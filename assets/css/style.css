@@ -7973,7 +7973,15 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   background-color: #132b45;
 }
 .hero-banner-card.bg-coral {
-  background-color: #e83f2a;
+  background: 
+    linear-gradient(to bottom, transparent 0, transparent 52px, #e83f2a 52px) right top / 36% 100% no-repeat,
+    linear-gradient(to right, #e83f2a, #e83f2a) left top / 66% 100% no-repeat;
+  background-color: transparent;
+}
+@media (max-width: 991px) {
+  .hero-banner-card.bg-coral {
+    background: #e83f2a !important;
+  }
 }
 .hero-banner-card.bg-green {
   background-color: #15483d;
