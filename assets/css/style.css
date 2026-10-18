@@ -8224,6 +8224,38 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
 }
 
+/* Staggered Fade Up Animation for Hero Text & Content */
+.hero-slider-item .banner-title,
+.hero-slider-item .banner-subtitle,
+.hero-slider-item .banner-actions {
+  opacity: 0;
+  transform: translateY(28px);
+  will-change: transform, opacity;
+}
+
+.hero-slider-item.active .banner-title {
+  animation: heroTextFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.05s forwards;
+}
+
+.hero-slider-item.active .banner-subtitle {
+  animation: heroTextFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+}
+
+.hero-slider-item.active .banner-actions {
+  animation: heroTextFadeUp 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
+}
+
+@keyframes heroTextFadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 @media (max-width: 1199px) {
   .hero-banner-building {
     max-width: 65%;

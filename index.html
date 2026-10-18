@@ -250,7 +250,7 @@
                             à Agadir
                         </h1>
                         <p class="banner-subtitle">
-                            Maison Benali vous accompagne dans l'acquisition de villas de prestige, programmes neufs certifiés et conciergerie 360°.
+                            Maison Benali vous accompagne dans l'acquisition de biens de prestige, programmes neufs certifiés et investissements pérennes.
                         </p>
                         <div class="banner-actions">
                             <a class="hero-btn-primary btn-coral" href="proprietes-projets">Découvrir nos biens <i class="far fa-arrow-right"></i></a>
@@ -268,20 +268,20 @@
                 <div class="hero-banner-card bg-coral">
                     <div class="banner-content">
                         <h1 class="banner-title">
-                            De Nouveaux Standards<br>
-                            pour <span class="accent-white font-awaking">l'Habitat d'Exception</span><br>
-                            à Agadir
+                            Villas Contemporaines<br>
+                            & <span class="accent-white font-awaking">Demeures de Prestige</span><br>
+                            en Baie d'Agadir
                         </h1>
                         <p class="banner-subtitle">
-                            Maison Benali vous accompagne dans l'acquisition de villas de prestige, programmes neufs certifiés et conciergerie 360°.
+                            Architecture avant-gardiste, piscines privées et finitions d'orfèvre : découvrez notre collection exclusive de villas uniques.
                         </p>
                         <div class="banner-actions">
-                            <a class="hero-btn-primary btn-navy" href="proprietes-projets">Découvrir nos biens <i class="far fa-arrow-right"></i></a>
-                            <a class="hero-btn-link" href="contact">Estimation gratuite <i class="far fa-arrow-right"></i></a>
+                            <a class="hero-btn-primary btn-navy" href="proprietes-projets">Explorer nos villas <i class="far fa-arrow-right"></i></a>
+                            <a class="hero-btn-link" href="contact">Visite privée <i class="far fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="hero-banner-img-wrap">
-                        <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-2.png" alt="Habitat d'Exception à Agadir">
+                        <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-2.png" alt="Villas Contemporaines à Agadir">
                     </div>
                 </div>
             </div>
@@ -291,20 +291,20 @@
                 <div class="hero-banner-card bg-green">
                     <div class="banner-content">
                         <h1 class="banner-title">
-                            De Nouveaux Standards<br>
-                            pour <span class="accent-coral font-awaking">l'Habitat d'Exception</span><br>
-                            à Agadir
+                            Investissement Serein<br>
+                            & <span class="accent-coral font-awaking">Conciergerie 360°</span><br>
+                            Clé en Main
                         </h1>
                         <p class="banner-subtitle">
-                            Maison Benali vous accompagne dans l'acquisition de villas de prestige, programmes neufs certifiés et conciergerie 360°.
+                            De l'acquisition sécurisée à la gestion locative VIP et la flotte Benali Cars : un accompagnement d'élite pour investisseurs et MRE.
                         </p>
                         <div class="banner-actions">
-                            <a class="hero-btn-primary btn-coral" href="proprietes-projets">Découvrir nos biens <i class="far fa-arrow-right"></i></a>
-                            <a class="hero-btn-link" href="contact">Estimation gratuite <i class="far fa-arrow-right"></i></a>
+                            <a class="hero-btn-primary btn-coral" href="ecosysteme-360">Notre Écosystème 360° <i class="far fa-arrow-right"></i></a>
+                            <a class="hero-btn-link" href="contact">Prendre rendez-vous <i class="far fa-arrow-right"></i></a>
                         </div>
                     </div>
                     <div class="hero-banner-img-wrap">
-                        <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-3.png" alt="Habitat d'Exception à Agadir">
+                        <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-3.png" alt="Conciergerie 360 et Investissement Agadir">
                     </div>
                 </div>
             </div>
@@ -325,12 +325,13 @@ document.addEventListener("DOMContentLoaded", function () {
             const isActive = (i === index);
             s.classList.toggle("active", isActive);
             if (isActive) {
-                const img = s.querySelector(".hero-banner-building");
-                if (img) {
-                    img.style.animation = 'none';
-                    void img.offsetHeight; // trigger reflow
-                    img.style.animation = '';
-                }
+                // Restart fade-up animation on title, subtitle, actions and building
+                const anims = s.querySelectorAll(".banner-title, .banner-subtitle, .banner-actions, .hero-banner-building");
+                anims.forEach(el => {
+                    el.style.animation = 'none';
+                    void el.offsetHeight; // trigger reflow
+                    el.style.animation = '';
+                });
             }
         });
         current = index;
