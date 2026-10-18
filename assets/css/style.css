@@ -8209,9 +8209,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   );
 }
 
-/* Fade up & Moving up Animation for Building Images (Smooth 3s duration) */
+/* Fade up & Moving up Animation for Building Images (Smooth 1.6s duration) */
 .hero-slider-item.active .hero-banner-building {
-  animation: heroBuildingMoveUp 3s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
+  animation: heroBuildingMoveUp 1.6s cubic-bezier(0.16, 1, 0.3, 1) 0.08s forwards;
 }
 @keyframes heroBuildingMoveUp {
   0% {
