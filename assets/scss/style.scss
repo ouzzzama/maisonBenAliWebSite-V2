@@ -1,0 +1,68 @@
+
+/*----------------------------------------------------------------------------------- 
+
+Template Name: Renvia – Real Estate Group HTML5 Template
+URI: https://nayonacademy.com/
+Description: Renvia is a premium, modern and feature-rich Real Estate HTML5 Template designed for property agencies, real estate companies, builders, architects, residential & commercial listing platforms. It delivers a clean UI, elegant layout structure, powerful features, and smooth user experience to help you showcase properties professionally and convert more clients.
+Author: Themeservices
+Author URI: https://themeforest.net/user/themeservices
+Version: 1.0 
+
+
+------------------------------------------------------
+   CSS INDEX
+-----------------------------------------------------
+
+    # Components
+        # Base CSS
+        # Common CSS
+        # Preloader CSS
+        # Offcanvas CSS
+        # Animation CSS
+        # Button CSS
+    # Sections
+       # Header CSS
+       # Hero Section CSS
+       # About Section CSS
+       # Features Section CSS
+       # Service Section CSS
+       # Counter Section CSS
+       # Project Section CSS
+       # Pricing Section CSS
+       # Faq Section CSS
+       # Testimonial Section CSS
+       # Company Section CSS
+       # CTA Section CSS
+       # Contact Section CSS
+       # Error Section CSS
+       # Footer CSS
+-------------------------------------------------------    */
+
+
+// Abstract
+
+@import "abstract";
+
+@import 'components/base';
+@import 'components/common';
+@import 'components/preloader';
+@import 'components/offcanvas';
+@import 'components/animations';
+@import 'components/buttons';
+@import 'sections/header';
+@import 'sections/hero';
+@import 'sections/about';
+@import 'sections/features';
+@import 'sections/service';
+@import 'sections/counter';
+@import 'sections/project';
+@import 'sections/pricing';
+@import 'sections/faq';
+@import 'sections/team';
+@import 'sections/testimonial';
+@import 'sections/blog';
+@import 'sections/company';
+@import 'sections/cta';
+@import 'sections/contact';
+@import 'sections/error';
+@import 'sections/footer';

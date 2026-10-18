@@ -1,0 +1,454 @@
+
+/*======================
+    Hero Section  CSS
+=======================*/
+
+
+/* Avatar Box */
+
+.renvia-avatar-box{
+    & .avatar-list{
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        & ul{
+            display: inline-flex;
+            align-items: center;
+            & li{
+                flex: 0 0 auto;
+                &:not(:first-child){
+                    margin-left: -15px;
+                }
+                & img{
+                    width: 55px;
+                    height: 55px;
+                    border: 2px solid $white-color;
+                    border-radius: 50%;
+                }
+                & span{
+                    width: 55px;
+                    height: 55px;
+                    border-radius: 50%;
+                    border: 2px solid $white-color;
+                    background-color: $primary-color;
+                    font-weight: 600;
+                    color: $white-color;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+            }
+        }
+    }
+}
+
+.renvia-hero_one{
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    & .hero-dots{
+        position: absolute;
+        top: 50%;
+        right: 40px;
+        z-index: 1;
+        transform: rotate(90deg);
+        padding: 0px 20px 10px;
+        border-radius: 100px;
+        border: 1px solid rgba(255, 255, 255, 0.25);
+        background-color: rgba(255, 255, 255, 0.15);
+        backdrop-filter: blur(5px);
+        @include respond(lg){
+            right: 0;
+        }
+        @include respond(md){
+            display: none;
+        }
+        & .slick-dots{
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            & li{
+                & button{
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    transition: all .3s;
+                }
+                &.slick-active{
+                    & button{
+                        width: 25px;
+                        border-radius: 10px;
+                    }
+                }
+            }
+        }
+    }
+    & .renvia-avatar-box{
+        position: absolute;
+        right: 60px;
+        bottom: 120px;
+        z-index: 1;
+        @include respond(md){
+            right: 50%;
+            transform: translateX(50%);
+            width: 100%;
+            text-align: center;
+        }
+        & .avatar-list{
+            @include respond(md){
+                justify-content: center;
+            }
+            & .text{
+                & p{
+                    color: $white-color;
+                    margin-top: 5px;
+                }
+            }
+        }
+    }
+    & .single-slider{
+        position: relative;
+        z-index: 1;
+        padding: 235px 0 120px;
+        @include respond(md){
+            padding: 200px 0 250px;
+        }
+    }
+    & .image-layer{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        transition: all 1.4s cubic-bezier(0.7, 0, 0.3, 1);
+        @include transform(scale(1.2));
+        z-index: -1;
+        &:after{
+            position: absolute;
+            top: 0;
+            left: 0;
+            content: '';
+            width: 100%;
+            height: 100%;
+            background-color: rgba(28, 28, 37, 0.60);
+            z-index: -1;
+        }
+    }
+    & .hero-content{
+        @include respond(md){
+            text-align: center;
+        }
+        & .tag-line{
+            font-size: 20px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            color: $white-color;
+            @include respond(md){
+                font-size: 16px;
+            }
+        }
+        & h1{
+            font-size: 94px;
+            line-height: 104px;
+            color: $white-color;
+            margin-bottom: 30px;
+            @include respond(lg){
+                font-size: 70px;
+                line-height: 80px;
+            }
+            @include respond(md){
+                font-size: 40px;
+                line-height: 50px;
+            }
+        }
+        & p{
+            color: $white-color;
+            max-width: 650px;
+            margin-bottom: 230px;
+            @include respond(md){
+                margin-bottom: 40px;
+            }
+        }
+    }
+}
+
+
+.renvoa-hero_two{
+    padding: 310px 0 240px;
+    position: relative;
+    z-index: 1;
+    overflow: hidden;
+    @include respond(md){
+        padding: 150px 0 100px;
+    }
+    & .hero-image{
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 50%;
+        height: 100%;
+        z-index: 1;
+        @include respond(xl){
+            display: none;
+        }
+        & img{
+            width: 100%;
+            height: 100%;
+            clip-path: polygon(60% 0, 100% 0, 100% 100%, 0% 100%);
+            @include respond(xxxl){
+                clip-path: polygon(100% 0, 100% 0, 100% 100%, 0% 100%);
+            }
+        }
+        &:after{
+            position: absolute;
+            left: 70px;
+            bottom: -80px;
+            content: "";
+            width: 100px;
+            height: 580px;
+            background-color: var(--white-color);
+            clip-path: polygon(55% 0%, 100% 0%, 45% 100%, 0% 100%);
+            z-index: -1;
+            transform: rotate(28deg);
+            @include respond(xxxl){
+                left: 110px;
+                transform: rotate(33deg);
+            }
+        }
+    }
+    & .shape-one{
+        position: absolute;
+        bottom: -10px;
+        right: 0;
+        z-index: 2;
+        & span{
+            width: 500px;
+            height: 500px;
+            background-color: $primary-color;
+            clip-path: polygon(100% 0, 20% 100%, 100% 100%);
+        }
+        @include respond(xl){
+            display: none;
+        }
+    }
+    &:after{
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-color: rgba(28, 28, 37, 0.97);
+        z-index: -1;
+    }
+    & .container-fluid{
+        padding-left: 180px;
+        padding-right: 180px;
+        @include respond(xxxl){
+            padding-left: 50px;
+            padding-right: 50px;
+        }
+        @include respond(xl){
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+    & .hero-content{
+        @include respond(xl){
+            text-align: center;
+        }
+        & .tag-line{
+            color: $primary-color;
+            font-size: 20px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 20px;
+            @include respond(md){
+                font-size: 16px;
+            }
+        }
+        & h1{
+            max-width: 600px;
+            color: $white-color;
+            margin-bottom: 20px;
+            @include respond(xl){
+                margin: 0 auto 20px;
+            }
+            @include respond(md){
+                font-size: 36px;
+                line-height: 45px;
+            }
+        }
+        & p{
+            color: $white-color;
+            max-width: 635px;
+            margin-bottom: 35px;
+            @include respond(xl){
+                margin: 0 auto 35px;
+            }
+        }
+    }
+}
+
+
+
+.renvia-hero_three{
+    position: relative;
+    z-index: 1;
+    padding: 138px 0 0;
+    &:after{
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 75%;
+        background-color: $gray-color;
+        z-index: -1;
+        @include respond(lg){
+            height: 85%;
+        }
+    }
+    & .container-fluid{
+        padding-left: 50px;
+        padding-right: 50px;
+        @include respond(xl){
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+    & .hero-content{
+        max-width: 765px;
+        & h1{
+            font-size: 92px;
+            line-height: 102px;
+            margin-bottom: 30px;
+            @include respond(xxxl){
+                font-size: 72px;
+                line-height: 85px;
+            }
+            @include respond(xl){
+                font-size: 60px;
+                line-height: 70px;
+            }
+            @include respond(lg){
+                font-size: 50px;
+                line-height: 65px;
+            }
+            @include respond(sm){
+                font-size: 36px;
+                line-height: 45px;
+            }
+        }
+        & p{
+            font-size: 18px;
+            line-height: 28px;
+            font-weight: 600;
+            max-width: 700px;
+            color: $heading-color;
+            @include respond(lg){
+                font-size: 16px;
+            }
+        }
+    }
+    & .renvia-text-box{
+        margin-top: 10px;
+        max-width: 520px;
+        float: right;
+        @include respond(lg){
+            float: none;
+            text-align: center;
+        }
+        & .renvia-avatar-box{
+            & .avatar-list{
+                @include respond(lg){
+                    justify-content: center;
+                }
+                @include respond(sm){
+                    flex-direction: column;
+                }
+                & .text{
+                    & p{
+                        color: $heading-color;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+        & > p{
+            color: $heading-color;
+            font-weight: 600;
+            margin-bottom: 30px;
+        }
+    }
+    & .renvia-image{
+        & img{
+            border-radius: 50px;
+            @include respond(lg){
+                border-radius: 20px;
+                min-height: 300px;
+                object-fit: cover;
+                object-position: center;
+            }
+        }
+    }
+}
+
+
+
+
+
+/* Page Banner CSS */
+
+.page-hero{
+    padding: 250px 0 135px;
+    position: relative;
+    z-index: 1;
+    @include respond(xl){
+        padding: 230px 0 100px;
+    }
+    @include respond(md){
+        padding: 200px 0 100px;
+    }
+    &::after{
+        position: absolute;
+        top: 0;
+        left: 0;
+        content: '';
+        width: 100%;
+        height: 100%;
+        background-color: rgba(28, 28, 37, 0.75);
+        z-index: -1;
+    }
+    & .page-content{
+        & h1{
+            color: $white-color;
+            font-size: 65px;
+            margin-bottom: 10px;
+            @include respond(md){
+                font-size: 44px;
+            }
+        }
+        & ul{
+            & li{
+                display: inline-block;
+                color: $white-color;
+                font-size: 20px;
+                line-height: 28px;
+                &:not(:last-child){
+                    &:after{
+                        display: inline-block;
+                        content: '\f101';
+                        font-family: 'Font Awesome 5 Pro';
+                        margin-left: 8px;
+                        margin-right: 5px;
+                    }
+                }
+                & a{
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+}

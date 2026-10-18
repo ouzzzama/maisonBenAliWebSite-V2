@@ -1,0 +1,255 @@
+
+/*======================
+    Service Section  CSS
+=======================*/
+
+
+.renvia-iconic-box{
+    &.style-one{
+        border: 1px solid $heading-color;
+        border-radius: 20px;
+        padding: 0 20px 20px;
+        & .icon{
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            background-color: $heading-color;
+            margin-bottom: 15px;
+            margin-top: -30px;
+        }
+        & .content{
+            & h5{
+                font-size: $h5-font;
+                margin-bottom: 10px;
+            }
+        }
+    }
+}
+
+.renvia-service-card{
+    &.style-one{
+        background-color: $white-color;
+        border-radius: 30px;
+        padding: 35px 40px 40px;
+        @include respond(xl){
+            padding: 35px 30px 40px;
+        }
+        &:hover{
+            & .title-wrap{
+                & .icon-btn{
+                    background-color: $primary-color;
+                    color: $white-color;
+                    & i{
+                        transform: rotate(0deg);
+                    }
+                }
+            }
+        }
+        & .title-wrap{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 30px;
+            border-bottom: 1px solid $border-color;
+            margin-bottom: 30px;
+            & h4{
+                max-width: 180px;
+            }
+            & .icon-btn{
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #F8F8F8;
+                color: $heading-color;
+                transition: all .3s;
+                & i{
+                    transform: rotate(-45deg);
+                    transition: all .35s;
+                }
+            }
+        }
+        & p{
+            margin-bottom: 30px;
+        }
+        & img{
+            width: 100%;
+            border-radius: 20px;
+        }
+    }
+    &.style-two{
+        background-color: $white-color;
+        padding: 40px;
+        border-radius: 30px;
+        & .content{
+            & .title{
+                margin-bottom: 35px;
+                @include respond(lg){
+                    font-size: 20px;
+                }
+                & a{
+                    display: flex;
+                    align-items: center;
+                }
+                & span{
+                    flex: 0 0 auto;
+                    max-width: 40px;
+                    margin-right: 15px;
+                }
+            }
+            & > img{
+                width: 100%;
+            }
+            & p{
+                margin-top: 25px;
+                margin-bottom: 30px;
+            }
+        }
+    }
+    &.style-three{
+        border-radius: 30px;
+        padding: 40px 30px;
+        text-align: center;
+        border: 1px solid $border-color;
+        transition: all .4s;
+        @include respond(xxxl){
+            padding: 40px 20px;
+        }
+        @include respond(xl){
+            padding: 40px 30px;
+        }
+        &:hover{
+            background-color: $heading-color;
+            border-color: transparent;
+            & .content{
+                & .title{
+                    color: $white-color;
+                }
+                & p{
+                    color: $white-color;
+                }
+                & .icon-btn{
+                    background-color: $primary-color;
+                    color: $white-color;
+                }
+            }
+        }
+        & .icon{
+            margin-bottom: 35px;
+        }
+        & .content{
+            & .title{
+                font-size: 22px;
+                margin-bottom: 10px;
+            }
+            & p{
+                margin-bottom: 20px;
+                font-weight: 600;
+            }
+            & .icon-btn{
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                background-color: #F8F8F8;
+                color: $heading-color;
+                transition: all .3s;
+                & i{
+                    transform: rotate(-45deg);
+                    transition: all .35s;
+                }
+            }
+        }
+    }
+}
+
+.service-slider{
+    margin-left: -15px;
+    margin-right: -15px;
+    @include respond(lg){
+        margin-left: -12px;
+        margin-right: -12px;
+    }
+    & .slick-slide{
+        margin-left: 15px;
+        margin-right: 15px;
+        @include respond(lg){
+            margin-left: 12px;
+            margin-right: 12px;
+        }
+    }
+}
+
+.renvia-service_two,
+.renvia-service_one{
+    & .container-fluid{
+        padding-left: 95px;
+        padding-right: 95px;
+        @include respond(xxxl){
+            padding-left: 30px;
+            padding-right: 30px;
+        }
+        @include respond(xl){
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+}
+
+/* Service Details */
+
+.service-details-wrapper{
+    & .service-image{
+        margin-bottom: 30px;
+        & img{
+            border-radius: 30px;
+            width: 100%;
+            display: block;
+        }
+    }
+    & .service-content{
+        & h3{
+            margin-bottom: 25px;
+            font-size: $h3-font;
+        }
+        & > p{
+            margin-bottom: 30px;
+        }
+        & .content-box{
+            & p{
+                margin-bottom: 20px;
+            }
+        }
+        & h4{
+            margin-bottom: 20px;
+        }
+        & .renvia-image{
+            margin-right: 20px;
+            & img{
+                border-radius: 20px;
+                width: 100%;
+            }
+        }
+    }
+}
+
+.service-cards-image-mid{
+    .renvia-service-card.style-one{
+        & .title-wrap{
+            margin-bottom: 25px;
+        }
+        & img{
+            margin-bottom: 20px;
+        }
+        & p{
+            margin-bottom: 0;
+        }
+    }
+}

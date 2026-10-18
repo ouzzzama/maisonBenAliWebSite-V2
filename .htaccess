@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Force HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # Redirect nested subfolder path to root
+  RewriteCond %{REQUEST_URI} ^/maisonBenAliWebSite/(.*)$ [NC]
+  RewriteRule ^maisonBenAliWebSite/(.*)$ https://maisonbenali.com/$1 [R=301,L]
+
+  # Clean URLs (optional: serve html extension automatically if omitted)
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}.html -f
+  RewriteRule ^(.*)$ $1.html [L,QSA]
+</IfModule>

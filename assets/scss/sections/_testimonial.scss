@@ -1,0 +1,349 @@
+
+/*============================
+    Testimonial Section  CSS
+=============================*/
+
+
+
+.author-thumb-item{
+    display: flex;
+    align-items: center;
+    & .author-thumb{
+        flex: 0 0 auto;
+        width: 60px;
+        margin-right: 20px;
+        & img{
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+        }
+    }
+    & .author-info{
+        & h5{
+            margin-bottom: 5px;
+        }
+    }
+}
+
+.renvia-testimonial-item{
+    &.style-one{
+        & .testimonial-content{
+            & .quote{
+                margin-bottom: 35px;
+            }
+            & p{
+                font-size: 20px;
+                line-height: 30px;
+                color: $heading-color;
+                font-weight: 600;
+                margin-bottom: 30px;
+                padding-right: 40px;
+                @include respond(md){
+                    font-size: 16px;
+                    line-height: 28px;
+                    padding-right: 0;
+                }
+            }
+        }
+    }
+    &.style-two{
+        background-color: $white-color;
+        border-radius: 30px;
+        padding: 30px;
+        & .testimonial-content{
+            & .quote-ratings-wrap{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 35px;
+            }
+            & > p{
+                font-size: 20px;
+                line-height: 30px;
+                color: $heading-color;
+                margin-bottom: 30px;
+            }
+            & .author-thumb-item{
+                & .author-thumb{
+                    margin-right: 16px;
+                    max-width: 50px;
+                    & img{
+                        width: 50px;
+                        height: 50px;
+                    }
+                }
+                & .author-info{
+                    & h5{
+                        margin-bottom: 0;
+                    }
+                    & .position{
+                        color: $primary-color;
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+    &.style-three{
+        border: 1px solid $border-color;
+        border-radius: 30px;
+        padding: 50px;
+        @include respond(lg){
+            padding: 30px;
+        }
+        & .testimonial-content{
+            & .quote-ratings-wrap{
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 20px;
+            }
+            & > p{
+                font-size: 20px;
+                color: $heading-color;
+                line-height: 30px;
+                font-weight: 600;
+                margin-bottom: 30px;
+                text-align: justify;
+                @include respond(lg){
+                    font-size: 16px;
+                    line-height: 28px;
+                }
+            }
+            & .author-thumb-item{
+                justify-content: space-between;
+                align-items: center;
+                & .author-thumb{
+                    width: 80px;
+                    margin-right: 0;
+                    & img{
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.testimonial-slider-two{
+    margin-left: -15px;
+    margin-right: -15px;
+    & .slick-slide{
+        margin-left: 15px;
+        margin-right: 15px;
+    }
+}
+
+.testimonial-slider-three{
+    margin-left: -15px;
+    margin-right: -15px;
+    @include respond(lg){
+        margin-left: -12px;
+        margin-right: -12px;
+    }
+    & .slick-slide{
+        margin-left: 15px;
+        margin-right: 15px;
+        @include respond(lg){
+            margin-left: 12px;
+            margin-right: 12px;
+        }
+    }
+}
+
+
+
+.renvia-testimonial_one{
+    & .container-fluid{
+        padding-left: 50px;
+        padding-right: 50px;
+        @include respond(xxxl){
+            padding-left: 15px;
+            padding-right: 15px;
+        }
+    }
+    & .renvia-image{
+        margin-right: 35px;
+        @include respond(xxxl){
+            margin-right: 0;
+        }
+        & img{
+            width: 100%;
+            border-radius: 30px;
+        }
+    }
+    & .renvia-content-box{
+        padding: 120px 220px 125px 120px;
+        border-radius: 30px;
+        @include respond(xxxl){
+            padding: 27px 50px 27px 50px;
+        }
+        @include respond(xl){
+            padding: 70px 50px 70px 50px;
+        }
+        @include respond(md){
+            padding: 50px 30px 50px;
+        }
+        & .testimonial-slider-wrap{
+            position: relative;
+            padding-bottom: 40px;
+            border-bottom: 1px solid $border-color;
+            margin-bottom: 40px;
+        }
+        & .testimonial-arrows{
+            position: absolute;
+            bottom: 40px;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            & .slick-arrow{
+                cursor: pointer;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                border: 1px solid $border-color;
+                color: $primary-color;
+                z-index: 1;
+                transition: all .3s;
+                &:hover{
+                    background-color: $primary-color;
+                    color: $white-color;
+                    border-color: transparent;
+                }
+            }
+        }
+        & .renvia-counter-box{
+            & .content{
+                display: flex;
+                align-items: center;
+                & h2{
+                    flex: 0 0 auto;
+                    max-width: 220px;
+                    display: flex;
+                    align-items: center;
+                    gap: 30px;
+                    margin-right: 30px;
+                    @include respond(md){
+                        gap: 10px;
+                        margin-right: 10px;
+                    }
+                    & .number{
+                        font-family: $heading-font;
+                        font-size: 88px;
+                        -webkit-text-stroke-width: 1px;
+                        -webkit-text-stroke-color: $text-color;
+                        color: transparent;
+                        @include respond(md){
+                            font-size: 50px;
+                        }
+                    }
+                    & .symbol{
+                        font-family: $heading-font;
+                        font-size: 80px;
+                        color: $heading-color;
+                        @include respond(md){
+                            font-size: 50px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.renvia-testimonial_two{
+    background-color: $gray-color;
+    & .testimonial-wrapper{
+        margin-left: 50px;
+        @include respond(xxxl){
+            margin-left: 20px;
+        }
+        @include respond(xl){
+            margin-left: 0;
+            margin-top: 50px;
+        }
+    }
+    & .renvia-content-box{
+        & .section-title{
+            & h2{
+                @include respond(xxxl){
+                    font-size: 44px;
+                }
+                @include respond(md){
+                    font-size: 28px;
+                }
+            }
+        }
+        & .text-wrap{
+            display: flex;
+            align-items: center;
+            margin-top: 20px;
+            & .number{
+                font-size: 52px;
+                color: $heading-color;
+                font-family: $heading-font;
+                margin-right: 18px;
+            }
+            & .text{
+                & p{
+                    font-size: 14px;
+                    color: $heading-color;
+                }
+            }
+        }
+    }
+    & .testimonial-dots{
+        text-align: center;
+        & .slick-dots{
+            & li{
+                margin-left: 7px;
+                margin-right: 7px;
+                & button{
+                    width: 8px;
+                    height: 8px;
+                    border-radius: 50%;
+                    background-color: $text-color;
+                    transition: all .3s;
+                }
+                &.slick-active{
+                    & button{
+                        width: 25px;
+                        border-radius: 8px;
+                        background-color: $primary-color;
+                    }
+                }
+            }
+        }
+    }
+    & .clients-wrapper{
+        & .section-title{
+            @include respond(lg){
+                text-align: center;
+            }
+            & h3{
+                display: flex;
+                align-items: center;
+                font-size: 20px;
+                @include respond(xl){
+                    font-size: 16px;
+                }
+                &:after{
+                    content: '';
+                    width: 60%;
+                    height: 1px;
+                    background-color: $border-color;
+                    margin-left: auto;
+                    @include respond(lg){
+                        display: none;
+                    }
+                }
+            }
+        }
+    }
+}

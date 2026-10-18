@@ -1,0 +1,116 @@
+
+/*======================
+    Counter Section  CSS
+=======================*/
+
+.renvia-counter-item{
+    &.style-one{
+        & .content{
+            & h2{
+                margin-bottom: 10px;
+                .symbol{
+                    color: $primary-color;
+                }
+            }
+        }
+    }
+    &.style-three{
+        text-align: center;
+        & .content{
+            & .title{
+                color: $white-color;
+                font-family: $heading-font;
+                margin-bottom: 42px;
+            }
+            & h2{
+                margin-bottom: 10px;
+                color: $white-color;
+                & .symbol{
+                    color: $primary-color;
+                }
+            }
+            & p{
+                font-weight: 700;
+            }
+        }
+    }
+}
+
+.renvia-counter-sec{
+    background-color: $heading-color;
+    & .counter-wrapper{
+        & .item-border{
+            &:not(:last-child){
+                & .renvia-counter-item{
+                    border-right: 1px solid rgba(255, 255, 255, 0.50);
+                    @include respond(lg){
+                        border-right: none;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.renvia-counter_three{
+    & .renvia-text-box{
+        border: 1px solid rgba(255, 255, 255, 0.50);
+        padding: 20px 30px;
+        border-radius: 30px;
+        text-align: center;
+        & p{
+            color: $white-color;
+        }
+    }
+    & .renvia-image{
+        & img{
+            border-radius: 30px;
+            width: 100%;
+        }
+    }
+    & .renvia-image-two{
+        margin-right: -20px;
+        @include respond(xl){
+            margin-right: 0;
+        }
+    }
+    & .counter-wrapper{
+        margin-left: 30px;
+        border:1px solid rgba(255, 255, 255, 0.50);
+        border-radius: 30px;
+        padding: 35px 40px 30px;
+        @include respond(xl){
+            margin-left: 0;
+        }
+        & .counter-list{
+            border-right: 1px solid rgba(255, 255, 255, 0.20);
+            @include respond(md){
+                border-right: none;
+            }
+            & .renvia-counter-item{
+                &:first-child{
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+                    padding-bottom: 30px;
+                    margin-bottom: 30px;
+                    @include respond(md){
+                        border-bottom: 0;
+                        padding-bottom: 0;
+                    }
+                }
+            }
+        }
+        & .counter-wrap{
+            & .renvia-counter-item{
+                &:first-child{
+                    border-bottom: 1px solid rgba(255, 255, 255, 0.20);
+                    padding-bottom: 30px;
+                    margin-bottom: 30px;
+                    @include respond(md){
+                        border-bottom: 0;
+                        padding-bottom: 0;
+                    }
+                }
+            } 
+        }
+    }
+}

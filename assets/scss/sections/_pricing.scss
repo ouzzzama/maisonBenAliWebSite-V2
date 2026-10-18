@@ -1,0 +1,148 @@
+
+/*=========================
+    Pricing Section  CSS
+==========================*/
+
+/* Switch Box */
+
+.theme-switch-box{
+    display: flex;
+    align-items: center;
+    & span{
+        font-size: 18px;
+        color: $heading-color;
+        &.left{
+            margin-right: 10px;
+        }
+        &.right{
+            margin-left: 10px;
+        }
+    }
+    & .switch{
+        display: inline-block;
+        height: 26px;
+        position: relative;
+        width: 60px;
+        & input{
+            display: none;
+            &:checked + .slider:before{
+                transform: translateX(33px);
+            }
+        }
+        & .slider{
+            background-color: $primary-color;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            top: 0;
+            margin-right: 0;
+            cursor: pointer;
+            &.round{
+                border-radius: 15px;
+            }
+            &:before{
+                background-color: $white-color;
+                position: absolute;
+                bottom: 3px;
+                left: 3px;
+                content: "";
+                height: 20px;
+                width: 20px;
+                border-radius: 50%;
+                transition: all .3s;
+            }
+        }
+    }
+}
+
+
+.renvia-pricing-item{
+    &.style-one{
+        position: relative;
+        background-color: $white-color;
+        padding: 35px 40px 40px;
+        border-radius: 30px;
+        box-shadow: 0 6px 25px 0 rgba(102, 102, 102, 0.15);
+        @include respond(xl){
+            padding: 35px 20px 40px;
+        }
+        & .popular{
+            position: absolute;
+            top: 25px;
+            left: 0;
+            transform: rotate(-45deg);
+            font-size: 16px;
+            font-weight: 500;
+            font-family: $heading-font;
+            color: $heading-color;
+            border-bottom: 1px solid $heading-color;
+            padding: 0 10px;
+        }
+        & .pricing-header{
+            padding: 0 25px;
+            text-align: center;
+            & .plan{
+                font-size: 30px;
+                color: $heading-color;
+                margin-bottom: 35px;
+                font-family: $heading-font;
+                font-weight: 500;
+                @include respond(xl){
+                    font-size: 20px;
+                }
+            }
+            & .price{
+                color: $heading-color;
+                font-family: $body-font;
+                font-size: $h2-font;
+                margin-bottom: 20px;
+                font-weight: 700;
+                & span{
+                    font-weight: 400;
+                    font-size: 16px;
+                    color: $text-color;
+                }
+            }
+        }
+        & .pricing-button{
+            & .theme-btn{
+                width: 100%;
+                &.style-one{
+                    background-color: $primary-black-color;
+                    &:hover{
+                        background-color: $primary-color;
+                    }
+                }
+            }
+        }
+        & .pricing-body{
+            padding: 0 40px;
+            @include respond(xl){
+                padding: 0;
+            }
+            & ul{
+                & li{
+                    color: $text-color;
+                    &:not(:last-child){
+                        margin-bottom: 28px;
+                    }
+                }
+            }
+            & .uncheck{
+                & i{
+                    color: $text-color;
+                }
+            }
+        }
+        &.popular-plan{
+            & .pricing-button{
+                & .theme-btn{
+                    &.style-one{
+                        background-color: $primary-color;
+                    }
+                }
+            }
+        }
+    }
+}
