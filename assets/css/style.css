@@ -8132,9 +8132,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   pointer-events: none;
   z-index: 4;
   overflow: visible;
-  /* CROPPED strictly by original block on bottom, right, and left; TOP completely open (-450px) to remove any roof cropping */
-  -webkit-clip-path: inset(-450px 0px 0px 0px round 0px 0px 42px 42px);
-  clip-path: inset(-450px 0px 0px 0px round 0px 0px 42px 42px);
+  /* Curved cropping removed - image displays fully with natural edges */
+  -webkit-clip-path: none !important;
+  clip-path: none !important;
 }
 .hero-banner-building {
   position: absolute;
@@ -8145,7 +8145,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   max-width: 68%; /* Bigger image that spans wide into the center of the card */
   object-fit: contain;
   object-position: bottom right;
-  border-bottom-right-radius: 42px;
+  border-radius: 0 !important;
   display: block;
   filter: none !important; /* Shadow completely removed */
   transform: translateY(65px);
@@ -8232,12 +8232,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 }
 @media (max-width: 991px) {
   .hero-banner-img-wrap {
-    -webkit-clip-path: inset(-300px 0px 0px 0px round 0px 0px 32px 32px);
-    clip-path: inset(-300px 0px 0px 0px round 0px 0px 32px 32px);
+    -webkit-clip-path: none !important;
+    clip-path: none !important;
   }
   .hero-banner-building {
     max-width: 82%;
     height: 330px;
+    border-radius: 0 !important;
   }
 }
 @media (max-width: 767px) {
@@ -8245,13 +8246,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     border-radius: 28px;
   }
   .hero-banner-img-wrap {
-    -webkit-clip-path: inset(-250px 0px 0px 0px round 0px 0px 28px 28px);
-    clip-path: inset(-250px 0px 0px 0px round 0px 0px 28px 28px);
+    -webkit-clip-path: none !important;
+    clip-path: none !important;
   }
   .hero-banner-building {
     max-width: 95%;
     height: 260px;
-    border-bottom-right-radius: 28px;
+    border-radius: 0 !important;
   }
 }
 
