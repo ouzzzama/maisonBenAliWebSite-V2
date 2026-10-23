@@ -8142,8 +8142,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   right: 0;
   bottom: 0;
   height: calc(100% + 95px); /* Balanced pop-out height that keeps the full roof intact */
-  width: 68%;
-  max-width: 68%; /* Locked width across all images */
+  width: auto;
+  max-width: 68%;
   object-fit: contain;
   object-position: bottom right;
   border-bottom-right-radius: 42px;
@@ -8152,35 +8152,60 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   transform: translateY(65px);
   opacity: 0;
   will-change: transform, opacity;
-  /* Unified Ultra-Smooth Wide Feather Mask: Locked at the exact same middle position for EVERY image */
+}
+
+/* Slide 1 (Navy Building): Scaled up grander so the lower left annex enters the wide feather mask and dissolves seamlessly */
+.bg-navy .hero-banner-building {
+  width: 82%;
+  max-width: 82%;
+  height: calc(100% + 140px);
+  right: -10px;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.01) 6%,
-    rgba(0, 0, 0, 0.05) 12%,
-    rgba(0, 0, 0, 0.14) 18%,
-    rgba(0, 0, 0, 0.28) 25%,
-    rgba(0, 0, 0, 0.48) 32%,
-    rgba(0, 0, 0, 0.70) 39%,
-    rgba(0, 0, 0, 0.88) 46%,
-    rgba(0, 0, 0, 0.98) 52%,
-    #000000 58%,
+    rgba(0, 0, 0, 0.01) 8%,
+    rgba(0, 0, 0, 0.06) 16%,
+    rgba(0, 0, 0, 0.18) 24%,
+    rgba(0, 0, 0, 0.38) 32%,
+    rgba(0, 0, 0, 0.65) 40%,
+    rgba(0, 0, 0, 0.88) 48%,
+    #000000 56%,
     #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.01) 6%,
-    rgba(0, 0, 0, 0.05) 12%,
-    rgba(0, 0, 0, 0.14) 18%,
-    rgba(0, 0, 0, 0.28) 25%,
-    rgba(0, 0, 0, 0.48) 32%,
-    rgba(0, 0, 0, 0.70) 39%,
-    rgba(0, 0, 0, 0.88) 46%,
-    rgba(0, 0, 0, 0.98) 52%,
-    #000000 58%,
+    rgba(0, 0, 0, 0.01) 8%,
+    rgba(0, 0, 0, 0.06) 16%,
+    rgba(0, 0, 0, 0.18) 24%,
+    rgba(0, 0, 0, 0.38) 32%,
+    rgba(0, 0, 0, 0.65) 40%,
+    rgba(0, 0, 0, 0.88) 48%,
+    #000000 56%,
     #000000 100%
   );
+}
+
+/* Slide 2 (Coral Villa): Clean default implementation of brand-new luxury modern villa & infinity pool */
+.bg-coral .hero-banner-building {
+  width: 70%;
+  max-width: 70%;
+  height: calc(100% + 80px);
+  right: 0;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  border-radius: 0 !important;
+}
+
+/* Slide 3 (Green Moroccan Moyen Standing Project): Clean architectural presentation */
+.bg-green .hero-banner-building {
+  width: 66%;
+  max-width: 66%;
+  height: calc(100% + 95px);
+  right: 15px;
+  -webkit-mask-image: none !important;
+  mask-image: none !important;
+  border-radius: 0 !important;
 }
 
 /* Fade up & Moving up Animation for Building Images (Smooth 1.6s duration) */
@@ -8232,9 +8257,20 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 @media (max-width: 1199px) {
   .hero-banner-building {
+    height: calc(100% + 85px);
+  }
+  .bg-navy .hero-banner-building {
+    width: 78%;
+    max-width: 78%;
+    height: calc(100% + 110px);
+  }
+  .bg-coral .hero-banner-building {
+    width: 68%;
+    max-width: 68%;
+  }
+  .bg-green .hero-banner-building {
     width: 65%;
     max-width: 65%;
-    height: calc(100% + 85px);
   }
 }
 @media (max-width: 991px) {
@@ -8243,9 +8279,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     clip-path: inset(-300px 0px 0px 0px round 0px 0px 32px 32px);
   }
   .hero-banner-building {
-    width: 82%;
-    max-width: 82%;
-    height: 330px;
+    width: 82% !important;
+    max-width: 82% !important;
+    height: 330px !important;
   }
 }
 @media (max-width: 767px) {
