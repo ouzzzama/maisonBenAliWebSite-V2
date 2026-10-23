@@ -8439,33 +8439,32 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   transform: translateX(4px);
 }
 
-/* Featured Projects Continuous Looping Carousel */
+/* Featured Projects Continuous Looping Amphitheater Carousel */
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 55px 0 65px;
+  padding: 60px 0 75px;
   overflow: hidden;
   display: flex;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
-  perspective: 1200px;
-  /* Feather mask on left & right edges */
+  /* Soft feathered edge blend */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.25) 2%,
-    #000000 6%,
-    #000000 94%,
-    rgba(0, 0, 0, 0.25) 98%,
+    rgba(0, 0, 0, 0.4) 1.5%,
+    #000000 4%,
+    #000000 96%,
+    rgba(0, 0, 0, 0.4) 98.5%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.25) 2%,
-    #000000 6%,
-    #000000 94%,
-    rgba(0, 0, 0, 0.25) 98%,
+    rgba(0, 0, 0, 0.4) 1.5%,
+    #000000 4%,
+    #000000 96%,
+    rgba(0, 0, 0, 0.4) 98.5%,
     transparent 100%
   );
 }
@@ -8477,7 +8476,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 140px;
+  width: 80px;
   pointer-events: none;
   z-index: 10;
 }
@@ -8492,9 +8491,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 .featured-arch-container {
   width: 100%;
+  max-width: 1440px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: visible;
-  perspective: 1200px;
+  perspective: 580px;
+  perspective-origin: 50% 50%;
 }
 
 /* Continuous Infinite Carousel Track */
@@ -8515,8 +8518,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-group {
   display: flex;
   align-items: center;
-  gap: 22px;
-  padding-right: 22px;
+  gap: 18px;
+  padding-right: 18px;
   flex-shrink: 0;
   transform-style: preserve-3d;
 }
@@ -8531,13 +8534,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
 }
 
-/* Warped Double-Curve Image Cards (Smaller Base Dimensions) */
+/* Warped Double-Curve Image Cards */
 .featured-arch-card {
   position: relative;
-  width: 235px;
-  height: 345px;
+  width: 175px;
+  height: 275px;
   flex-shrink: 0;
-  border-radius: 22px;
+  border-radius: 20px;
   cursor: pointer;
   display: block;
   text-decoration: none;
@@ -8548,7 +8551,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 }
 
 .featured-arch-card:hover {
-  box-shadow: 0 20px 40px rgba(19, 43, 69, 0.16);
+  box-shadow: 0 20px 40px rgba(19, 43, 69, 0.20);
 }
 
 /* Inner Box - Pure Clean Architectural Photography, No Overlays or Gradients */
@@ -8556,10 +8559,11 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 22px;
+  border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 14px 34px rgba(19, 43, 69, 0.10);
+  box-shadow: 0 16px 36px rgba(19, 43, 69, 0.14);
   background: #132b45;
+  transform-style: preserve-3d;
 }
 
 .featured-arch-card .card-inner img {
@@ -8568,6 +8572,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   object-fit: cover;
   display: block;
   transform: none;
+  transition: none;
+}
   transition: none;
 }
 
@@ -8639,16 +8645,16 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 38px;
   }
   .featured-arch-card {
-    width: 210px;
-    height: 310px;
-    border-radius: 20px;
+    width: 155px;
+    height: 245px;
+    border-radius: 18px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 20px;
+    border-radius: 18px;
   }
   .featured-arch-group {
-    gap: 18px;
-    padding-right: 18px;
+    gap: 15px;
+    padding-right: 15px;
   }
   .featured-triad-col {
     padding: 0 20px;
@@ -8663,16 +8669,16 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 32px;
   }
   .featured-arch-card {
-    width: 180px;
-    height: 265px;
-    border-radius: 18px;
+    width: 135px;
+    height: 215px;
+    border-radius: 16px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 18px;
+    border-radius: 16px;
   }
   .featured-arch-group {
-    gap: 16px;
-    padding-right: 16px;
+    gap: 12px;
+    padding-right: 12px;
   }
   .featured-triad-row {
     grid-template-columns: 1fr;
@@ -8701,19 +8707,19 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
   .featured-arch-wrapper::before,
   .featured-arch-wrapper::after {
-    width: 60px;
+    width: 50px;
   }
   .featured-arch-card {
-    width: 145px;
-    height: 215px;
-    border-radius: 16px;
+    width: 110px;
+    height: 175px;
+    border-radius: 14px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 16px;
+    border-radius: 14px;
   }
   .featured-arch-group {
-    gap: 12px;
-    padding-right: 12px;
+    gap: 10px;
+    padding-right: 10px;
   }
 }
 
