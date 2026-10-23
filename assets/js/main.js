@@ -471,7 +471,6 @@ Version: 1.0
         if (!$hero.length || !$slides.length) return;
 
         var currentIndex = 0;
-        var $pills = $hero.find('.hero-page-pill');
 
         function switchSlide(index) {
             if (index === currentIndex && $slides.eq(index).hasClass('active')) return;
@@ -490,20 +489,13 @@ Version: 1.0
                     });
                 }
             });
-
-            if ($pills.length) {
-                $pills.each(function(i) {
-                    $(this).toggleClass('active', i === index);
-                });
-            }
         }
 
-        var slideCount = $slides.length;
         var pinDistance = function () {
             return window.innerWidth <= 767 ? 900 : 1500;
         };
 
-        var heroST = ScrollTrigger.create({
+        ScrollTrigger.create({
             trigger: '.modern-hero-section',
             start: 'top top',
             end: () => '+=' + pinDistance(),
@@ -522,21 +514,6 @@ Version: 1.0
                     target = 2;
                 }
                 switchSlide(target);
-            }
-        });
-
-        // Click on indicator pill scrolls smoothly to that slide
-        $pills.on('click', function(e) {
-            e.preventDefault();
-            var targetIdx = parseInt($(this).data('slide'), 10) || 0;
-            var targetProgress = targetIdx / (slideCount - 1);
-            var dist = pinDistance();
-            var targetY = heroST.start + (targetProgress * dist);
-            var smoother = ScrollSmoother.get();
-            if (smoother) {
-                smoother.scrollTo(targetY, true);
-            } else {
-                $('html, body').stop().animate({ scrollTop: targetY }, 500);
             }
         });
 
