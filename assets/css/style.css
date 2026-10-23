@@ -8443,11 +8443,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 30px 0 55px;
+  padding: 55px 0 65px;
   overflow: hidden;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  perspective: 1200px;
   /* Feather mask on left & right edges */
   -webkit-mask-image: linear-gradient(
     to right,
@@ -8492,7 +8493,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-container {
   width: 100%;
   display: flex;
-  overflow: hidden;
+  overflow: visible;
+  perspective: 1200px;
 }
 
 /* Continuous Infinite Carousel Track */
@@ -8500,7 +8502,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: featuredCarouselLoop 38s linear infinite;
+  transform-style: preserve-3d;
+  animation: featuredCarouselLoop 40s linear infinite;
 }
 
 /* Pause motion completely on hover */
@@ -8512,9 +8515,10 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-group {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding-right: 24px;
+  gap: 22px;
+  padding-right: 22px;
   flex-shrink: 0;
+  transform-style: preserve-3d;
 }
 
 /* Loop Animation */
@@ -8527,23 +8531,23 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
 }
 
-/* Bigger Luxury Squircle Image Cards */
+/* Warped Double-Curve Image Cards (Smaller Base Dimensions) */
 .featured-arch-card {
   position: relative;
-  width: 320px;
-  height: 440px;
+  width: 235px;
+  height: 345px;
   flex-shrink: 0;
-  border-radius: 26px;
+  border-radius: 22px;
   cursor: pointer;
   display: block;
   text-decoration: none;
-  /* No size changing or scaling on hover */
-  transform: none !important;
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  will-change: transform;
   transition: box-shadow 0.3s ease;
 }
 
 .featured-arch-card:hover {
-  transform: none !important;
   box-shadow: 0 20px 40px rgba(19, 43, 69, 0.16);
 }
 
@@ -8552,7 +8556,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 26px;
+  border-radius: 22px;
   overflow: hidden;
   box-shadow: 0 14px 34px rgba(19, 43, 69, 0.10);
   background: #132b45;
@@ -8563,13 +8567,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   height: 100%;
   object-fit: cover;
   display: block;
-  /* Zero scale or zoom on hover */
-  transform: none !important;
+  transform: none;
   transition: none;
-}
-
-.featured-arch-card:hover .card-inner img {
-  transform: none !important;
 }
 
 /* Bottom Feature Triad (3-Column Highlights) */
@@ -8640,12 +8639,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 38px;
   }
   .featured-arch-card {
-    width: 270px;
-    height: 380px;
-    border-radius: 22px;
+    width: 210px;
+    height: 310px;
+    border-radius: 20px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 22px;
+    border-radius: 20px;
   }
   .featured-arch-group {
     gap: 18px;
@@ -8664,12 +8663,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 32px;
   }
   .featured-arch-card {
-    width: 230px;
-    height: 330px;
-    border-radius: 20px;
+    width: 180px;
+    height: 265px;
+    border-radius: 18px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 20px;
+    border-radius: 18px;
   }
   .featured-arch-group {
     gap: 16px;
@@ -8698,23 +8697,23 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 14.5px;
   }
   .featured-arch-wrapper {
-    padding: 20px 0 35px;
+    padding: 35px 0 45px;
   }
   .featured-arch-wrapper::before,
   .featured-arch-wrapper::after {
-    width: 80px;
+    width: 60px;
   }
   .featured-arch-card {
-    width: 185px;
-    height: 270px;
-    border-radius: 18px;
+    width: 145px;
+    height: 215px;
+    border-radius: 16px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 18px;
+    border-radius: 16px;
   }
   .featured-arch-group {
-    gap: 14px;
-    padding-right: 14px;
+    gap: 12px;
+    padding-right: 12px;
   }
 }
 

@@ -646,9 +646,52 @@ Version: 1.0
         offset: 0
     });
 
-    //===== Projets en Vedette (Infinite Looping Carousel)
+    //===== Projets en Vedette (Double-Curved Warped Infinite Carousel)
     function initFeaturedArch() {
-        // Infinite carousel movement and hover-pause are managed via high-performance CSS
+        const wrapper = document.querySelector('.featured-arch-wrapper');
+        const track = document.getElementById('featuredArchTrack');
+        if (!wrapper || !track) return;
+
+        const cards = track.querySelectorAll('.featured-arch-card');
+        if (!cards.length) return;
+
+        function updateWarp() {
+            const wrapperRect = wrapper.getBoundingClientRect();
+            const centerX = wrapperRect.left + wrapperRect.width / 2;
+            const halfWidth = wrapperRect.width / 2;
+            if (halfWidth <= 0) return;
+
+            cards.forEach(card => {
+                const cardRect = card.getBoundingClientRect();
+                const cardCenterX = cardRect.left + cardRect.width / 2;
+                // Normalized position: 0 at center, -1 at left edge, +1 at right edge
+                const normX = (cardCenterX - centerX) / halfWidth;
+                
+                // Clamp so buffer items far outside viewport don't explode
+                const u = Math.max(-1.4, Math.min(1.4, normX));
+                const distSq = u * u; // 0 in center, 1 at edges
+
+                // Double curve formula: center height is shorter, sides height is wider/taller
+                const scale = 0.80 + distSq * 0.42;
+                
+                // Subtle concave amphitheater rotation
+                const rotateY = -u * 15;
+                const translateZ = (distSq - 0.4) * 30;
+
+                card.style.transform = `scale(${scale.toFixed(3)}) rotateY(${rotateY.toFixed(1)}deg) translateZ(${translateZ.toFixed(1)}px)`;
+            });
+        }
+
+        // Run continuously with display refresh rate
+        if (window.gsap && gsap.ticker) {
+            gsap.ticker.add(updateWarp);
+        } else {
+            function loop() {
+                updateWarp();
+                requestAnimationFrame(loop);
+            }
+            requestAnimationFrame(loop);
+        }
     }
 
     // Document Ready
