@@ -8154,7 +8154,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   will-change: transform, opacity;
 }
 
-/* Slide 1 (Navy Building): Scaled up grander so the lower left annex enters the wide feather mask and dissolves seamlessly */
+/* Slide 1 (Navy Building): Clean feather mask on the left transition zone */
 .bg-navy .hero-banner-building {
   width: 82%;
   max-width: 82%;
@@ -8163,30 +8163,26 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.01) 8%,
-    rgba(0, 0, 0, 0.06) 16%,
-    rgba(0, 0, 0, 0.18) 24%,
-    rgba(0, 0, 0, 0.38) 32%,
-    rgba(0, 0, 0, 0.65) 40%,
-    rgba(0, 0, 0, 0.88) 48%,
-    #000000 56%,
+    transparent 12%,
+    rgba(0, 0, 0, 0.05) 15%,
+    rgba(0, 0, 0, 0.2) 18%,
+    rgba(0, 0, 0, 0.6) 23%,
+    #000000 28%,
     #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.01) 8%,
-    rgba(0, 0, 0, 0.06) 16%,
-    rgba(0, 0, 0, 0.18) 24%,
-    rgba(0, 0, 0, 0.38) 32%,
-    rgba(0, 0, 0, 0.65) 40%,
-    rgba(0, 0, 0, 0.88) 48%,
-    #000000 56%,
+    transparent 12%,
+    rgba(0, 0, 0, 0.05) 15%,
+    rgba(0, 0, 0, 0.2) 18%,
+    rgba(0, 0, 0, 0.6) 23%,
+    #000000 28%,
     #000000 100%
   );
 }
 
-/* Slide 2 (Coral Villa): Restored original luxury villa & pool presentation */
+/* Slide 2 (Coral Villa): Clean feather mask on the left pool & mountain transition */
 .bg-coral .hero-banner-building {
   width: auto;
   max-width: 68%;
@@ -8196,29 +8192,51 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.15) 3%,
-    rgba(0, 0, 0, 0.6) 7%,
-    #000000 12%
+    rgba(0, 0, 0, 0.05) 2%,
+    rgba(0, 0, 0, 0.2) 5%,
+    rgba(0, 0, 0, 0.6) 9%,
+    #000000 15%,
+    #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.15) 3%,
-    rgba(0, 0, 0, 0.6) 7%,
-    #000000 12%
+    rgba(0, 0, 0, 0.05) 2%,
+    rgba(0, 0, 0, 0.2) 5%,
+    rgba(0, 0, 0, 0.6) 9%,
+    #000000 15%,
+    #000000 100%
   );
 }
 
-/* Slide 3 (Green Moroccan Moyen Standing Project): Clean architectural presentation, cropped right and bottom only */
+/* Slide 3 (Green Moroccan Moyen Standing Project): Clean feather mask on the left facade & balconies, cropped right and bottom only */
 .bg-green .hero-banner-building {
   width: 78%;
   max-width: 78%;
   height: calc(100% + 155px);
   right: -45px;
   bottom: -35px;
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
   border-radius: 0 !important;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.05) 23%,
+    rgba(0, 0, 0, 0.2) 26%,
+    rgba(0, 0, 0, 0.6) 30%,
+    #000000 36%,
+    #000000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.05) 23%,
+    rgba(0, 0, 0, 0.2) 26%,
+    rgba(0, 0, 0, 0.6) 30%,
+    #000000 36%,
+    #000000 100%
+  );
 }
 
 /* Fade up & Moving up Animation for Building Images (Smooth 1.6s duration) */
