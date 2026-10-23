@@ -682,8 +682,9 @@ Version: 1.0
                 // Dynamic perspective rotation: tilts top down toward center, bottom up toward center
                 const rotateY = -u * 26;
 
-                // All cards remain at Z = 0 so no card ever steps in front of its neighbor. Gap is strictly untouched!
-                card.style.transform = `scale(1, ${scaleY.toFixed(3)}) rotateY(${rotateY.toFixed(1)}deg)`;
+                // Independent local perspective per card: guarantees zero cross-card piercing/overlap!
+                // The gap between cards is strictly preserved and untouchable across the entire component!
+                card.style.transform = `perspective(700px) scale(1, ${scaleY.toFixed(3)}) rotateY(${rotateY.toFixed(1)}deg)`;
             });
         }
 

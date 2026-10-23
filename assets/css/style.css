@@ -8448,45 +8448,27 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Soft feathered edge blend */
+  /* Clean edge fade only at extreme 2% boundary */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.4) 1.5%,
-    #000000 4%,
-    #000000 96%,
-    rgba(0, 0, 0, 0.4) 98.5%,
+    #000000 2%,
+    #000000 98%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.4) 1.5%,
-    #000000 4%,
-    #000000 96%,
-    rgba(0, 0, 0, 0.4) 98.5%,
+    #000000 2%,
+    #000000 98%,
     transparent 100%
   );
 }
 
-/* Feathered gradient edge blend */
+/* Remove heavy white gradient overlays that washed out side cards and obscured gaps */
 .featured-arch-wrapper::before,
 .featured-arch-wrapper::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 80px;
-  pointer-events: none;
-  z-index: 10;
-}
-.featured-arch-wrapper::before {
-  left: 0;
-  background: linear-gradient(to right, #FAF7F2 15%, rgba(250, 247, 242, 0.85) 50%, rgba(250, 247, 242, 0) 100%);
-}
-.featured-arch-wrapper::after {
-  right: 0;
-  background: linear-gradient(to left, #FAF7F2 15%, rgba(250, 247, 242, 0.85) 50%, rgba(250, 247, 242, 0) 100%);
+  display: none !important;
 }
 
 .featured-arch-container {
@@ -8497,8 +8479,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   justify-content: center;
   align-items: center;
   overflow: visible;
-  perspective: 700px;
-  perspective-origin: 50% 50%;
 }
 
 /* Continuous Infinite Carousel Track */
@@ -8506,7 +8486,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   display: flex;
   width: max-content;
   will-change: transform;
-  transform-style: preserve-3d;
   animation: featuredCarouselLoop 40s linear infinite;
   overflow: visible;
   padding: 20px 0;
@@ -8521,10 +8500,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-group {
   display: flex;
   align-items: center;
-  gap: 24px;
-  padding-right: 24px;
+  gap: 28px;
+  padding-right: 28px;
   flex-shrink: 0;
-  transform-style: preserve-3d;
 }
 
 /* Loop Animation */
@@ -8548,7 +8526,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   display: block;
   text-decoration: none;
   transform-origin: center center;
-  transform-style: preserve-3d;
   will-change: transform;
   transition: box-shadow 0.3s ease;
 }
@@ -8564,9 +8541,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   height: 100%;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: 0 16px 36px rgba(19, 43, 69, 0.14);
+  box-shadow: 0 14px 32px rgba(19, 43, 69, 0.12);
   background: #132b45;
-  transform-style: preserve-3d;
 }
 
 .featured-arch-card .card-inner img {
