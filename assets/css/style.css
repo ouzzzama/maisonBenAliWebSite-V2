@@ -8443,7 +8443,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 100px 0 110px;
+  padding: 80px 0 90px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -8465,7 +8465,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   );
 }
 
-/* Remove heavy white gradient overlays that washed out side cards and obscured gaps */
 .featured-arch-wrapper::before,
 .featured-arch-wrapper::after {
   display: none !important;
@@ -8474,7 +8473,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-container {
   width: 100%;
   max-width: 1440px;
-  min-height: 480px;
+  min-height: 440px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -8486,26 +8485,20 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: featuredCarouselLoop 40s linear infinite;
+  animation: featuredCarouselLoop 38s linear infinite;
   overflow: visible;
-  padding: 20px 0;
-}
-
-/* Pause motion completely on hover */
-.featured-arch-wrapper:hover .featured-arch-track,
-.featured-arch-track:hover {
-  animation-play-state: paused;
+  padding: 25px 0;
 }
 
 .featured-arch-group {
   display: flex;
   align-items: center;
-  gap: 28px;
-  padding-right: 28px;
+  gap: 26px;
+  padding-right: 26px;
   flex-shrink: 0;
 }
 
-/* Loop Animation */
+/* Seamless 50% Infinite Loop Animation */
 @keyframes featuredCarouselLoop {
   0% {
     transform: translateX(0);
@@ -8515,13 +8508,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
 }
 
-/* Warped Double-Curve Image Cards */
+/* All Cards Share Identical Uniform Dimensions (Sides NEVER get longer!) */
 .featured-arch-card {
   position: relative;
-  width: 165px;
-  height: 260px;
+  width: 205px;
+  height: 305px;
   flex-shrink: 0;
-  border-radius: 20px;
+  border-radius: 22px;
   cursor: pointer;
   display: block;
   text-decoration: none;
@@ -8531,7 +8524,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 }
 
 .featured-arch-card:hover {
-  box-shadow: 0 20px 40px rgba(19, 43, 69, 0.20);
+  box-shadow: 0 20px 45px rgba(19, 43, 69, 0.22);
 }
 
 /* Inner Box - Pure Clean Architectural Photography, No Overlays or Gradients */
@@ -8539,9 +8532,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 20px;
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 14px 32px rgba(19, 43, 69, 0.12);
+  box-shadow: 0 14px 34px rgba(19, 43, 69, 0.12);
   background: #132b45;
 }
 
@@ -8551,8 +8544,6 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   object-fit: cover;
   display: block;
   transform: none;
-  transition: none;
-}
   transition: none;
 }
 
@@ -8624,16 +8615,16 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 38px;
   }
   .featured-arch-card {
-    width: 155px;
-    height: 245px;
-    border-radius: 18px;
+    width: 180px;
+    height: 270px;
+    border-radius: 20px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 18px;
+    border-radius: 20px;
   }
   .featured-arch-group {
-    gap: 15px;
-    padding-right: 15px;
+    gap: 20px;
+    padding-right: 20px;
   }
   .featured-triad-col {
     padding: 0 20px;
@@ -8648,16 +8639,16 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 32px;
   }
   .featured-arch-card {
-    width: 135px;
-    height: 215px;
-    border-radius: 16px;
+    width: 155px;
+    height: 235px;
+    border-radius: 18px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 16px;
+    border-radius: 18px;
   }
   .featured-arch-group {
-    gap: 12px;
-    padding-right: 12px;
+    gap: 16px;
+    padding-right: 16px;
   }
   .featured-triad-row {
     grid-template-columns: 1fr;
@@ -8682,23 +8673,19 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 14.5px;
   }
   .featured-arch-wrapper {
-    padding: 35px 0 45px;
-  }
-  .featured-arch-wrapper::before,
-  .featured-arch-wrapper::after {
-    width: 50px;
+    padding: 50px 0 60px;
   }
   .featured-arch-card {
-    width: 110px;
-    height: 175px;
-    border-radius: 14px;
+    width: 130px;
+    height: 200px;
+    border-radius: 16px;
   }
   .featured-arch-card .card-inner {
-    border-radius: 14px;
+    border-radius: 16px;
   }
   .featured-arch-group {
-    gap: 10px;
-    padding-right: 10px;
+    gap: 14px;
+    padding-right: 14px;
   }
 }
 

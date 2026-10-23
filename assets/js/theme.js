@@ -646,7 +646,7 @@ Version: 1.0
         offset: 0
     });
 
-    //===== Projets en Vedette (Double-Curved Amphitheater Warped Carousel)
+    //===== Projets en Vedette (Continuous Infinite Loop Curved Alignment)
     function initFeaturedArch() {
         const wrapper = document.querySelector('.featured-arch-wrapper');
         const container = document.querySelector('.featured-arch-container');
@@ -656,6 +656,16 @@ Version: 1.0
         const cards = track.querySelectorAll('.featured-arch-card');
         if (!cards.length) return;
 
+        // Hover pause ONLY when actively pointing directly over a card
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                track.style.animationPlayState = 'paused';
+            });
+            card.addEventListener('mouseleave', () => {
+                track.style.animationPlayState = 'running';
+            });
+        });
+
         function updateWarp() {
             const stage = container || wrapper;
             const stageRect = stage.getBoundingClientRect();
@@ -663,7 +673,7 @@ Version: 1.0
             const halfWidth = stageRect.width / 2;
             if (halfWidth <= 0) return;
 
-            // Frame the 7-card amphitheater curve gracefully
+            // Curved alignment span
             const span = Math.min(halfWidth, 680) * 0.90;
 
             cards.forEach(card => {
@@ -672,19 +682,17 @@ Version: 1.0
                 // Normalized coordinate: 0 at center, -1 at left edge, +1 at right edge
                 const normX = (cardCenterX - centerX) / span;
                 
-                // Clamp so buffer items outside view stay gracefully bounded
-                const u = Math.max(-1.25, Math.min(1.25, normX));
+                // Clamped coordinate
+                const u = Math.max(-1.3, Math.min(1.3, normX));
                 const distSq = u * u; // 0 in center, 1 at edges
 
-                // ONLY scale vertically (scaleY). Horizontal scale is strictly 1.0 so cards NEVER widen or overlap!
-                const scaleY = 0.85 + distSq * 0.50;
-                
-                // Dynamic perspective rotation: tilts top down toward center, bottom up toward center
-                const rotateY = -u * 26;
+                // ALL CARDS ARE IDENTICAL IN SIZE (SIDES NEVER GET LONGER THAN OTHERS!)
+                // They are aligned in a smooth curve via vertical translation and curve tangent tilt:
+                const translateY = -(distSq * 42); // curve elevation on sides
+                const rotateZ = u * 6.5; // tilt along the curve tangent
+                const rotateY = -u * 12; // subtle amphitheater depth
 
-                // Independent local perspective per card: guarantees zero cross-card piercing/overlap!
-                // The gap between cards is strictly preserved and untouchable across the entire component!
-                card.style.transform = `perspective(700px) scale(1, ${scaleY.toFixed(3)}) rotateY(${rotateY.toFixed(1)}deg)`;
+                card.style.transform = `perspective(800px) translateY(${translateY.toFixed(1)}px) rotateZ(${rotateZ.toFixed(2)}deg) rotateY(${rotateY.toFixed(1)}deg)`;
             });
         }
 
