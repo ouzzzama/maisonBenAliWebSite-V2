@@ -708,7 +708,7 @@ Version: 1.0
         }
     }
 
-    //===== Cinematic Curtain Reveal Footer
+//===== Cinematic Curtain Reveal Footer
     function initCinematicFooter() {
         var $footer = $('#cinematicFooter');
         if (!$footer.length) return;
