@@ -8154,7 +8154,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   will-change: transform, opacity;
 }
 
-/* Slide 1 (Navy Building): Clean feather mask on the left transition zone */
+/* Slide 1 (Navy Building): Smooth and wide feather mask across the left annex */
 .bg-navy .hero-banner-building {
   width: 82%;
   max-width: 82%;
@@ -8163,21 +8163,29 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent 12%,
-    rgba(0, 0, 0, 0.05) 15%,
-    rgba(0, 0, 0, 0.2) 18%,
-    rgba(0, 0, 0, 0.6) 23%,
-    #000000 28%,
+    transparent 6%,
+    rgba(0, 0, 0, 0.03) 12%,
+    rgba(0, 0, 0, 0.08) 18%,
+    rgba(0, 0, 0, 0.18) 24%,
+    rgba(0, 0, 0, 0.32) 30%,
+    rgba(0, 0, 0, 0.50) 36%,
+    rgba(0, 0, 0, 0.72) 42%,
+    rgba(0, 0, 0, 0.90) 48%,
+    #000000 54%,
     #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent 12%,
-    rgba(0, 0, 0, 0.05) 15%,
-    rgba(0, 0, 0, 0.2) 18%,
-    rgba(0, 0, 0, 0.6) 23%,
-    #000000 28%,
+    transparent 6%,
+    rgba(0, 0, 0, 0.03) 12%,
+    rgba(0, 0, 0, 0.08) 18%,
+    rgba(0, 0, 0, 0.18) 24%,
+    rgba(0, 0, 0, 0.32) 30%,
+    rgba(0, 0, 0, 0.50) 36%,
+    rgba(0, 0, 0, 0.72) 42%,
+    rgba(0, 0, 0, 0.90) 48%,
+    #000000 54%,
     #000000 100%
   );
 }
