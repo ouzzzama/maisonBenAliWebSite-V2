@@ -8439,38 +8439,32 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   transform: translateX(4px);
 }
 
-/* 3D Arch Wrapper & Cylindrical Amphitheater Track */
+/* Featured Projects Cards Gallery Track */
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 40px 0 65px;
-  perspective: 1100px;
-  perspective-origin: 50% 50%;
+  padding: 35px 0 50px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Feather mask on left & right edges (Exact match to reference mockup) */
+  /* Feather mask on left & right edges */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.2) 4%,
-    rgba(0, 0, 0, 0.85) 12%,
-    #000000 18%,
-    #000000 82%,
-    rgba(0, 0, 0, 0.85) 88%,
-    rgba(0, 0, 0, 0.2) 96%,
+    rgba(0, 0, 0, 0.25) 3%,
+    #000000 8%,
+    #000000 92%,
+    rgba(0, 0, 0, 0.25) 97%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.2) 4%,
-    rgba(0, 0, 0, 0.85) 12%,
-    #000000 18%,
-    #000000 82%,
-    rgba(0, 0, 0, 0.85) 88%,
-    rgba(0, 0, 0, 0.2) 96%,
+    rgba(0, 0, 0, 0.25) 3%,
+    #000000 8%,
+    #000000 92%,
+    rgba(0, 0, 0, 0.25) 97%,
     transparent 100%
   );
 }
@@ -8482,7 +8476,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 170px;
+  width: 150px;
   pointer-events: none;
   z-index: 10;
 }
@@ -8508,60 +8502,41 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 16px;
-  transform-style: preserve-3d;
-  padding: 30px 10px;
+  gap: 18px;
+  padding: 15px 10px;
   width: 100%;
   max-width: 1480px;
 }
 
-/* Individual Cards */
+/* Individual Cards - Flat Uniform Modern Squircle Shape (Exact Match to Mockup) */
 .featured-arch-card {
   position: relative;
-  width: 175px;
-  height: 255px;
+  width: 185px;
+  height: 275px;
   flex-shrink: 0;
   border-radius: 22px;
-  transition: all 0.55s cubic-bezier(0.16, 1, 0.3, 1);
-  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   cursor: pointer;
+  transform: none !important;
 }
 
-/* Concave Cylindrical Curve (Amphitheater / Wraparound Arena - Exact Match to Mockup) */
-.featured-arch-card.card-pos-1 {
-  transform: rotateY(38deg) translateZ(115px) translateY(-22px) scale(1.42);
-  z-index: 4;
-}
-.featured-arch-card.card-pos-2 {
-  transform: rotateY(26deg) translateZ(65px) translateY(-12px) scale(1.18);
-  z-index: 3;
-}
-.featured-arch-card.card-pos-3 {
-  transform: rotateY(14deg) translateZ(25px) translateY(-4px) scale(0.98);
-  z-index: 2;
-}
-.featured-arch-card.card-pos-4 {
-  transform: rotateY(0deg) translateZ(-5px) translateY(0px) scale(0.86);
-  z-index: 1;
-}
-.featured-arch-card.card-pos-5 {
-  transform: rotateY(-14deg) translateZ(25px) translateY(-4px) scale(0.98);
-  z-index: 2;
-}
-.featured-arch-card.card-pos-6 {
-  transform: rotateY(-26deg) translateZ(65px) translateY(-12px) scale(1.18);
-  z-index: 3;
-}
+/* All 7 cards share the exact same clean, flat horizontal alignment */
+.featured-arch-card.card-pos-1,
+.featured-arch-card.card-pos-2,
+.featured-arch-card.card-pos-3,
+.featured-arch-card.card-pos-4,
+.featured-arch-card.card-pos-5,
+.featured-arch-card.card-pos-6,
 .featured-arch-card.card-pos-7 {
-  transform: rotateY(-38deg) translateZ(115px) translateY(-22px) scale(1.42);
-  z-index: 4;
+  transform: none !important;
+  z-index: 1;
 }
 
 /* Card Hover Elevation */
 .featured-arch-card:hover {
-  transform: rotateY(0deg) translateZ(160px) translateY(-15px) scale(1.22) !important;
-  z-index: 25 !important;
-  box-shadow: 0 30px 60px rgba(19, 43, 69, 0.25) !important;
+  transform: translateY(-8px) scale(1.03) !important;
+  z-index: 10 !important;
+  box-shadow: 0 20px 45px rgba(19, 43, 69, 0.22) !important;
 }
 
 /* Inner Box */
@@ -8569,9 +8544,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 24px;
+  border-radius: 22px;
   overflow: hidden;
-  box-shadow: 0 16px 36px rgba(19, 43, 69, 0.14);
+  box-shadow: 0 14px 34px rgba(19, 43, 69, 0.12);
   background: #132b45;
 }
 
