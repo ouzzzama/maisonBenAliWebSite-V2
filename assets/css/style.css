@@ -8439,44 +8439,44 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   transform: translateX(4px);
 }
 
-/* Featured Projects Cards Gallery Track */
+/* Featured Projects Continuous Looping Carousel */
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 35px 0 50px;
+  padding: 30px 0 55px;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   /* Feather mask on left & right edges */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.25) 3%,
-    #000000 8%,
-    #000000 92%,
-    rgba(0, 0, 0, 0.25) 97%,
+    rgba(0, 0, 0, 0.25) 2%,
+    #000000 6%,
+    #000000 94%,
+    rgba(0, 0, 0, 0.25) 98%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.25) 3%,
-    #000000 8%,
-    #000000 92%,
-    rgba(0, 0, 0, 0.25) 97%,
+    rgba(0, 0, 0, 0.25) 2%,
+    #000000 6%,
+    #000000 94%,
+    rgba(0, 0, 0, 0.25) 98%,
     transparent 100%
   );
 }
 
-/* Soft feathered gradient overlays for seamless edge blending across all viewports */
+/* Feathered gradient edge blend */
 .featured-arch-wrapper::before,
 .featured-arch-wrapper::after {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 150px;
+  width: 140px;
   pointer-events: none;
   z-index: 10;
 }
@@ -8492,61 +8492,69 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-container {
   width: 100%;
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: 0 auto;
-  overflow: visible;
+  overflow: hidden;
 }
 
+/* Continuous Infinite Carousel Track */
 .featured-arch-track {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 18px;
-  padding: 15px 10px;
-  width: 100%;
-  max-width: 1480px;
+  width: max-content;
+  will-change: transform;
+  animation: featuredCarouselLoop 38s linear infinite;
 }
 
-/* Individual Cards - Flat Uniform Modern Squircle Shape (Exact Match to Mockup) */
+/* Pause motion completely on hover */
+.featured-arch-wrapper:hover .featured-arch-track,
+.featured-arch-track:hover {
+  animation-play-state: paused;
+}
+
+.featured-arch-group {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding-right: 24px;
+  flex-shrink: 0;
+}
+
+/* Loop Animation */
+@keyframes featuredCarouselLoop {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Bigger Luxury Squircle Image Cards */
 .featured-arch-card {
   position: relative;
-  width: 185px;
-  height: 275px;
+  width: 320px;
+  height: 440px;
   flex-shrink: 0;
-  border-radius: 22px;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 26px;
   cursor: pointer;
+  display: block;
+  text-decoration: none;
+  /* No size changing or scaling on hover */
   transform: none !important;
+  transition: box-shadow 0.3s ease;
 }
 
-/* All 7 cards share the exact same clean, flat horizontal alignment */
-.featured-arch-card.card-pos-1,
-.featured-arch-card.card-pos-2,
-.featured-arch-card.card-pos-3,
-.featured-arch-card.card-pos-4,
-.featured-arch-card.card-pos-5,
-.featured-arch-card.card-pos-6,
-.featured-arch-card.card-pos-7 {
-  transform: none !important;
-  z-index: 1;
-}
-
-/* Card Hover Elevation */
 .featured-arch-card:hover {
-  transform: translateY(-8px) scale(1.03) !important;
-  z-index: 10 !important;
-  box-shadow: 0 20px 45px rgba(19, 43, 69, 0.22) !important;
+  transform: none !important;
+  box-shadow: 0 20px 40px rgba(19, 43, 69, 0.16);
 }
 
-/* Inner Box */
+/* Inner Box - Pure Clean Architectural Photography, No Overlays or Gradients */
 .featured-arch-card .card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  border-radius: 22px;
+  border-radius: 26px;
   overflow: hidden;
-  box-shadow: 0 14px 34px rgba(19, 43, 69, 0.12);
+  box-shadow: 0 14px 34px rgba(19, 43, 69, 0.10);
   background: #132b45;
 }
 
@@ -8554,114 +8562,14 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
   display: block;
+  /* Zero scale or zoom on hover */
+  transform: none !important;
+  transition: none;
 }
 
 .featured-arch-card:hover .card-inner img {
-  transform: scale(1.1);
-}
-
-.card-badge-vip {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  background: #e83f2a;
-  color: #ffffff;
-  font-family: 'Cal Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  padding: 5px 12px;
-  border-radius: 50px;
-  z-index: 3;
-  box-shadow: 0 4px 12px rgba(232, 63, 42, 0.4);
-}
-
-/* Card Glassmorphic Overlay */
-.featured-arch-card .card-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 22px 18px;
-  background: linear-gradient(
-    to top,
-    rgba(19, 43, 69, 0.96) 0%,
-    rgba(19, 43, 69, 0.75) 60%,
-    transparent 100%
-  );
-  color: #ffffff;
-  z-index: 2;
-  transition: all 0.4s ease;
-  transform: translateY(12px);
-  opacity: 0.95;
-}
-
-.featured-arch-card:hover .card-overlay {
-  transform: translateY(0);
-  opacity: 1;
-  background: linear-gradient(
-    to top,
-    rgba(19, 43, 69, 0.98) 0%,
-    rgba(19, 43, 69, 0.85) 70%,
-    transparent 100%
-  );
-}
-
-.card-tag {
-  display: block;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
-  color: #c5a880;
-  margin-bottom: 4px;
-}
-
-.card-title {
-  font-family: 'Awaking', serif;
-  font-size: 16px;
-  font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 4px;
-  line-height: 1.25;
-}
-
-.card-loc {
-  font-family: 'Cal Sans', sans-serif;
-  font-size: 12px;
-  color: rgba(255, 255, 255, 0.82);
-  margin-bottom: 10px;
-}
-
-.card-loc i {
-  color: #e83f2a;
-  margin-right: 4px;
-}
-
-.card-link-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-family: 'Cal Sans', sans-serif;
-  font-size: 12px;
-  font-weight: 600;
-  color: #ffffff !important;
-  text-decoration: none;
-  opacity: 0;
-  transform: translateY(8px);
-  transition: all 0.3s ease;
-}
-
-.featured-arch-card:hover .card-link-btn {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-.card-link-btn:hover {
-  color: #e83f2a !important;
+  transform: none !important;
 }
 
 /* Bottom Feature Triad (3-Column Highlights) */
@@ -8732,11 +8640,16 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 38px;
   }
   .featured-arch-card {
-    width: 145px;
-    height: 220px;
+    width: 270px;
+    height: 380px;
+    border-radius: 22px;
   }
-  .featured-arch-track {
-    gap: 12px;
+  .featured-arch-card .card-inner {
+    border-radius: 22px;
+  }
+  .featured-arch-group {
+    gap: 18px;
+    padding-right: 18px;
   }
   .featured-triad-col {
     padding: 0 20px;
@@ -8750,17 +8663,17 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   .featured-main-title {
     font-size: 32px;
   }
-  .featured-arch-wrapper {
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    justify-content: flex-start;
+  .featured-arch-card {
+    width: 230px;
+    height: 330px;
+    border-radius: 20px;
   }
-  .featured-arch-wrapper::-webkit-scrollbar {
-    display: none;
+  .featured-arch-card .card-inner {
+    border-radius: 20px;
   }
-  .featured-arch-container {
-    min-width: 1050px;
+  .featured-arch-group {
+    gap: 16px;
+    padding-right: 16px;
   }
   .featured-triad-row {
     grid-template-columns: 1fr;
@@ -8789,30 +8702,19 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
   .featured-arch-wrapper::before,
   .featured-arch-wrapper::after {
-    width: 90px;
-  }
-  .featured-arch-container {
-    min-width: 860px;
-  }
-  .featured-arch-track {
-    gap: 8px;
-    padding: 10px;
+    width: 80px;
   }
   .featured-arch-card {
-    width: 115px;
-    height: 175px;
-    border-radius: 16px;
+    width: 185px;
+    height: 270px;
+    border-radius: 18px;
   }
-  .card-title {
-    font-size: 12px;
+  .featured-arch-card .card-inner {
+    border-radius: 18px;
   }
-  .card-loc {
-    font-size: 10px;
-    margin-bottom: 4px;
-  }
-  .card-badge-vip {
-    font-size: 8px;
-    padding: 2px 6px;
+  .featured-arch-group {
+    gap: 14px;
+    padding-right: 14px;
   }
 }
 

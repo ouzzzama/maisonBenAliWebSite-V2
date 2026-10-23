@@ -646,39 +646,9 @@ Version: 1.0
         offset: 0
     });
 
-    //===== Projets en Vedette (3D Cylindrical Gallery Arch Interaction)
+    //===== Projets en Vedette (Infinite Looping Carousel)
     function initFeaturedArch() {
-        const cards = document.querySelectorAll('.featured-arch-card');
-        if (!cards.length) return;
-
-        cards.forEach((card, clickedIdx) => {
-            card.addEventListener('click', function(e) {
-                // If clicking an internal link button, let it navigate
-                if (e.target.closest('.card-link-btn')) return;
-
-                cards.forEach((c, i) => {
-                    const offset = i - clickedIdx;
-                    // Reset all position classes
-                    c.className = 'featured-arch-card';
-                    
-                    if (offset === 0) {
-                        c.classList.add('card-pos-4', 'active-center');
-                    } else if (offset === -1) {
-                        c.classList.add('card-pos-3');
-                    } else if (offset === -2) {
-                        c.classList.add('card-pos-2');
-                    } else if (offset <= -3) {
-                        c.classList.add('card-pos-1');
-                    } else if (offset === 1) {
-                        c.classList.add('card-pos-5');
-                    } else if (offset === 2) {
-                        c.classList.add('card-pos-6');
-                    } else if (offset >= 3) {
-                        c.classList.add('card-pos-7');
-                    }
-                });
-            });
-        });
+        // Infinite carousel movement and hover-pause are managed via high-performance CSS
     }
 
     // Document Ready
