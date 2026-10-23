@@ -8209,12 +8209,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   );
 }
 
-/* Slide 3 (Green Moroccan Moyen Standing Project): Clean architectural presentation */
+/* Slide 3 (Green Moroccan Moyen Standing Project): Clean architectural presentation, cropped right and bottom only */
 .bg-green .hero-banner-building {
-  width: 66%;
-  max-width: 66%;
-  height: calc(100% + 95px);
-  right: 15px;
+  width: 78%;
+  max-width: 78%;
+  height: calc(100% + 155px);
+  right: -45px;
+  bottom: -35px;
   -webkit-mask-image: none !important;
   mask-image: none !important;
   border-radius: 0 !important;
@@ -8281,8 +8282,11 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     max-width: 68%;
   }
   .bg-green .hero-banner-building {
-    width: 65%;
-    max-width: 65%;
+    width: 76%;
+    max-width: 76%;
+    height: calc(100% + 130px);
+    right: -35px;
+    bottom: -25px;
   }
 }
 @media (max-width: 991px) {
@@ -8294,6 +8298,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     width: 82% !important;
     max-width: 82% !important;
     height: 330px !important;
+  }
+  .bg-green .hero-banner-building {
+    width: 85% !important;
+    max-width: 85% !important;
+    height: 360px !important;
+    right: -30px !important;
+    bottom: -20px !important;
   }
 }
 @media (max-width: 767px) {
@@ -8309,6 +8320,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     max-width: 95%;
     height: 260px;
     border-bottom-right-radius: 28px;
+  }
+  .bg-green .hero-banner-building {
+    width: 98% !important;
+    max-width: 98% !important;
+    height: 290px !important;
+    right: -20px !important;
+    bottom: -15px !important;
   }
 }
 
