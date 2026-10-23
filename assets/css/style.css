@@ -8142,8 +8142,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   right: 0;
   bottom: 0;
   height: calc(100% + 95px); /* Balanced pop-out height that keeps the full roof intact */
-  width: auto;
-  max-width: 68%; /* Bigger image that spans wide into the center of the card */
+  width: 68%;
+  max-width: 68%; /* Locked width across all images */
   object-fit: contain;
   object-position: bottom right;
   border-bottom-right-radius: 42px;
@@ -8152,61 +8152,34 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   transform: translateY(65px);
   opacity: 0;
   will-change: transform, opacity;
-}
-
-/* Slide 2 (Coral Villa): Clean soft fade on far-left water edge only; all roofs, overhangs, and architecture are 100% intact & solid */
-.bg-coral .hero-banner-building {
+  /* Unified Ultra-Smooth Wide Feather Mask: Locked at the exact same middle position for EVERY image */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.15) 3%,
-    rgba(0, 0, 0, 0.6) 7%,
-    #000000 12%
+    rgba(0, 0, 0, 0.01) 6%,
+    rgba(0, 0, 0, 0.05) 12%,
+    rgba(0, 0, 0, 0.14) 18%,
+    rgba(0, 0, 0, 0.28) 25%,
+    rgba(0, 0, 0, 0.48) 32%,
+    rgba(0, 0, 0, 0.70) 39%,
+    rgba(0, 0, 0, 0.88) 46%,
+    rgba(0, 0, 0, 0.98) 52%,
+    #000000 58%,
+    #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.15) 3%,
-    rgba(0, 0, 0, 0.6) 7%,
-    #000000 12%
-  );
-}
-
-/* Slide 1 (Navy Building): Clean soft fade on far-left wall edge */
-.bg-navy .hero-banner-building {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.15) 3%,
-    rgba(0, 0, 0, 0.6) 7%,
-    #000000 12%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    rgba(0, 0, 0, 0.15) 3%,
-    rgba(0, 0, 0, 0.6) 7%,
-    #000000 12%
-  );
-}
-
-/* Slide 3 (Green Apartment): Softens the brick vertical edge smoothly */
-.bg-green .hero-banner-building {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    transparent 26%,
-    rgba(0, 0, 0, 0.15) 29%,
-    rgba(0, 0, 0, 0.6) 33%,
-    #000000 38%
-  );
-  mask-image: linear-gradient(
-    to right,
-    transparent 0%,
-    transparent 26%,
-    rgba(0, 0, 0, 0.15) 29%,
-    rgba(0, 0, 0, 0.6) 33%,
-    #000000 38%
+    rgba(0, 0, 0, 0.01) 6%,
+    rgba(0, 0, 0, 0.05) 12%,
+    rgba(0, 0, 0, 0.14) 18%,
+    rgba(0, 0, 0, 0.28) 25%,
+    rgba(0, 0, 0, 0.48) 32%,
+    rgba(0, 0, 0, 0.70) 39%,
+    rgba(0, 0, 0, 0.88) 46%,
+    rgba(0, 0, 0, 0.98) 52%,
+    #000000 58%,
+    #000000 100%
   );
 }
 
@@ -8259,6 +8232,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 @media (max-width: 1199px) {
   .hero-banner-building {
+    width: 65%;
     max-width: 65%;
     height: calc(100% + 85px);
   }
@@ -8269,6 +8243,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     clip-path: inset(-300px 0px 0px 0px round 0px 0px 32px 32px);
   }
   .hero-banner-building {
+    width: 82%;
     max-width: 82%;
     height: 330px;
   }
@@ -8282,6 +8257,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     clip-path: inset(-250px 0px 0px 0px round 0px 0px 28px 28px);
   }
   .hero-banner-building {
+    width: 95%;
     max-width: 95%;
     height: 260px;
     border-bottom-right-radius: 28px;
