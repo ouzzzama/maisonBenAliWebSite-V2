@@ -8182,12 +8182,13 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   );
 }
 
-/* Slide 2 (Coral Villa): Clean feather mask on the left pool & mountain transition */
+/* Slide 2 (Coral Villa): Clean feather mask on the left pool & mountain transition, lowered 40px */
 .bg-coral .hero-banner-building {
   width: auto;
   max-width: 68%;
   height: calc(100% + 95px);
   right: 0;
+  bottom: -40px;
   border-bottom-right-radius: 42px;
   -webkit-mask-image: linear-gradient(
     to right,
@@ -8298,6 +8299,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   .bg-coral .hero-banner-building {
     width: 68%;
     max-width: 68%;
+    bottom: -30px;
   }
   .bg-green .hero-banner-building {
     width: 76%;
