@@ -7442,15 +7442,59 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* ==========================================================================
-   GSAP CARDS FIXES (HOME PAGE)
+   PROJETS EN VEFA SECTION - BRAND GREEN THEME (#15483d)
    ========================================================================== */
-/* 1. Add massive gap below the pinning section so it doesn't overlap the video section */
 .renvia-project_one {
+  background-color: #15483d !important;
   padding-bottom: 250px !important;
   margin-bottom: 80px !important;
   clip-path: none !important;
   -webkit-clip-path: none !important;
   overflow: visible !important;
+  position: relative;
+}
+
+.renvia-project_one .section-title h2 {
+  color: #ffffff !important;
+  font-family: 'Cal Sans', sans-serif !important;
+}
+
+.renvia-project_one .section-title .sub-title {
+  color: #e83f2a !important;
+  font-family: 'Cal Sans', sans-serif !important;
+  font-weight: 700;
+}
+
+.renvia-project_one .section-title .sub-title img {
+  filter: brightness(0) saturate(100%) invert(32%) sepia(85%) saturate(2200%) hue-rotate(345deg);
+}
+
+.renvia-project_one .renvia-content-box p {
+  color: rgba(255, 255, 255, 0.88) !important;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.renvia-project_one .theme-btn.style-one {
+  background-color: #e83f2a !important;
+  color: #ffffff !important;
+  box-shadow: 0 10px 25px rgba(232, 63, 42, 0.35) !important;
+  border-radius: 50px !important;
+}
+
+.renvia-project_one .theme-btn.style-one:hover {
+  background-color: #ffffff !important;
+  color: #15483d !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25) !important;
+}
+
+/* Floating White Luxury Cards on Brand Green */
+.renvia-project_one .renvia-project-item.style-one {
+  background-color: #ffffff !important;
+  border-radius: 24px !important;
+  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.16) !important;
+  border: 1px solid rgba(255, 255, 255, 0.12) !important;
+  margin-bottom: 30px;
 }
 
 /* 2. Image styling now handled cleanly by .renvia-project-item.style-one */
@@ -8448,19 +8492,35 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Clean edge fade only at extreme 2% boundary */
+  /* Deep, ultra-smooth progressive feather mask on both sides */
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    #000000 2%,
-    #000000 98%,
+    rgba(0, 0, 0, 0.05) 2%,
+    rgba(0, 0, 0, 0.15) 5%,
+    rgba(0, 0, 0, 0.38) 9%,
+    rgba(0, 0, 0, 0.72) 13%,
+    #000000 18%,
+    #000000 82%,
+    rgba(0, 0, 0, 0.72) 87%,
+    rgba(0, 0, 0, 0.38) 91%,
+    rgba(0, 0, 0, 0.15) 95%,
+    rgba(0, 0, 0, 0.05) 98%,
     transparent 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    #000000 2%,
-    #000000 98%,
+    rgba(0, 0, 0, 0.05) 2%,
+    rgba(0, 0, 0, 0.15) 5%,
+    rgba(0, 0, 0, 0.38) 9%,
+    rgba(0, 0, 0, 0.72) 13%,
+    #000000 18%,
+    #000000 82%,
+    rgba(0, 0, 0, 0.72) 87%,
+    rgba(0, 0, 0, 0.38) 91%,
+    rgba(0, 0, 0, 0.15) 95%,
+    rgba(0, 0, 0, 0.05) 98%,
     transparent 100%
   );
 }
