@@ -7938,20 +7938,21 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   width: 100%;
   min-height: 440px;
   overflow: visible;
+  display: grid;
+  grid-template-areas: "slide";
 }
 
 .hero-slider-item {
-  position: absolute;
-  inset: 0;
+  grid-area: slide;
+  width: 100%;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  transition: opacity 0.7s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.7s ease;
+  transition: opacity 0.65s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.65s ease;
   z-index: 1;
   overflow: visible;
 }
 .hero-slider-item.active {
-  position: relative;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
@@ -7973,15 +7974,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   background-color: #132b45;
 }
 .hero-banner-card.bg-coral {
-  background: 
-    linear-gradient(to bottom, transparent 0, transparent 52px, #e83f2a 52px) right top / 36% 100% no-repeat,
-    linear-gradient(to right, #e83f2a, #e83f2a) left top / 66% 100% no-repeat;
-  background-color: transparent;
-}
-@media (max-width: 991px) {
-  .hero-banner-card.bg-coral {
-    background: #e83f2a !important;
-  }
+  background-color: #e83f2a;
 }
 .hero-banner-card.bg-green {
   background-color: #15483d;
@@ -7992,23 +7985,136 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: relative;
   z-index: 5;
   width: 58%;
-  padding: 55px 70px;
+  padding: 55px 70px 85px 70px;
 }
 @media (max-width: 1199px) {
   .hero-banner-card .banner-content {
     width: 62%;
-    padding: 45px 45px;
+    padding: 45px 45px 80px 45px;
   }
 }
 @media (max-width: 991px) {
   .hero-banner-card .banner-content {
     width: 100%;
-    padding: 40px 35px 260px 35px;
+    padding: 40px 35px 280px 35px;
   }
 }
 @media (max-width: 767px) {
   .hero-banner-card .banner-content {
-    padding: 30px 24px 220px 24px;
+    padding: 30px 24px 240px 24px;
+  }
+}
+
+/* Hero On-Scroll Pagination Indicators */
+.hero-scroll-pagination {
+  position: absolute;
+  bottom: 24px;
+  left: 70px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: auto;
+}
+.hero-page-pill {
+  background: rgba(255, 255, 255, 0.14);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 30px;
+  padding: 6px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(255, 255, 255, 0.75);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+.hero-page-pill:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+.hero-page-pill .pill-number {
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+.hero-page-pill .pill-line {
+  display: inline-block;
+  width: 10px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 2px;
+  transition: width 0.35s ease, background 0.35s ease;
+}
+.hero-page-pill .pill-title {
+  font-size: 12px;
+  display: none;
+}
+.hero-page-pill.active {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #132b45;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.16);
+}
+.hero-page-pill.active .pill-line {
+  width: 16px;
+  background: #e83f2a;
+}
+.hero-page-pill.active .pill-title {
+  display: inline-block;
+}
+.hero-scroll-status {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-left: 10px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 11.5px;
+  font-weight: 500;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.hero-scroll-status .scroll-icon {
+  animation: heroScrollBounce 1.8s infinite ease-in-out;
+  display: inline-block;
+}
+@keyframes heroScrollBounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
+@media (max-width: 1199px) {
+  .hero-scroll-pagination {
+    left: 45px;
+    bottom: 20px;
+  }
+}
+@media (max-width: 991px) {
+  .hero-scroll-pagination {
+    left: 35px;
+    bottom: 22px;
+  }
+  .hero-page-pill .pill-title {
+    display: none !important;
+  }
+  .hero-scroll-status .scroll-note {
+    display: none;
+  }
+}
+@media (max-width: 767px) {
+  .hero-scroll-pagination {
+    left: 24px;
+    bottom: 18px;
+    gap: 8px;
+  }
+  .hero-page-pill {
+    padding: 5px 10px;
+    font-size: 11.5px;
   }
 }
 

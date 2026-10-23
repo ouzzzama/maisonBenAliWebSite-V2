@@ -464,6 +464,85 @@ Version: 1.0
         smoothTouch: 0.1,
     });
 
+    //===== Modern Hero On-Scroll Banner Switching
+    (function initHeroScrollSlider() {
+        var $hero = $('.modern-hero-section');
+        var $slides = $hero.find('.hero-slider-item');
+        if (!$hero.length || !$slides.length) return;
+
+        var currentIndex = 0;
+        var $pills = $hero.find('.hero-page-pill');
+
+        function switchSlide(index) {
+            if (index === currentIndex && $slides.eq(index).hasClass('active')) return;
+            currentIndex = index;
+
+            $slides.each(function(i) {
+                var isActive = (i === index);
+                var $slide = $(this);
+                $slide.toggleClass('active', isActive);
+                if (isActive) {
+                    var animElements = $slide.find('.banner-title, .banner-subtitle, .banner-actions, .hero-banner-building').get();
+                    animElements.forEach(function(el) {
+                        el.style.animation = 'none';
+                        void el.offsetHeight; // force reflow
+                        el.style.animation = '';
+                    });
+                }
+            });
+
+            if ($pills.length) {
+                $pills.each(function(i) {
+                    $(this).toggleClass('active', i === index);
+                });
+            }
+        }
+
+        var slideCount = $slides.length;
+        var pinDistance = function () {
+            return window.innerWidth <= 767 ? 900 : 1500;
+        };
+
+        var heroST = ScrollTrigger.create({
+            trigger: '.modern-hero-section',
+            start: 'top top',
+            end: () => '+=' + pinDistance(),
+            pin: true,
+            pinSpacing: true,
+            anticipatePin: 1,
+            scrub: 0.3,
+            onUpdate: function(self) {
+                var p = self.progress; // 0.0 to 1.0
+                var target = 0;
+                if (p < 0.33) {
+                    target = 0;
+                } else if (p < 0.67) {
+                    target = 1;
+                } else {
+                    target = 2;
+                }
+                switchSlide(target);
+            }
+        });
+
+        // Click on indicator pill scrolls smoothly to that slide
+        $pills.on('click', function(e) {
+            e.preventDefault();
+            var targetIdx = parseInt($(this).data('slide'), 10) || 0;
+            var targetProgress = targetIdx / (slideCount - 1);
+            var dist = pinDistance();
+            var targetY = heroST.start + (targetProgress * dist);
+            var smoother = ScrollSmoother.get();
+            if (smoother) {
+                smoother.scrollTo(targetY, true);
+            } else {
+                $('html, body').stop().animate({ scrollTop: targetY }, 500);
+            }
+        });
+
+        ScrollTrigger.refresh();
+    })();
+
     var carsModal = document.getElementById('airbnbCarsModal');
     if (carsModal) {
         carsModal.addEventListener('show.bs.modal', function () {
