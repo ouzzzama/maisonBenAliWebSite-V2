@@ -676,16 +676,14 @@ Version: 1.0
                 const u = Math.max(-1.25, Math.min(1.25, normX));
                 const distSq = u * u; // 0 in center, 1 at edges
 
-                // Height ratio: Center ~0.84, Edges ~1.36 (outer height is ~1.5x - 1.6x center height)
-                const scale = 0.84 + distSq * 0.52;
+                // ONLY scale vertically (scaleY). Horizontal scale is strictly 1.0 so cards NEVER widen or overlap!
+                const scaleY = 0.85 + distSq * 0.50;
                 
                 // Dynamic perspective rotation: tilts top down toward center, bottom up toward center
-                const rotateY = -u * 34;
+                const rotateY = -u * 26;
 
-                // Concave amphitheater depth: center is set back, sides are brought forward
-                const translateZ = (distSq - 0.25) * 55;
-
-                card.style.transform = `scale(${scale.toFixed(3)}) rotateY(${rotateY.toFixed(1)}deg) translateZ(${translateZ.toFixed(1)}px)`;
+                // All cards remain at Z = 0 so no card ever steps in front of its neighbor. Gap is strictly untouched!
+                card.style.transform = `scale(1, ${scaleY.toFixed(3)}) rotateY(${rotateY.toFixed(1)}deg)`;
             });
         }
 

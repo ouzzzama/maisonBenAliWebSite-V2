@@ -8443,7 +8443,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 60px 0 75px;
+  padding: 100px 0 110px;
   overflow: hidden;
   display: flex;
   justify-content: center;
@@ -8492,11 +8492,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-container {
   width: 100%;
   max-width: 1440px;
+  min-height: 480px;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow: visible;
-  perspective: 580px;
+  perspective: 700px;
   perspective-origin: 50% 50%;
 }
 
@@ -8507,6 +8508,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   will-change: transform;
   transform-style: preserve-3d;
   animation: featuredCarouselLoop 40s linear infinite;
+  overflow: visible;
+  padding: 20px 0;
 }
 
 /* Pause motion completely on hover */
@@ -8518,8 +8521,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-group {
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding-right: 18px;
+  gap: 24px;
+  padding-right: 24px;
   flex-shrink: 0;
   transform-style: preserve-3d;
 }
@@ -8537,8 +8540,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 /* Warped Double-Curve Image Cards */
 .featured-arch-card {
   position: relative;
-  width: 175px;
-  height: 275px;
+  width: 165px;
+  height: 260px;
   flex-shrink: 0;
   border-radius: 20px;
   cursor: pointer;
