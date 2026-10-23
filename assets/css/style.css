@@ -8186,15 +8186,27 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   );
 }
 
-/* Slide 2 (Coral Villa): Clean default implementation of brand-new luxury modern villa & infinity pool */
+/* Slide 2 (Coral Villa): Restored original luxury villa & pool presentation */
 .bg-coral .hero-banner-building {
-  width: 70%;
-  max-width: 70%;
-  height: calc(100% + 80px);
+  width: auto;
+  max-width: 68%;
+  height: calc(100% + 95px);
   right: 0;
-  -webkit-mask-image: none !important;
-  mask-image: none !important;
-  border-radius: 0 !important;
+  border-bottom-right-radius: 42px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.15) 3%,
+    rgba(0, 0, 0, 0.6) 7%,
+    #000000 12%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.15) 3%,
+    rgba(0, 0, 0, 0.6) 7%,
+    #000000 12%
+  );
 }
 
 /* Slide 3 (Green Moroccan Moyen Standing Project): Clean architectural presentation */
