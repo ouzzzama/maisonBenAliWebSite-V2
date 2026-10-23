@@ -8439,93 +8439,129 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   transform: translateX(4px);
 }
 
-/* 3D Arch Wrapper & Cylindrical Track */
+/* 3D Arch Wrapper & Cylindrical Amphitheater Track */
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 30px 0 45px;
-  perspective: 1500px;
+  padding: 40px 0 65px;
+  perspective: 1100px;
   perspective-origin: 50% 50%;
-  overflow-x: auto;
-  overflow-y: visible;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Feather mask on left & right edges (Exact match to reference mockup) */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 4%,
+    rgba(0, 0, 0, 0.85) 12%,
+    #000000 18%,
+    #000000 82%,
+    rgba(0, 0, 0, 0.85) 88%,
+    rgba(0, 0, 0, 0.2) 96%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    rgba(0, 0, 0, 0.2) 4%,
+    rgba(0, 0, 0, 0.85) 12%,
+    #000000 18%,
+    #000000 82%,
+    rgba(0, 0, 0, 0.85) 88%,
+    rgba(0, 0, 0, 0.2) 96%,
+    transparent 100%
+  );
 }
-.featured-arch-wrapper::-webkit-scrollbar {
-  display: none;
+
+/* Soft feathered gradient overlays for seamless edge blending across all viewports */
+.featured-arch-wrapper::before,
+.featured-arch-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 170px;
+  pointer-events: none;
+  z-index: 10;
+}
+.featured-arch-wrapper::before {
+  left: 0;
+  background: linear-gradient(to right, #FAF7F2 15%, rgba(250, 247, 242, 0.85) 50%, rgba(250, 247, 242, 0) 100%);
+}
+.featured-arch-wrapper::after {
+  right: 0;
+  background: linear-gradient(to left, #FAF7F2 15%, rgba(250, 247, 242, 0.85) 50%, rgba(250, 247, 242, 0) 100%);
 }
 
 .featured-arch-container {
-  min-width: 1360px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   margin: 0 auto;
+  overflow: visible;
 }
 
 .featured-arch-track {
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 18px;
+  gap: 16px;
   transform-style: preserve-3d;
-  padding: 30px 40px;
+  padding: 30px 10px;
+  width: 100%;
+  max-width: 1480px;
 }
 
 /* Individual Cards */
 .featured-arch-card {
   position: relative;
-  width: 205px;
-  height: 335px;
+  width: 175px;
+  height: 255px;
   flex-shrink: 0;
-  border-radius: 24px;
+  border-radius: 22px;
   transition: all 0.55s cubic-bezier(0.16, 1, 0.3, 1);
   transform-style: preserve-3d;
   cursor: pointer;
 }
 
-/* Symmetrical 3D Cylindrical Curve (Arched Ribbon) */
+/* Concave Cylindrical Curve (Amphitheater / Wraparound Arena - Exact Match to Mockup) */
 .featured-arch-card.card-pos-1 {
-  transform: rotateY(30deg) translateZ(-65px) scale(0.88);
-  z-index: 1;
-  opacity: 0.82;
+  transform: rotateY(38deg) translateZ(115px) translateY(-22px) scale(1.42);
+  z-index: 4;
 }
 .featured-arch-card.card-pos-2 {
-  transform: rotateY(20deg) translateZ(-35px) scale(0.92);
-  z-index: 2;
-  opacity: 0.92;
+  transform: rotateY(26deg) translateZ(65px) translateY(-12px) scale(1.18);
+  z-index: 3;
 }
 .featured-arch-card.card-pos-3 {
-  transform: rotateY(10deg) translateZ(-10px) scale(0.96);
-  z-index: 3;
-  opacity: 0.98;
+  transform: rotateY(14deg) translateZ(25px) translateY(-4px) scale(0.98);
+  z-index: 2;
 }
 .featured-arch-card.card-pos-4 {
-  transform: rotateY(0deg) translateZ(20px) scale(1.05);
-  z-index: 5;
-  opacity: 1;
+  transform: rotateY(0deg) translateZ(-5px) translateY(0px) scale(0.86);
+  z-index: 1;
 }
 .featured-arch-card.card-pos-5 {
-  transform: rotateY(-10deg) translateZ(-10px) scale(0.96);
-  z-index: 3;
-  opacity: 0.98;
+  transform: rotateY(-14deg) translateZ(25px) translateY(-4px) scale(0.98);
+  z-index: 2;
 }
 .featured-arch-card.card-pos-6 {
-  transform: rotateY(-20deg) translateZ(-35px) scale(0.92);
-  z-index: 2;
-  opacity: 0.92;
+  transform: rotateY(-26deg) translateZ(65px) translateY(-12px) scale(1.18);
+  z-index: 3;
 }
 .featured-arch-card.card-pos-7 {
-  transform: rotateY(-30deg) translateZ(-65px) scale(0.88);
-  z-index: 1;
-  opacity: 0.82;
+  transform: rotateY(-38deg) translateZ(115px) translateY(-22px) scale(1.42);
+  z-index: 4;
 }
 
 /* Card Hover Elevation */
 .featured-arch-card:hover {
-  transform: rotateY(0deg) translateZ(60px) scale(1.08) !important;
+  transform: rotateY(0deg) translateZ(160px) translateY(-15px) scale(1.22) !important;
   z-index: 25 !important;
-  opacity: 1 !important;
+  box-shadow: 0 30px 60px rgba(19, 43, 69, 0.25) !important;
 }
 
 /* Inner Box */
@@ -8721,8 +8757,11 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 38px;
   }
   .featured-arch-card {
-    width: 180px;
-    height: 300px;
+    width: 145px;
+    height: 220px;
+  }
+  .featured-arch-track {
+    gap: 12px;
   }
   .featured-triad-col {
     padding: 0 20px;
@@ -8735,6 +8774,18 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
   .featured-main-title {
     font-size: 32px;
+  }
+  .featured-arch-wrapper {
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    justify-content: flex-start;
+  }
+  .featured-arch-wrapper::-webkit-scrollbar {
+    display: none;
+  }
+  .featured-arch-container {
+    min-width: 1050px;
   }
   .featured-triad-row {
     grid-template-columns: 1fr;
@@ -8759,30 +8810,34 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 14.5px;
   }
   .featured-arch-wrapper {
-    padding: 15px 0 25px;
+    padding: 20px 0 35px;
+  }
+  .featured-arch-wrapper::before,
+  .featured-arch-wrapper::after {
+    width: 90px;
   }
   .featured-arch-container {
-    min-width: 1100px;
+    min-width: 860px;
   }
   .featured-arch-track {
-    gap: 12px;
-    padding: 15px;
+    gap: 8px;
+    padding: 10px;
   }
   .featured-arch-card {
-    width: 145px;
-    height: 245px;
-    border-radius: 18px;
+    width: 115px;
+    height: 175px;
+    border-radius: 16px;
   }
   .card-title {
-    font-size: 13px;
+    font-size: 12px;
   }
   .card-loc {
-    font-size: 11px;
-    margin-bottom: 5px;
+    font-size: 10px;
+    margin-bottom: 4px;
   }
   .card-badge-vip {
-    font-size: 9px;
-    padding: 3px 8px;
+    font-size: 8px;
+    padding: 2px 6px;
   }
 }
 
