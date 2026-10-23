@@ -8897,11 +8897,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 .editorial-subtitle {
   font-family: 'Awaking', serif;
-  font-size: clamp(17px, 1.4vw, 20px);
-  font-weight: 600;
-  line-height: 1.45;
-  color: #2b2b2b;
-  margin-bottom: 18px;
+  font-size: 17px !important;
+  font-weight: 500 !important;
+  line-height: 1.55 !important;
+  color: #555555 !important;
+  margin-bottom: 16px !important;
+  letter-spacing: 0.3px;
 }
 
 .editorial-desc {
@@ -9147,7 +9148,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 30px;
   }
   .editorial-subtitle {
-    font-size: 16px;
+    font-size: 15px !important;
   }
   .editorial-card-left .editorial-card-frame {
     border-top-right-radius: 32px !important;
