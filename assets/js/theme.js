@@ -708,6 +708,112 @@ Version: 1.0
         }
     }
 
+    //===== Cinematic Curtain Reveal Footer
+    function initCinematicFooter() {
+        var $footer = $('#cinematicFooter');
+        if (!$footer.length) return;
+
+        // 1. Magnetic Buttons Interaction
+        var magneticElements = document.querySelectorAll('.magnetic-btn');
+        magneticElements.forEach(function(element) {
+            element.addEventListener('mousemove', function(e) {
+                var rect = element.getBoundingClientRect();
+                var h = rect.width / 2;
+                var w = rect.height / 2;
+                var x = e.clientX - rect.left - h;
+                var y = e.clientY - rect.top - w;
+
+                if (window.gsap) {
+                    gsap.to(element, {
+                        x: x * 0.35,
+                        y: y * 0.35,
+                        rotationX: -y * 0.12,
+                        rotationY: x * 0.12,
+                        scale: 1.05,
+                        ease: 'power2.out',
+                        duration: 0.35
+                    });
+                }
+            });
+
+            element.addEventListener('mouseleave', function() {
+                if (window.gsap) {
+                    gsap.to(element, {
+                        x: 0,
+                        y: 0,
+                        rotationX: 0,
+                        rotationY: 0,
+                        scale: 1,
+                        ease: 'elastic.out(1, 0.35)',
+                        duration: 1.1
+                    });
+                }
+            });
+        });
+
+        // 2. Scroll-to-Top Button
+        $('#footerScrollTopBtn').on('click', function(e) {
+            e.preventDefault();
+            if (typeof ScrollSmoother !== 'undefined') {
+                var smoother = ScrollSmoother.get();
+                if (smoother) {
+                    smoother.scrollTo(0, true);
+                    return;
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+
+        // 3. GSAP Parallax & Content Reveal
+        if (window.gsap && window.ScrollTrigger) {
+            var spacer = document.querySelector('.cinematic-footer-reveal-spacer');
+            if (spacer) {
+                // Giant Background Text Parallax
+                var giantText = document.getElementById('footerGiantText');
+                if (giantText) {
+                    gsap.fromTo(
+                        giantText,
+                        { y: '12vh', scale: 0.85, opacity: 0.2 },
+                        {
+                            y: '0vh',
+                            scale: 1,
+                            opacity: 1,
+                            ease: 'power1.out',
+                            scrollTrigger: {
+                                trigger: spacer,
+                                start: 'top 85%',
+                                end: 'bottom bottom',
+                                scrub: 1
+                            }
+                        }
+                    );
+                }
+
+                // Center Heading & Pills Staggered Float
+                var heading = document.getElementById('footerHeading');
+                var pills = document.getElementById('footerPills');
+                if (heading && pills) {
+                    gsap.fromTo(
+                        [heading, pills],
+                        { y: 40, opacity: 0 },
+                        {
+                            y: 0,
+                            opacity: 1,
+                            stagger: 0.15,
+                            ease: 'power3.out',
+                            scrollTrigger: {
+                                trigger: spacer,
+                                start: 'top 50%',
+                                end: 'bottom 90%',
+                                scrub: 1
+                            }
+                        }
+                    );
+                }
+            }
+        }
+    }
+
     // Document Ready
 
     $(function() {
@@ -716,6 +822,7 @@ Version: 1.0
         initOffcanvasPanel();
         dynamicBackground();
         initFeaturedArch();
+        initCinematicFooter();
     });
 
 })(window.jQuery);
