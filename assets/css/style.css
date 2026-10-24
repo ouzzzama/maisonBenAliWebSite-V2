@@ -6790,10 +6790,9 @@ main > section:nth-child(15) { z-index: 6 !important; }
 
 /* 3. Automatically pad the content of the section that got pulled up, so it doesn't get hidden under the curve */
 .curve-bottom + section::before {
-  content: "";
-  display: block;
-  height: 5vw;
-  width: 100%;
+  display: none !important;
+  content: none !important;
+  height: 0 !important;
 }
 
 /* Responsive Curve for Mobile UI/UX */
@@ -6806,8 +6805,10 @@ main > section:nth-child(15) { z-index: 6 !important; }
     padding-bottom: 30px !important;
   }
   .curve-bottom + section::before {
-    height: 30px;
-  }
+  display: none !important;
+  content: none !important;
+  height: 0 !important;
+}
 }
 
 /* Fix for the footer and other sections being covered by the curve */
@@ -7561,6 +7562,26 @@ input:focus, textarea:focus, select:focus {
     }
 }
 
+/* Section 8 (Awards) & Section 9 (Blog) Seamless Curve Transition */
+.renvia-awards_one {
+  margin-top: 0 !important;
+  margin-bottom: -6.5vw !important;
+  background-color: var(--white-color, #ffffff) !important;
+}
+.renvia-blog-sec {
+  padding-top: 8vw !important;
+}
+
+@media (max-width: 768px) {
+  .renvia-awards_one {
+    margin-bottom: -60px !important;
+  }
+  .renvia-blog-sec {
+    padding-top: 70px !important;
+  }
+}
+
+
 
 
 
@@ -7607,9 +7628,9 @@ main + footer::before {
 
 /* Center the last curved section against the viewport so both ends match. */
 main > section.curve-bottom:last-child {
-  width: 100vw !important;
-  max-width: 100vw !important;
-  margin-left: calc(50% - 50vw) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin-left: 0 !important;
   margin-right: 0 !important;
 }
 
