@@ -10028,3 +10028,97 @@ footer.main-footer.footer-minimalist {
   transform: translateY(-2px);
   box-shadow: 0 6px 18px rgba(255, 65, 54, 0.35);
 }
+
+
+/* ==========================================================================
+   GENEROUS SECTION SPACING & SEAMLESS CURVE SEPARATION TRANSITIONS
+   ========================================================================== */
+
+/* 1. Global Curve Separation Overlap & Base Spacing */
+.curve-bottom {
+  clip-path: ellipse(160% 100% at 50% 0%) !important;
+  -webkit-clip-path: ellipse(160% 100% at 50% 0%) !important;
+  border-radius: 0 !important;
+  margin-bottom: -7.5vw !important; /* Pulls next section up to seamlessly cover curved corners */
+  padding-bottom: clamp(140px, 11vw, 200px) !important; /* Generous breathing space above the curve */
+  overflow: hidden !important;
+  z-index: 10 !important;
+  position: relative !important;
+}
+
+.curve-bottom:not(.gray-bg):not(.dark-bg) {
+  background-color: var(--white-color, #ffffff) !important;
+}
+
+.curve-bottom + section {
+  padding-top: clamp(140px, 11vw, 200px) !important;
+}
+
+/* 2. Specific Section Overrides: Section 4 (Propriétés & Projets Neufs VEFA) */
+.renvia-project_one {
+  background-color: #15483d !important;
+  padding-bottom: clamp(260px, 20vw, 360px) !important; /* Deep breathing cushion below the CTA button & cards */
+  margin-bottom: -7.5vw !important;
+  position: relative !important;
+}
+
+/* 3. Section 5 (Video Section): Breathing room for the Play Button */
+.renvia-intro_one {
+  position: relative !important;
+  z-index: 1 !important;
+  padding-top: clamp(230px, 18vw, 310px) !important; /* Generous airy distance below the green arch */
+  padding-bottom: clamp(200px, 15vw, 260px) !important;
+}
+
+/* 4. Section 7 (Awards) -> Section 8 (Blog) */
+.renvia-awards_one {
+  margin-top: 0 !important;
+  margin-bottom: -7.5vw !important;
+  padding-bottom: clamp(140px, 11vw, 190px) !important;
+  background-color: var(--white-color, #ffffff) !important;
+}
+
+/* 5. Section 8 (Blog Conseils & Actualités): Generous breathing room above curve */
+.renvia-blog-sec {
+  padding-top: clamp(140px, 11vw, 190px) !important;
+  padding-bottom: clamp(200px, 16vw, 280px) !important; /* Ample cushion below the 3 luxury cards */
+  margin-bottom: -8vw !important;
+}
+
+/* 6. Footer: Generous breathing room below the blog curve */
+footer.main-footer.footer-minimalist {
+  padding-top: clamp(160px, 13vw, 220px) !important; /* Plentiful breathing space below the curve arch */
+  padding-bottom: 35px !important;
+}
+
+/* 7. Mobile Responsive Adjustments */
+@media (max-width: 768px) {
+  .curve-bottom {
+    clip-path: ellipse(190% 100% at 50% 0%) !important;
+    -webkit-clip-path: ellipse(190% 100% at 50% 0%) !important;
+    margin-bottom: -45px !important;
+    padding-bottom: 85px !important;
+  }
+  .curve-bottom + section {
+    padding-top: 80px !important;
+  }
+  .renvia-project_one {
+    padding-bottom: 120px !important;
+    margin-bottom: -45px !important;
+  }
+  .renvia-intro_one {
+    padding-top: 110px !important;
+    padding-bottom: 100px !important;
+  }
+  .renvia-awards_one {
+    margin-bottom: -45px !important;
+    padding-bottom: 85px !important;
+  }
+  .renvia-blog-sec {
+    padding-top: 80px !important;
+    padding-bottom: 100px !important;
+  }
+  footer.main-footer.footer-minimalist {
+    padding-top: 95px !important;
+  }
+}
