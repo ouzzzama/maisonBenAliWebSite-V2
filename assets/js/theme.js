@@ -775,6 +775,155 @@ Version: 1.0
         }
     }
 
+    
+    // GSAP Editorial About Section Parallax Entrance (Text reveals first, then flanking images sweep from offscreen)
+    function initEditorialParallaxEntrance() {
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+        var section = document.querySelector('.editorial-about-section');
+        if (!section) return;
+
+        var leftCard = section.querySelector('.editorial-card-left');
+        var rightCard = section.querySelector('.editorial-card-right');
+        var centerCol = section.querySelector('.editorial-center-col');
+        if (!leftCard || !rightCard || !centerCol) return;
+
+        var mm = gsap.matchMedia();
+
+        // Desktop & Tablet Landscape (>= 992px)
+        mm.add("(min-width: 992px)", function() {
+            var textItems = [
+                centerCol.querySelector('.editorial-sparkle'),
+                centerCol.querySelector('.editorial-kicker'),
+                centerCol.querySelector('.editorial-title'),
+                centerCol.querySelector('.editorial-subtitle'),
+                centerCol.querySelector('.editorial-desc'),
+                centerCol.querySelector('.editorial-cta')
+            ].filter(Boolean);
+
+            var leftImg = leftCard.querySelector('.editorial-card-frame img');
+            var rightImg = rightCard.querySelector('.editorial-card-frame img');
+            var badge = leftCard.querySelector('.editorial-spinning-seal');
+
+            // Master entrance timeline: text appears first, then images glide in from outside screen
+            var tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 72%',
+                    toggleActions: 'play none none none',
+                    once: true
+                }
+            });
+
+            // 1. Center text elements reveal gracefully
+            tl.fromTo(
+                textItems,
+                { opacity: 0, y: 35 },
+                { opacity: 1, y: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out' }
+            );
+
+            // 2. AFTER text appears, flanking cards sweep in from outside the screen
+            tl.fromTo(
+                leftCard,
+                { xPercent: -125, y: -25, opacity: 0 },
+                { xPercent: 0, y: -25, opacity: 1, duration: 1.35, ease: 'power3.out' },
+                '+=0.1'
+            );
+
+            tl.fromTo(
+                rightCard,
+                { xPercent: 125, y: 35, opacity: 0 },
+                { xPercent: 0, y: 35, opacity: 1, duration: 1.35, ease: 'power3.out' },
+                '<'
+            );
+
+            // Inner image counter-parallax for multi-plane depth
+            if (leftImg) {
+                tl.fromTo(
+                    leftImg,
+                    { xPercent: 20, scale: 1.15 },
+                    { xPercent: 0, scale: 1, duration: 1.5, ease: 'power2.out' },
+                    '<'
+                );
+            }
+            if (rightImg) {
+                tl.fromTo(
+                    rightImg,
+                    { xPercent: -20, scale: 1.15 },
+                    { xPercent: 0, scale: 1, duration: 1.5, ease: 'power2.out' },
+                    '<'
+                );
+            }
+
+            // 3. Spinning seal badge pops in with playful bounce as left card arrives
+            if (badge) {
+                tl.fromTo(
+                    badge,
+                    { scale: 0, opacity: 0, rotation: -70 },
+                    { scale: 1, opacity: 1, rotation: 0, duration: 0.9, ease: 'back.out(2)' },
+                    '-=0.6'
+                );
+            }
+
+            // 4. Continuous organic scroll parallax while moving through the section
+            gsap.to(leftCard.querySelector('.editorial-card-frame'), {
+                y: 40,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1.2
+                }
+            });
+
+            gsap.to(rightCard.querySelector('.editorial-card-frame'), {
+                y: -40,
+                ease: 'none',
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top bottom',
+                    end: 'bottom top',
+                    scrub: 1.2
+                }
+            });
+        });
+
+        // Mobile / Small Tablet (< 992px)
+        mm.add("(max-width: 991px)", function() {
+            var textItems = [
+                centerCol.querySelector('.editorial-sparkle'),
+                centerCol.querySelector('.editorial-kicker'),
+                centerCol.querySelector('.editorial-title'),
+                centerCol.querySelector('.editorial-subtitle'),
+                centerCol.querySelector('.editorial-desc'),
+                centerCol.querySelector('.editorial-cta')
+            ].filter(Boolean);
+
+            var tlMobile = gsap.timeline({
+                scrollTrigger: {
+                    trigger: section,
+                    start: 'top 80%',
+                    toggleActions: 'play none none none',
+                    once: true
+                }
+            });
+
+            tlMobile.fromTo(
+                textItems,
+                { opacity: 0, y: 30 },
+                { opacity: 1, y: 0, stagger: 0.08, duration: 0.7, ease: 'power3.out' }
+            );
+
+            tlMobile.fromTo(
+                [leftCard, rightCard],
+                { opacity: 0, y: 40 },
+                { opacity: 1, y: 0, stagger: 0.2, duration: 0.9, ease: 'power3.out' },
+                '+=0.1'
+            );
+        });
+    }
+
     // Document Ready
 
     $(function() {
@@ -784,6 +933,7 @@ Version: 1.0
         dynamicBackground();
         initFeaturedArch();
         initMinimalistFooterReveal();
+        initEditorialParallaxEntrance();
     });
 
 })(window.jQuery);
