@@ -10211,9 +10211,6 @@ footer.main-footer.footer-minimalist {
   height: clamp(430px, 35vw, 530px);
   pointer-events: none;
   z-index: 2; /* Sits over road (z:1), but strictly UNDER content & gradient (z:10) */
-  /* Mask ensures the bottom of the car does not extend over the text area */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, rgba(0, 0, 0, 0) 66%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, rgba(0, 0, 0, 0) 66%);
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
