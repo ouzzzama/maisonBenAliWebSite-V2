@@ -679,10 +679,11 @@ Version: 1.0
                 const distSq = u * u; // 0 in center, 1 at edges
 
                 // ALL CARDS ARE IDENTICAL IN SIZE (SIDES NEVER GET LONGER THAN OTHERS!)
-                // They are aligned in a smooth curve via vertical translation and curve tangent tilt:
-                const translateY = -(distSq * 42); // curve elevation on sides
-                const rotateZ = u * 6.5; // tilt along the curve tangent
-                const rotateY = -u * 12; // subtle amphitheater depth
+                // Bounded curve elevation with generous headroom so tops are NEVER cropped:
+                const curveFactor = Math.min(1.0, u * u);
+                const translateY = -(curveFactor * 36); // graceful elevation on sides
+                const rotateZ = u * 5.5; // tilt along curve tangent
+                const rotateY = -u * 10; // amphitheater depth
 
                 card.style.transform = `perspective(800px) translateY(${translateY.toFixed(1)}px) rotateZ(${rotateZ.toFixed(2)}deg) rotateY(${rotateY.toFixed(1)}deg)`;
             });

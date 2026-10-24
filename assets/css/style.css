@@ -8487,8 +8487,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-arch-wrapper {
   position: relative;
   width: 100%;
-  padding: 25px 0 35px;
-  margin-top: 0;
+  padding: 85px 0 45px;
+  margin-top: -55px;
+  margin-bottom: -15px;
   overflow: hidden;
   display: flex;
   justify-content: flex-start;
@@ -8548,7 +8549,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   will-change: transform;
   animation: featuredCarouselLoop 38s linear infinite;
   overflow: visible;
-  padding: 10px 0;
+  padding: 25px 0;
 }
 
 .featured-arch-group {
@@ -8734,7 +8735,8 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     font-size: 14.5px;
   }
   .featured-arch-wrapper {
-    padding: 50px 0 60px;
+    padding: 70px 0 50px;
+    margin-top: -35px;
   }
   .featured-arch-card {
     width: 130px;
