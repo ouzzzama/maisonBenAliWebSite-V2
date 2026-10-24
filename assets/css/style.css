@@ -9535,3 +9535,46 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     padding: 70px 16px 20px;
   }
 }
+
+/* ==========================================================================
+   SIGNATURE DUAL-LINE SUBTITLE STANDARDIZATION (ALL SECTIONS)
+   Matches reference: coral red, Cal Sans, bold uppercase, flanked by line1 & line2
+   ========================================================================== */
+.sub-title,
+.section-title .sub-title,
+.section-title span.sub-title,
+.editorial-kicker .sub-title,
+.featured-header-block .sub-title {
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.15em !important;
+  color: #e83f2a !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  margin-bottom: 14px !important;
+  line-height: 1 !important;
+  text-shadow: none !important;
+}
+
+.sub-title img,
+.section-title .sub-title img,
+.editorial-kicker .sub-title img,
+.featured-header-block .sub-title img {
+  display: inline-block !important;
+  vertical-align: middle !important;
+  width: auto !important;
+  height: 7px !important;
+  max-height: 14px !important;
+  flex-shrink: 0 !important;
+}
+
+.editorial-kicker {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin-bottom: 16px !important;
+}
