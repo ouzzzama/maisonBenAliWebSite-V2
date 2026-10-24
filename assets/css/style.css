@@ -10181,43 +10181,16 @@ footer.main-footer.footer-minimalist {
   margin: 60px auto 0;
 }
 
-.benali-cars-floating-car {
-  position: absolute;
-  top: -85px; /* Surpasses top border of card by 85px to look 3D */
-  left: 0;
-  width: 100%;
-  height: clamp(430px, 35vw, 530px);
-  pointer-events: none;
-  z-index: 5;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.benali-cars-car-cutout {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 62%;
-  display: block;
-  filter: drop-shadow(0 18px 25px rgba(0, 0, 0, 0.35));
-}
-
-.benali-cars-3d-wrapper:hover .benali-cars-floating-car {
-  transform: translateY(-12px) scale(1.02);
-}
-
-.benali-cars-card-block {
+/* Layer 1: Road Background frame */
+.benali-cars-road-frame {
   position: relative;
   width: 100%;
   border-radius: 42px;
   overflow: hidden;
   box-shadow: 0 24px 60px rgba(12, 33, 54, 0.14), 0 8px 24px rgba(232, 63, 42, 0.1);
   background-color: #ffffff;
+  z-index: 1;
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.45s ease;
-}
-
-.benali-cars-3d-wrapper:hover .benali-cars-card-block {
-  transform: translateY(-6px);
-  box-shadow: 0 35px 80px rgba(12, 33, 54, 0.2), 0 12px 36px rgba(232, 63, 42, 0.22);
 }
 
 .benali-cars-road-img {
@@ -10229,22 +10202,64 @@ footer.main-footer.footer-minimalist {
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.benali-cars-3d-wrapper:hover .benali-cars-road-img {
-  transform: scale(1.02);
+/* Layer 2: 3D Car floating above road, popping past top border, but strictly BEHIND gradient & text */
+.benali-cars-floating-car {
+  position: absolute;
+  top: -90px; /* Surpasses top border of card to look 3D */
+  left: 0;
+  width: 100%;
+  height: clamp(430px, 35vw, 530px);
+  pointer-events: none;
+  z-index: 2; /* Sits over road (z:1), but strictly UNDER content & gradient (z:10) */
+  /* Mask ensures the bottom of the car does not extend over the text area */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 50%, rgba(0, 0, 0, 0) 66%);
+  mask-image: linear-gradient(to bottom, #000 0%, #000 50%, rgba(0, 0, 0, 0) 66%);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+.benali-cars-car-cutout {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 62%;
+  display: block;
+  filter: drop-shadow(0 14px 20px rgba(0, 0, 0, 0.28));
+}
+
+/* Layer 3: Gradient and interactive content strictly ON TOP of the car */
 .benali-cars-content-layer {
   position: absolute;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 40px 30px 32px;
-  background: linear-gradient(180deg, rgba(232, 63, 42, 0) 0%, rgba(220, 50, 30, 0.88) 35%, rgba(190, 35, 18, 0.98) 100%);
+  padding: 44px 30px 34px;
+  border-radius: 0 0 42px 42px;
+  background: linear-gradient(180deg, rgba(218, 48, 28, 0) 0%, rgba(215, 45, 25, 0.85) 24%, rgba(195, 30, 15, 0.98) 46%, rgba(180, 24, 12, 1) 100%);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  z-index: 6;
+  z-index: 10; /* Strictly higher than car (z:2) so gradient and text are ON TOP of car */
+  pointer-events: auto;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Hover effects */
+.benali-cars-3d-wrapper:hover .benali-cars-road-frame {
+  transform: translateY(-6px);
+  box-shadow: 0 35px 80px rgba(12, 33, 54, 0.2), 0 12px 36px rgba(232, 63, 42, 0.22);
+}
+
+.benali-cars-3d-wrapper:hover .benali-cars-road-img {
+  transform: scale(1.02);
+}
+
+.benali-cars-3d-wrapper:hover .benali-cars-floating-car {
+  transform: translateY(-12px) scale(1.02);
+}
+
+.benali-cars-3d-wrapper:hover .benali-cars-content-layer {
+  transform: translateY(-6px);
 }
 
 .benali-cars-pill-wrap {
@@ -10266,6 +10281,11 @@ footer.main-footer.footer-minimalist {
   font-weight: 700;
   letter-spacing: 1.2px;
   text-transform: uppercase;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.benali-cars-pill i {
+  color: #ffde59;
 }
 
 .benali-cars-title {
@@ -10296,15 +10316,15 @@ footer.main-footer.footer-minimalist {
 .perk-item {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: rgba(255, 255, 255, 0.92);
-  font-size: 13px;
+  gap: 7px;
+  color: #ffffff;
+  font-size: 13.5px;
   font-weight: 500;
 }
 
 .perk-item i {
-  color: #ffd166;
-  font-size: 13px;
+  color: #ffde59;
+  font-size: 14px;
 }
 
 .benali-cars-actions {
@@ -10312,7 +10332,7 @@ footer.main-footer.footer-minimalist {
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  gap: 14px;
+  gap: 16px;
 }
 
 .benali-btn-primary {
@@ -10320,24 +10340,26 @@ footer.main-footer.footer-minimalist {
   align-items: center;
   gap: 10px;
   background-color: #ffffff;
-  color: #e83f2a !important;
+  color: #d83120 !important;
+  font-family: 'Syne', sans-serif;
   font-weight: 700;
-  font-size: 14px;
-  padding: 12px 28px;
+  font-size: 14.5px;
+  padding: 13px 28px;
   border-radius: 50px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .benali-btn-primary:hover {
   background-color: #0c2136;
   color: #ffffff !important;
-  transform: translateY(-3px) scale(1.03);
-  box-shadow: 0 12px 30px rgba(12, 33, 54, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(12, 33, 54, 0.3);
 }
 
 .benali-btn-primary i {
+  font-size: 13px;
   transition: transform 0.3s ease;
 }
 
@@ -10348,54 +10370,63 @@ footer.main-footer.footer-minimalist {
 .benali-btn-secondary {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   background: rgba(255, 255, 255, 0.16);
-  border: 1.5px solid rgba(255, 255, 255, 0.65);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
   color: #ffffff !important;
+  font-family: 'Syne', sans-serif;
   font-weight: 600;
-  font-size: 14px;
-  padding: 11px 24px;
+  font-size: 14.5px;
+  padding: 12px 26px;
   border-radius: 50px;
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
-  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
 }
 
 .benali-btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.3);
+  background: #ffffff;
+  color: #0c2136 !important;
   border-color: #ffffff;
-  color: #ffffff !important;
-  transform: translateY(-3px);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
 }
 
-@media (max-width: 768px) {
-  .benali-cars-3d-wrapper {
-    margin-top: 40px;
+.benali-btn-secondary i {
+  font-size: 14px;
+}
+
+@media (max-width: 991px) {
+  .benali-cars-floating-car {
+    top: -65px;
   }
+  .benali-cars-title {
+    font-size: 24px !important;
+  }
+  .benali-cars-perks-row {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 767px) {
   .benali-cars-floating-car {
     top: -45px;
   }
   .benali-cars-content-layer {
-    padding: 30px 16px 24px;
+    padding: 30px 18px 25px;
   }
-  .benali-cars-perks-row {
-    gap: 10px;
-    margin-bottom: 16px;
+  .benali-cars-title {
+    font-size: 20px !important;
   }
   .perk-item {
-    font-size: 11px;
-  }
-  .benali-cars-actions {
-    flex-direction: column;
-    width: 100%;
+    font-size: 12px;
   }
   .benali-btn-primary, .benali-btn-secondary {
     width: 100%;
     justify-content: center;
   }
 }
-
 
 /* 5. Section 8 (Blog Conseils & Actualités): Generous breathing room above curve */
 .renvia-blog-sec {
