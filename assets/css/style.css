@@ -10128,9 +10128,37 @@ footer.main-footer.footer-minimalist {
    ENHANCED HERO CLEARANCE & SMART MOVING NAVBAR
    ========================================================================== */
 
-/* Hero Banner top clearance so navbar never covers the building PNG */
+/* Reduced, balanced distance between navbar and hero banners */
 .modern-hero-section {
-  padding-top: clamp(270px, 20vw, 320px) !important;
+  padding-top: clamp(155px, 12vw, 175px) !important;
+  padding-bottom: 45px !important;
+}
+
+/* Slide 1 (Navy Building): Clean pop-out that fits perfectly under the navbar */
+.bg-navy .hero-banner-building {
+  width: 82%;
+  max-width: 82%;
+  height: calc(100% + 35px) !important;
+  max-height: calc(100% + 35px) !important;
+  right: -10px !important;
+  bottom: 0 !important;
+}
+
+/* Slide 2 (Coral Villa): Clean pop-out */
+.bg-coral .hero-banner-building {
+  height: calc(100% + 30px) !important;
+  max-height: calc(100% + 30px) !important;
+  bottom: -20px !important;
+}
+
+/* Slide 3 (Green Moroccan Project): Clean pop-out */
+.bg-green .hero-banner-building {
+  width: 78%;
+  max-width: 78%;
+  height: calc(100% + 35px) !important;
+  max-height: calc(100% + 35px) !important;
+  right: -25px !important;
+  bottom: 0 !important;
 }
 
 /* Smart Dynamic Moving Navbar: Intelligently avoids PNG and sticks while scrolling down */
