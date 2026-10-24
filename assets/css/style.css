@@ -8491,7 +8491,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   margin-top: 0;
   overflow: hidden;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   /* Deep, ultra-smooth progressive feather mask on both sides */
   -webkit-mask-image: linear-gradient(
@@ -8533,10 +8533,10 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 .featured-arch-container {
   width: 100%;
-  max-width: 1440px;
+  max-width: 100%;
   min-height: auto;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   overflow: visible;
 }
@@ -8562,10 +8562,10 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 /* Seamless 50% Infinite Loop Animation */
 @keyframes featuredCarouselLoop {
   0% {
-    transform: translateX(0);
+    transform: translate3d(-20%, 0, 0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translate3d(-40%, 0, 0);
   }
 }
 

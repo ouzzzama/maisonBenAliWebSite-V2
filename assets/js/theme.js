@@ -656,15 +656,7 @@ Version: 1.0
         const cards = track.querySelectorAll('.featured-arch-card');
         if (!cards.length) return;
 
-        // Hover pause ONLY when actively pointing directly over a card
-        cards.forEach(card => {
-            card.addEventListener('mouseenter', () => {
-                track.style.animationPlayState = 'paused';
-            });
-            card.addEventListener('mouseleave', () => {
-                track.style.animationPlayState = 'running';
-            });
-        });
+        // Non-stopping continuous infinite stream (no hover pause)
 
         function updateWarp() {
             const stage = container || wrapper;
