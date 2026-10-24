@@ -115,45 +115,6 @@ Version: 1.0
     })
 
     
-    //====== Smart Dynamic Sticky Header (Animates intelligently: never covers hero PNG, sticks while scrolling down)
-    $(document).ready(function () {
-        function initStickyHeader(headerSelector) {
-            const header = $(headerSelector);
-            let lastScroll = 0;
-            const heroThreshold = 460; // Point where building PNG has fully cleared the top
-
-            $(window).on('scroll', function () {
-                const currentScroll = $(this).scrollTop();
-
-                // 1. At the very top of page: reset to natural hero position
-                if (currentScroll <= 60) {
-                    header.removeClass('sticky header-pass-hero header-sticky-active');
-                    lastScroll = currentScroll;
-                    return;
-                }
-
-                // 2. In Hero Banner zone (while building PNG is passing):
-                if (currentScroll < heroThreshold) {
-                    if (currentScroll > lastScroll) {
-                        // Scrolling DOWN through hero: glide navbar up out of the way so it NEVER touches or covers the PNG
-                        header.addClass('sticky header-pass-hero').removeClass('header-sticky-active');
-                    } else {
-                        // Scrolling UP back to top
-                        header.removeClass('sticky header-pass-hero header-sticky-active');
-                    }
-                    lastScroll = currentScroll;
-                    return;
-                }
-
-                // 3. Past Hero Banner (Services, Projects, Video, Features, Awards, Blog, Footer):
-                // STICK CONTINUOUSLY WHILE SCROLLING DOWN AND UP!
-                header.addClass('sticky header-sticky-active').removeClass('header-pass-hero');
-                lastScroll = currentScroll;
-            });
-        }
-        initStickyHeader('header');
-    });
-
     //===== Magnific-popup js
     
     if ($('.video-popup').length){
@@ -536,6 +497,78 @@ Version: 1.0
         });
 
         ScrollTrigger.refresh();
+    })();
+
+    //===== Smart Glitch-Free Moving Navbar (Never covers Hero PNG & Sticks while scrolling down)
+    (function initSmartMovingNavbar() {
+        const header = $('header.header-area');
+        if (!header.length) return;
+
+        let currentState = 'top'; // 'top' | 'hidden' | 'sticky'
+
+        function setState(newState) {
+            if (currentState === newState) return;
+            currentState = newState;
+
+            if (newState === 'top') {
+                header.removeClass('sticky header-pass-hero header-sticky-active nav-hidden-mode nav-sticky-mode');
+            } else if (newState === 'hidden') {
+                header.addClass('sticky header-pass-hero nav-hidden-mode').removeClass('header-sticky-active nav-sticky-mode');
+            } else if (newState === 'sticky') {
+                header.addClass('sticky header-sticky-active nav-sticky-mode').removeClass('header-pass-hero nav-hidden-mode');
+            }
+        }
+
+        function getHeroScrollThreshold() {
+            const heroSec = document.querySelector('.modern-hero-section');
+            if (!heroSec) return 100;
+            const isMobile = window.innerWidth <= 767;
+            const pinDistance = isMobile ? 900 : 1500;
+            return pinDistance + heroSec.offsetHeight - 80;
+        }
+
+        function evaluateScroll(scrollY) {
+            const heroExit = getHeroScrollThreshold();
+
+            if (currentState === 'top') {
+                if (scrollY > 80) {
+                    setState('hidden');
+                }
+            } else if (currentState === 'hidden') {
+                if (scrollY <= 60) {
+                    setState('top');
+                } else if (scrollY >= heroExit) {
+                    setState('sticky');
+                }
+            } else if (currentState === 'sticky') {
+                if (scrollY < (heroExit - 80)) {
+                    setState('hidden');
+                }
+            }
+        }
+
+        // Sync with ScrollTrigger for 60fps frame-perfect updates during ScrollSmoother motion
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.create({
+                start: 0,
+                end: 'max',
+                onUpdate: function (self) {
+                    evaluateScroll(self.scroll());
+                }
+            });
+        }
+
+        // Window scroll listener for direct native scroll / instant responsiveness
+        $(window).on('scroll', function () {
+            const scrollY = $(this).scrollTop();
+            evaluateScroll(scrollY);
+        });
+
+        // Evaluate immediately on initialization
+        const initialY = (typeof ScrollSmoother !== 'undefined' && ScrollSmoother.get()) 
+            ? ScrollSmoother.get().scrollTop() 
+            : $(window).scrollTop();
+        evaluateScroll(initialY);
     })();
 
     var carsModal = document.getElementById('airbnbCarsModal');
