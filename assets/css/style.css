@@ -9600,3 +9600,431 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   justify-content: center !important;
   margin-bottom: 16px !important;
 }
+
+
+/* ==========================================================================
+   MAISON BENALI REFINED BLOG CARDS (DESIGN SYSTEM)
+   ========================================================================== */
+.renvia-blog-sec {
+  background-color: var(--gray-color, #F7F5EF);
+}
+
+.renvia-blog-sec .renvia-blog-post-item {
+  background: #ffffff !important;
+  border-radius: 24px !important;
+  border: 1px solid rgba(0, 0, 0, 0.06) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  overflow: hidden !important;
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100% !important;
+  margin-bottom: 30px !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item:hover {
+  transform: translateY(-8px) !important;
+  margin-top: 0 !important;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.09) !important;
+  border-color: rgba(255, 65, 54, 0.3) !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .post-thumbnail {
+  position: relative !important;
+  overflow: hidden !important;
+  height: 240px !important;
+  background: #eaeaea;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .post-thumbnail img {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  border-radius: 0 !important;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item:hover .post-thumbnail img {
+  transform: scale(1.08) !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .category-badge {
+  position: absolute !important;
+  top: 16px !important;
+  left: 16px !important;
+  background: rgba(255, 65, 54, 0.92) !important;
+  color: #ffffff !important;
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.06em !important;
+  padding: 6px 14px !important;
+  border-radius: 50px !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 4px 15px rgba(255, 65, 54, 0.35) !important;
+  z-index: 2 !important;
+  transition: all 0.3s ease !important;
+  pointer-events: none;
+}
+
+.renvia-blog-sec .renvia-blog-post-item:hover .category-badge {
+  background: #1C1C25 !important;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .post-content {
+  padding: 26px 28px 30px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 !important;
+  background: #ffffff !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .post-meta {
+  display: flex !important;
+  align-items: center !important;
+  gap: 16px !important;
+  margin-bottom: 12px !important;
+  font-size: 13px !important;
+  color: var(--text-color, #797E88) !important;
+  font-weight: 500 !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .post-meta span i {
+  color: var(--primary-color, #FF4136) !important;
+  margin-right: 6px !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .post-content .title {
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 700 !important;
+  line-height: 1.4 !important;
+  margin-bottom: 12px !important;
+  color: var(--heading-color, #1C1C25) !important;
+  transition: color 0.3s ease !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .post-content .title a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item:hover .post-content .title a {
+  color: var(--primary-color, #FF4136) !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .excerpt {
+  font-size: 14.5px !important;
+  line-height: 1.65 !important;
+  color: var(--text-color, #797E88) !important;
+  margin-bottom: 22px !important;
+  flex: 1 !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .card-action {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding-top: 18px !important;
+  border-top: 1px solid rgba(0, 0, 0, 0.06) !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .read-more-link {
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  color: var(--heading-color, #1C1C25) !important;
+  text-decoration: none !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  transition: color 0.3s ease, gap 0.3s ease !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .read-more-link i {
+  color: var(--primary-color, #FF4136) !important;
+  transition: transform 0.3s ease !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item:hover .read-more-link {
+  color: var(--primary-color, #FF4136) !important;
+  gap: 12px !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item:hover .read-more-link i {
+  transform: translateX(4px) !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item .action-icon-circle {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  background: rgba(255, 65, 54, 0.08) !important;
+  color: var(--primary-color, #FF4136) !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 13px !important;
+  transition: all 0.3s ease !important;
+}
+
+.renvia-blog-sec .renvia-blog-post-item:hover .action-icon-circle {
+  background: var(--primary-color, #FF4136) !important;
+  color: #ffffff !important;
+  transform: scale(1.08) !important;
+}
+
+
+/* ==========================================================================
+   MINIMALIST LUXURY FOOTER WITH ORANGE GLOW SCROLL REVEAL
+   ========================================================================== */
+footer.main-footer.footer-minimalist {
+  position: relative !important;
+  background-color: #0c0f13 !important;
+  color: #FAF7F2 !important;
+  overflow: hidden !important;
+  z-index: 1 !important;
+  padding-top: 80px !important;
+  padding-bottom: 30px !important;
+}
+
+/* Ambient Orange Color Glow in the Background */
+.footer-orange-glow {
+  position: absolute;
+  bottom: -25%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 85vw;
+  height: 70vh;
+  max-width: 1300px;
+  background: radial-gradient(
+    ellipse at 50% 100%, 
+    rgba(255, 65, 54, 0.38) 0%, 
+    rgba(255, 90, 54, 0.16) 40%, 
+    rgba(21, 72, 61, 0.06) 65%, 
+    transparent 80%
+  );
+  filter: blur(85px);
+  pointer-events: none;
+  z-index: 0;
+  will-change: transform, opacity;
+  animation: footer-orange-breathe 8s ease-in-out infinite alternate;
+}
+
+@keyframes footer-orange-breathe {
+  0% { transform: translateX(-50%) scale(0.96); opacity: 0.75; }
+  100% { transform: translateX(-50%) scale(1.12); opacity: 1; }
+}
+
+/* Subtle Grid Background Overlay */
+.footer-grid-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background-size: 50px 50px;
+  background-image: 
+    linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+  mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 25%, black 75%, transparent);
+}
+
+.footer-minimalist .container {
+  position: relative;
+  z-index: 2;
+}
+
+.footer-brand-box {
+  max-width: 380px;
+}
+
+.footer-resume-text {
+  font-size: 14.5px !important;
+  line-height: 1.7 !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  margin-bottom: 22px !important;
+}
+
+.footer-badge-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 18px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+}
+
+.footer-badge-pill .pulse-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #FF4136;
+  box-shadow: 0 0 10px #FF4136;
+  animation: pulse-dot-glow 2s infinite ease-in-out;
+}
+
+@keyframes pulse-dot-glow {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 14px #FF4136; }
+}
+
+.footer-minimalist .widget-title {
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: 14.5px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.1em !important;
+  color: #ffffff !important;
+  margin-bottom: 20px !important;
+  position: relative;
+}
+
+.footer-minimalist .widget-title::after {
+  content: "";
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #FF4136;
+  margin-top: 8px;
+  border-radius: 2px;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-links li {
+  margin-bottom: 11px;
+}
+
+.footer-links li a {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  transition: all 0.3s ease;
+  display: inline-block;
+}
+
+.footer-links li a:hover {
+  color: #FF4136;
+  transform: translateX(4px);
+}
+
+.footer-contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-contact-list li {
+  font-size: 13.5px;
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-contact-list li i {
+  color: #FF4136;
+  font-size: 15px;
+  width: 16px;
+  text-align: center;
+}
+
+.footer-social-pills {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.footer-social-pills .social-pill {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.footer-social-pills .social-pill svg {
+  fill: currentColor;
+}
+
+.footer-social-pills .social-pill:hover {
+  background: #FF4136;
+  border-color: #FF4136;
+  color: #ffffff;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 65, 54, 0.4);
+}
+
+.footer-bottom-bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  margin-top: 40px;
+  padding-top: 24px;
+}
+
+.footer-bottom-bar .copyright-text {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.footer-bottom-bar .brand-highlight {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.footer-bottom-link {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-bottom-link:hover {
+  color: #FF4136;
+}
+
+.footer-bottom-bar .sep {
+  color: rgba(255, 255, 255, 0.2);
+}
+
+.scroll-top-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 50px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.scroll-top-pill:hover {
+  background: #FF4136;
+  color: #ffffff;
+  border-color: #FF4136;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(255, 65, 54, 0.35);
+}

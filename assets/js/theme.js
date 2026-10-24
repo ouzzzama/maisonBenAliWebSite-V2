@@ -701,51 +701,13 @@ Version: 1.0
         }
     }
 
-//===== Cinematic Curtain Reveal Footer
-    function initCinematicFooter() {
-        var $footer = $('#cinematicFooter');
+//===== Minimalist Footer with Orange Glow Scroll Reveal
+    function initMinimalistFooterReveal() {
+        var $footer = $('#mainFooter');
         if (!$footer.length) return;
 
-        // 1. Magnetic Buttons Interaction
-        var magneticElements = document.querySelectorAll('.magnetic-btn');
-        magneticElements.forEach(function(element) {
-            element.addEventListener('mousemove', function(e) {
-                var rect = element.getBoundingClientRect();
-                var h = rect.width / 2;
-                var w = rect.height / 2;
-                var x = e.clientX - rect.left - h;
-                var y = e.clientY - rect.top - w;
-
-                if (window.gsap) {
-                    gsap.to(element, {
-                        x: x * 0.35,
-                        y: y * 0.35,
-                        rotationX: -y * 0.12,
-                        rotationY: x * 0.12,
-                        scale: 1.05,
-                        ease: 'power2.out',
-                        duration: 0.35
-                    });
-                }
-            });
-
-            element.addEventListener('mouseleave', function() {
-                if (window.gsap) {
-                    gsap.to(element, {
-                        x: 0,
-                        y: 0,
-                        rotationX: 0,
-                        rotationY: 0,
-                        scale: 1,
-                        ease: 'elastic.out(1, 0.35)',
-                        duration: 1.1
-                    });
-                }
-            });
-        });
-
-        // 2. Scroll-to-Top Button
-        $('#footerScrollTopBtn').on('click', function(e) {
+        // 1. Scroll-to-Top Button
+        $('#scrollTopBtn').on('click', function(e) {
             e.preventDefault();
             if (typeof ScrollSmoother !== 'undefined') {
                 var smoother = ScrollSmoother.get();
@@ -757,52 +719,46 @@ Version: 1.0
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // 3. GSAP Parallax & Content Reveal
+        // 2. GSAP Orange Glow Scroll Reveal & Parallax
         if (window.gsap && window.ScrollTrigger) {
-            var spacer = document.querySelector('.cinematic-footer-reveal-spacer');
-            if (spacer) {
-                // Giant Background Text Parallax
-                var giantText = document.getElementById('footerGiantText');
-                if (giantText) {
-                    gsap.fromTo(
-                        giantText,
-                        { y: '12vh', scale: 0.85, opacity: 0.2 },
-                        {
-                            y: '0vh',
-                            scale: 1,
-                            opacity: 1,
-                            ease: 'power1.out',
-                            scrollTrigger: {
-                                trigger: spacer,
-                                start: 'top 85%',
-                                end: 'bottom bottom',
-                                scrub: 1
-                            }
+            var glow = document.getElementById('footerOrangeGlow');
+            if (glow) {
+                gsap.fromTo(
+                    glow,
+                    { scale: 0.8, opacity: 0.35, y: 60 },
+                    {
+                        scale: 1.15,
+                        opacity: 1,
+                        y: 0,
+                        ease: 'power2.out',
+                        scrollTrigger: {
+                            trigger: '#mainFooter',
+                            start: 'top 95%',
+                            end: 'bottom bottom',
+                            scrub: 1.2
                         }
-                    );
-                }
+                    }
+                );
+            }
 
-                // Center Heading & Pills Staggered Float
-                var heading = document.getElementById('footerHeading');
-                var pills = document.getElementById('footerPills');
-                if (heading && pills) {
-                    gsap.fromTo(
-                        [heading, pills],
-                        { y: 40, opacity: 0 },
-                        {
-                            y: 0,
-                            opacity: 1,
-                            stagger: 0.15,
-                            ease: 'power3.out',
-                            scrollTrigger: {
-                                trigger: spacer,
-                                start: 'top 50%',
-                                end: 'bottom 90%',
-                                scrub: 1
-                            }
+            // Stagger reveal widgets smoothly
+            var widgets = document.querySelectorAll('.footer-top-row .col-lg-4, .footer-top-row .col-lg-2, .footer-top-row .col-lg-3, .footer-bottom-bar');
+            if (widgets.length) {
+                gsap.fromTo(
+                    widgets,
+                    { y: 35, opacity: 0 },
+                    {
+                        y: 0,
+                        opacity: 1,
+                        stagger: 0.1,
+                        duration: 0.9,
+                        ease: 'power3.out',
+                        scrollTrigger: {
+                            trigger: '#mainFooter',
+                            start: 'top 85%'
                         }
-                    );
-                }
+                    }
+                );
             }
         }
     }
@@ -815,7 +771,7 @@ Version: 1.0
         initOffcanvasPanel();
         dynamicBackground();
         initFeaturedArch();
-        initCinematicFooter();
+        initMinimalistFooterReveal();
     });
 
 })(window.jQuery);
