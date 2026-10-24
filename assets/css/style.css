@@ -7038,6 +7038,7 @@ input:focus, textarea:focus, select:focus {
 /* 1. Prevent clipping in section & slider containers while preserving position */
 .renvia-service_one {
   overflow: visible !important;
+  background-image: none !important;
 }
 
 .service-section-heading {
