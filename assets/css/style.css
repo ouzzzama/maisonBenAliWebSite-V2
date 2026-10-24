@@ -8218,7 +8218,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   will-change: transform, opacity;
 }
 
-/* Slide 1 (Navy Building): Smooth and wide feather mask across the left annex */
+/* Slide 1 (Navy Building): Smooth progressive feather mask shifted right to fade the left annex */
 .bg-navy .hero-banner-building {
   width: 82%;
   max-width: 82%;
@@ -8227,34 +8227,30 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent 6%,
-    rgba(0, 0, 0, 0.03) 12%,
-    rgba(0, 0, 0, 0.08) 18%,
-    rgba(0, 0, 0, 0.18) 24%,
-    rgba(0, 0, 0, 0.32) 30%,
-    rgba(0, 0, 0, 0.50) 36%,
-    rgba(0, 0, 0, 0.72) 42%,
-    rgba(0, 0, 0, 0.90) 48%,
-    #000000 54%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.05) 36%,
+    rgba(0, 0, 0, 0.15) 44%,
+    rgba(0, 0, 0, 0.35) 52%,
+    rgba(0, 0, 0, 0.65) 60%,
+    rgba(0, 0, 0, 0.88) 65%,
+    #000000 72%,
     #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent 6%,
-    rgba(0, 0, 0, 0.03) 12%,
-    rgba(0, 0, 0, 0.08) 18%,
-    rgba(0, 0, 0, 0.18) 24%,
-    rgba(0, 0, 0, 0.32) 30%,
-    rgba(0, 0, 0, 0.50) 36%,
-    rgba(0, 0, 0, 0.72) 42%,
-    rgba(0, 0, 0, 0.90) 48%,
-    #000000 54%,
+    transparent 30%,
+    rgba(0, 0, 0, 0.05) 36%,
+    rgba(0, 0, 0, 0.15) 44%,
+    rgba(0, 0, 0, 0.35) 52%,
+    rgba(0, 0, 0, 0.65) 60%,
+    rgba(0, 0, 0, 0.88) 65%,
+    #000000 72%,
     #000000 100%
   );
 }
 
-/* Slide 2 (Coral Villa): Clean feather mask on the left pool & mountain transition, lowered 40px */
+/* Slide 2 (Coral Villa): Smooth progressive feather mask shifted right to fade the pool transition */
 .bg-coral .hero-banner-building {
   width: auto;
   max-width: 68%;
@@ -8265,24 +8261,28 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.05) 2%,
-    rgba(0, 0, 0, 0.2) 5%,
-    rgba(0, 0, 0, 0.6) 9%,
-    #000000 15%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.05) 28%,
+    rgba(0, 0, 0, 0.20) 36%,
+    rgba(0, 0, 0, 0.50) 45%,
+    rgba(0, 0, 0, 0.80) 54%,
+    #000000 62%,
     #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    rgba(0, 0, 0, 0.05) 2%,
-    rgba(0, 0, 0, 0.2) 5%,
-    rgba(0, 0, 0, 0.6) 9%,
-    #000000 15%,
+    transparent 20%,
+    rgba(0, 0, 0, 0.05) 28%,
+    rgba(0, 0, 0, 0.20) 36%,
+    rgba(0, 0, 0, 0.50) 45%,
+    rgba(0, 0, 0, 0.80) 54%,
+    #000000 62%,
     #000000 100%
   );
 }
 
-/* Slide 3 (Green Moroccan Moyen Standing Project): Clean feather mask on the left facade & balconies, cropped right and bottom only */
+/* Slide 3 (Green Moroccan Moyen Standing Project): Smooth progressive feather mask shifted right to fade the left balconies */
 .bg-green .hero-banner-building {
   width: 78%;
   max-width: 78%;
@@ -8293,21 +8293,23 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent 20%,
-    rgba(0, 0, 0, 0.05) 23%,
-    rgba(0, 0, 0, 0.2) 26%,
-    rgba(0, 0, 0, 0.6) 30%,
-    #000000 36%,
+    transparent 32%,
+    rgba(0, 0, 0, 0.05) 39%,
+    rgba(0, 0, 0, 0.20) 47%,
+    rgba(0, 0, 0, 0.50) 55%,
+    rgba(0, 0, 0, 0.80) 63%,
+    #000000 72%,
     #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent 20%,
-    rgba(0, 0, 0, 0.05) 23%,
-    rgba(0, 0, 0, 0.2) 26%,
-    rgba(0, 0, 0, 0.6) 30%,
-    #000000 36%,
+    transparent 32%,
+    rgba(0, 0, 0, 0.05) 39%,
+    rgba(0, 0, 0, 0.20) 47%,
+    rgba(0, 0, 0, 0.50) 55%,
+    rgba(0, 0, 0, 0.80) 63%,
+    #000000 72%,
     #000000 100%
   );
 }
