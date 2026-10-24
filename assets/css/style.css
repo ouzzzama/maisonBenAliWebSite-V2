@@ -10161,7 +10161,9 @@ footer.main-footer.footer-minimalist {
   bottom: 0 !important;
 }
 
-/* Smart Dynamic Moving Navbar: Intelligently avoids PNG and sticks while scrolling down */
+/* ==========================================================================
+   PERMANENTLY LOCKED FLOATING NAVBAR (Zero Movement, Always Locked on Screen)
+   ========================================================================== */
 header.header-area {
   position: fixed !important;
   top: 0 !important;
@@ -10171,64 +10173,26 @@ header.header-area {
   z-index: 9999 !important;
   pointer-events: none !important;
   margin: 0 !important;
-  padding-top: 25px !important;
-  padding-bottom: 15px !important;
+  padding-top: 22px !important;
+  padding-bottom: 14px !important;
   background: transparent !important;
-  transform: translateY(0) !important;
+  transform: none !important;
   opacity: 1 !important;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.35s ease, padding 0.3s ease !important;
-  will-change: transform, opacity;
+  transition: none !important;
 }
 
 header.header-area .header-navigation {
   pointer-events: auto !important;
-  transition: background-color 0.35s ease, backdrop-filter 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease, padding 0.3s ease !important;
-}
-
-/* While passing the hero building PNG: smoothly glide up out of the way */
-header.header-area.header-pass-hero,
-header.header-area.nav-hidden-mode,
-header.header-area.sticky.header-pass-hero {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  transform: translateY(-135%) !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  background: transparent !important;
-}
-
-/* Once past the hero building PNG: glide down smoothly and STICK permanently while scrolling down */
-header.header-area.header-sticky-active,
-header.header-area.nav-sticky-mode,
-header.header-area.sticky.header-sticky-active,
-header.header-area.sticky:not(.header-pass-hero):not(.nav-hidden-mode) {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  width: 100% !important;
-  margin-top: 0 !important;
-  padding-top: 14px !important;
-  padding-bottom: 14px !important;
-  z-index: 9999 !important;
-  background: transparent !important; /* No full-width white slab cutting across */
-  transform: translateY(0) !important;
-  opacity: 1 !important;
-  pointer-events: auto !important;
-}
-
-/* Luxury Floating Island Pill Navigation */
-header.header-area.header-sticky-active .header-navigation,
-header.header-area.nav-sticky-mode .header-navigation,
-header.header-area.sticky .header-navigation {
   background: rgba(255, 255, 255, 0.96) !important;
   backdrop-filter: blur(20px) !important;
   -webkit-backdrop-filter: blur(20px) !important;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08) !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08) !important;
   border: 1px solid rgba(0, 0, 0, 0.05) !important;
+  transition: box-shadow 0.3s ease !important;
+}
+
+header.header-area.is-scrolled .header-navigation {
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.12) !important;
 }
 
 /* Generous Breathing Space: Section 3 (Services Flip Cards) above the curve */
