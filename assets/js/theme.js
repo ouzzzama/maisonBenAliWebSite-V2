@@ -115,22 +115,49 @@ Version: 1.0
     })
 
     
-    //====== Sticky Header 
-    
+    //====== Smart Dynamic Sticky Header (Moves on scroll, never covers hero content)
     $(document).ready(function () {
         function initStickyHeader(headerSelector) {
             const header = $(headerSelector);
+            let lastScroll = 0;
+            const scrollThreshold = 10;
+            const heroThreshold = 450;
+
             $(window).on('scroll', function () {
                 const currentScroll = $(this).scrollTop();
-                if (currentScroll > 100) {
-                    if (!header.hasClass('sticky')) {
-                        header.addClass('sticky');
-                    }
-                } else {
-                    if (header.hasClass('sticky')) {
-                        header.removeClass('sticky');
-                    }
+
+                // At the very top of page
+                if (currentScroll <= 80) {
+                    header.removeClass('sticky header-hidden header-visible');
+                    lastScroll = currentScroll;
+                    return;
                 }
+
+                // In hero banner area: move navbar out of the way so it NEVER covers building PNG
+                if (currentScroll < heroThreshold) {
+                    if (currentScroll > lastScroll) {
+                        header.addClass('sticky header-hidden').removeClass('header-visible');
+                    } else {
+                        header.removeClass('sticky header-hidden header-visible');
+                    }
+                    lastScroll = currentScroll;
+                    return;
+                }
+
+                // Past hero banner: smart move on scroll
+                if (Math.abs(currentScroll - lastScroll) < scrollThreshold) {
+                    return;
+                }
+
+                if (currentScroll > lastScroll && currentScroll > 150) {
+                    // Scrolling DOWN: moves up out of view
+                    header.addClass('sticky header-hidden').removeClass('header-visible');
+                } else if (currentScroll < lastScroll) {
+                    // Scrolling UP: slides down into view
+                    header.addClass('sticky header-visible').removeClass('header-hidden');
+                }
+
+                lastScroll = currentScroll;
             });
         }
         initStickyHeader('header');

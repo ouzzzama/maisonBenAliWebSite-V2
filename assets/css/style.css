@@ -8222,7 +8222,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .bg-navy .hero-banner-building {
   width: 82%;
   max-width: 82%;
-  height: calc(100% + 140px);
+  height: calc(100% + 105px);
   right: -10px;
   -webkit-mask-image: linear-gradient(
     to right,
@@ -10121,4 +10121,57 @@ footer.main-footer.footer-minimalist {
   footer.main-footer.footer-minimalist {
     padding-top: 95px !important;
   }
+}
+
+
+/* ==========================================================================
+   ENHANCED HERO CLEARANCE & SMART MOVING NAVBAR
+   ========================================================================== */
+
+/* Hero Banner top clearance so navbar never covers the building PNG */
+.modern-hero-section {
+  padding-top: clamp(270px, 20vw, 320px) !important;
+}
+
+/* Smart Dynamic Moving Navbar (Moves smoothly on scroll, never covers content) */
+header.header-area {
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+header.header-area.sticky {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  margin-top: 0 !important;
+  padding-top: 15px !important;
+  padding-bottom: 15px !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+}
+
+header.header-area.sticky.header-hidden {
+  transform: translateY(-120%) !important;
+  pointer-events: none !important;
+}
+
+header.header-area.sticky.header-visible {
+  transform: translateY(0) !important;
+  pointer-events: auto !important;
+}
+
+header.header-area.sticky .header-navigation {
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Generous Breathing Space: Section 3 (Services Flip Cards) above the curve */
+.renvia-service_one {
+  padding-bottom: clamp(210px, 17vw, 290px) !important;
+  margin-bottom: -7.5vw !important;
+}
+
+/* Generous Breathing Space: Section 4 (Propriétés & VEFA) below top curve */
+.renvia-project_one {
+  padding-top: clamp(170px, 13vw, 240px) !important;
 }
