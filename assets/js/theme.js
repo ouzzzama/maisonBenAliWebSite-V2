@@ -115,48 +115,39 @@ Version: 1.0
     })
 
     
-    //====== Smart Dynamic Sticky Header (Moves on scroll, never covers hero content)
+    //====== Smart Dynamic Sticky Header (Animates intelligently: never covers hero PNG, sticks while scrolling down)
     $(document).ready(function () {
         function initStickyHeader(headerSelector) {
             const header = $(headerSelector);
             let lastScroll = 0;
-            const scrollThreshold = 10;
-            const heroThreshold = 450;
+            const heroThreshold = 460; // Point where building PNG has fully cleared the top
 
             $(window).on('scroll', function () {
                 const currentScroll = $(this).scrollTop();
 
-                // At the very top of page
-                if (currentScroll <= 80) {
-                    header.removeClass('sticky header-hidden header-visible');
+                // 1. At the very top of page: reset to natural hero position
+                if (currentScroll <= 60) {
+                    header.removeClass('sticky header-pass-hero header-sticky-active');
                     lastScroll = currentScroll;
                     return;
                 }
 
-                // In hero banner area: move navbar out of the way so it NEVER covers building PNG
+                // 2. In Hero Banner zone (while building PNG is passing):
                 if (currentScroll < heroThreshold) {
                     if (currentScroll > lastScroll) {
-                        header.addClass('sticky header-hidden').removeClass('header-visible');
+                        // Scrolling DOWN through hero: glide navbar up out of the way so it NEVER touches or covers the PNG
+                        header.addClass('sticky header-pass-hero').removeClass('header-sticky-active');
                     } else {
-                        header.removeClass('sticky header-hidden header-visible');
+                        // Scrolling UP back to top
+                        header.removeClass('sticky header-pass-hero header-sticky-active');
                     }
                     lastScroll = currentScroll;
                     return;
                 }
 
-                // Past hero banner: smart move on scroll
-                if (Math.abs(currentScroll - lastScroll) < scrollThreshold) {
-                    return;
-                }
-
-                if (currentScroll > lastScroll && currentScroll > 150) {
-                    // Scrolling DOWN: moves up out of view
-                    header.addClass('sticky header-hidden').removeClass('header-visible');
-                } else if (currentScroll < lastScroll) {
-                    // Scrolling UP: slides down into view
-                    header.addClass('sticky header-visible').removeClass('header-hidden');
-                }
-
+                // 3. Past Hero Banner (Services, Projects, Video, Features, Awards, Blog, Footer):
+                // STICK CONTINUOUSLY WHILE SCROLLING DOWN AND UP!
+                header.addClass('sticky header-sticky-active').removeClass('header-pass-hero');
                 lastScroll = currentScroll;
             });
         }
