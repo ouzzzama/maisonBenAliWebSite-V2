@@ -584,23 +584,35 @@ Version: 1.0
         if (window.__renviaProjectScrollTriggerInit) return;
         window.__renviaProjectScrollTriggerInit = true;
 
-        // Pin 120px below viewport top so the sticky navbar (~96px) does not hide the cards or title when scrolling up
-        let pinTopOffset = 120;
+        // Pin 165px below viewport top so the sticky navbar (~95px) has generous luxury headroom (~70px)
+        let pinTopOffset = 165;
 
         let cards = gsap.utils.toArray(".renvia-proiect-list .renvia-project-item");
         if (!cards.length) return;
 
-        let stickDistance = 530;
-        let lastCardST = ScrollTrigger.create({
-            trigger: cards[cards.length - 1],
-            start: "bottom bottom",
-            markers: false
-        });
+        function calcProjectPinEnd() {
+            let $sec = $(".renvia-project_one");
+            let $box = $(".renvia-project_one .renvia-content-box");
+            if (!$sec.length) return 7000;
+            
+            let secDocBottom = $sec.offset().top + $sec.outerHeight();
+            let curveRise = ($(window).width() * 0.075) + ($sec.outerHeight() * 0.05);
+            let separationDocTop = secDocBottom - curveRise;
+            
+            let boxHeight = $box.outerHeight(true) || 420;
+            let cardHeights = cards.map(c => $(c).outerHeight(true) || 330);
+            let maxCardHeight = Math.max(...cardHeights, 330);
+            let maxCompViewportBottom = pinTopOffset + Math.max(boxHeight, maxCardHeight);
+            
+            // Stop scroll separation before it reaches 50px distance from components (safe buffer: 75px)
+            let safeMaxEnd = separationDocTop - maxCompViewportBottom - 75;
+            return Math.floor(safeMaxEnd);
+        }
 
         ScrollTrigger.create({
             trigger: ".renvia-project_one .renvia-content-box",
             start: "top " + pinTopOffset + "px",
-            end: () => lastCardST.start + stickDistance,
+            end: calcProjectPinEnd,
             pin: ".renvia-project_one .renvia-content-box",
             pinSpacing: false,
             markers: false
@@ -610,7 +622,7 @@ Version: 1.0
             ScrollTrigger.create({
                 trigger: card,
                 start: "top " + pinTopOffset + "px",
-                end: () => lastCardST.start + stickDistance,
+                end: calcProjectPinEnd,
                 pin: true,
                 pinSpacing: false,
                 scrub: true,
