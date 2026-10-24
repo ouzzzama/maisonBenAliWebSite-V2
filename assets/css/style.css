@@ -10177,7 +10177,7 @@ footer.main-footer.footer-minimalist {
 .benali-cars-3d-wrapper {
   position: relative;
   width: 100%;
-  max-width: 1060px;
+  max-width: 100%; /* Matches width of stats-orange-fullwidth-band (col-12) */
   margin: 60px auto 0;
 }
 
@@ -10195,7 +10195,7 @@ footer.main-footer.footer-minimalist {
 
 .benali-cars-road-img {
   width: 100%;
-  height: clamp(430px, 35vw, 530px);
+  height: clamp(450px, 36vw, 560px);
   object-fit: cover;
   object-position: center 100%;
   display: block;
@@ -10208,7 +10208,7 @@ footer.main-footer.footer-minimalist {
   top: -105px; /* Surpasses top border of card by ~50px to look authentic 3D */ /* Surpasses top border of card to look 3D */
   left: 0;
   width: 100%;
-  height: clamp(430px, 35vw, 530px);
+  height: clamp(450px, 36vw, 560px);
   pointer-events: none;
   z-index: 2; /* Sits over road (z:1), but strictly UNDER content & gradient (z:10) */
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
