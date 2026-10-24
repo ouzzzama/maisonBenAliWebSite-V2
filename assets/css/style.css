@@ -8225,9 +8225,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   position: absolute;
   right: 0;
   bottom: 0;
-  height: calc(100% + 95px); /* Balanced pop-out height that keeps the full roof intact */
+  height: calc(100% + 115px); /* Enhanced luxury scale with safe navbar clearance */
   width: auto;
-  max-width: 68%;
+  max-width: 75%;
   object-fit: contain;
   object-position: bottom right;
   border-bottom-right-radius: 42px;
@@ -8240,10 +8240,11 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 /* Slide 1 (Navy Building): Smooth progressive feather mask shifted right to fade the left annex */
 .bg-navy .hero-banner-building {
-  width: 82%;
-  max-width: 82%;
-  height: calc(100% + 105px);
-  right: -10px;
+  width: 86%;
+  max-width: 86%;
+  height: calc(100% + 120px);
+  right: -12px;
+  bottom: -8px;
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
@@ -8273,10 +8274,10 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 /* Slide 2 (Coral Villa): Smooth progressive feather mask shifted right to fade the pool transition */
 .bg-coral .hero-banner-building {
   width: auto;
-  max-width: 68%;
-  height: calc(100% + 95px);
+  max-width: 75%;
+  height: calc(100% + 115px);
   right: 0;
-  bottom: -40px;
+  bottom: -32px;
   border-bottom-right-radius: 42px;
   -webkit-mask-image: linear-gradient(
     to right,
@@ -8304,11 +8305,11 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 /* Slide 3 (Green Moroccan Moyen Standing Project): Smooth progressive feather mask shifted right to fade the left balconies */
 .bg-green .hero-banner-building {
-  width: 78%;
-  max-width: 78%;
-  height: calc(100% + 155px);
-  right: -45px;
-  bottom: -35px;
+  width: 83%;
+  max-width: 83%;
+  height: calc(100% + 175px);
+  right: -40px;
+  bottom: -32px;
   border-radius: 0 !important;
   -webkit-mask-image: linear-gradient(
     to right,
@@ -8383,22 +8384,23 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 @media (max-width: 1199px) {
   .hero-banner-building {
-    height: calc(100% + 85px);
+    height: calc(100% + 100px);
   }
   .bg-navy .hero-banner-building {
-    width: 78%;
-    max-width: 78%;
-    height: calc(100% + 110px);
+    width: 82%;
+    max-width: 82%;
+    height: calc(100% + 115px);
   }
   .bg-coral .hero-banner-building {
-    width: 68%;
-    max-width: 68%;
-    bottom: -30px;
+    width: 72%;
+    max-width: 72%;
+    height: calc(100% + 105px);
+    bottom: -25px;
   }
   .bg-green .hero-banner-building {
-    width: 76%;
-    max-width: 76%;
-    height: calc(100% + 130px);
+    width: 80%;
+    max-width: 80%;
+    height: calc(100% + 150px);
     right: -35px;
     bottom: -25px;
   }
@@ -10152,7 +10154,7 @@ footer.main-footer.footer-minimalist {
 
 /* Reduced, balanced distance between navbar and hero banners */
 .modern-hero-section {
-  padding-top: clamp(155px, 12vw, 175px) !important;
+  padding-top: clamp(165px, 12.5vw, 180px) !important;
   padding-bottom: 45px !important;
 }
 
