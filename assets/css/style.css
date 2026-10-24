@@ -8048,18 +8048,26 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .hero-banner-card .banner-content {
   position: relative;
   z-index: 5;
-  width: 58%;
+  width: 68%;
+  max-width: 880px;
   padding: 55px 70px;
+}
+@media (max-width: 1399px) {
+  .hero-banner-card .banner-content {
+    width: 70%;
+    padding: 50px 60px;
+  }
 }
 @media (max-width: 1199px) {
   .hero-banner-card .banner-content {
-    width: 62%;
+    width: 72%;
     padding: 45px 45px;
   }
 }
 @media (max-width: 991px) {
   .hero-banner-card .banner-content {
     width: 100%;
+    max-width: none;
     padding: 40px 35px 260px 35px;
   }
 }
@@ -8072,9 +8080,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 /* Titles & Typography */
 .hero-banner-card .banner-title {
   font-family: 'Cal Sans', sans-serif !important;
-  font-size: 46px !important;
+  font-size: 48px !important;
   font-weight: 600 !important;
-  line-height: 1.16 !important;
+  line-height: 1.15 !important;
   color: #ffffff !important;
   letter-spacing: -0.3px !important;
   margin: 0 0 18px 0 !important;
@@ -8084,7 +8092,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   font-family: 'Awaking', serif !important;
   font-weight: 400 !important;
   font-style: normal !important;
-  font-size: 1.1em !important;
+  font-size: 1.12em !important;
   letter-spacing: 0.5px !important;
 }
 .hero-banner-card .banner-title .accent-coral {
@@ -8096,12 +8104,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 @media (max-width: 1399px) {
   .hero-banner-card .banner-title {
-    font-size: 40px !important;
+    font-size: 42px !important;
   }
 }
 @media (max-width: 1199px) {
   .hero-banner-card .banner-title {
-    font-size: 34px !important;
+    font-size: 36px !important;
   }
 }
 @media (max-width: 767px) {
@@ -8114,16 +8122,28 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 /* Subtitle */
 .hero-banner-card .banner-subtitle {
   font-family: 'Cal Sans', sans-serif;
-  font-size: 14.5px;
-  line-height: 1.6;
+  font-size: 15px;
+  line-height: 1.62;
   color: rgba(255, 255, 255, 0.88);
   margin-bottom: 28px;
-  max-width: 520px;
+  max-width: 660px;
+}
+@media (max-width: 1399px) {
+  .hero-banner-card .banner-subtitle {
+    max-width: 620px;
+  }
+}
+@media (max-width: 1199px) {
+  .hero-banner-card .banner-subtitle {
+    max-width: 580px;
+    font-size: 14.5px;
+  }
 }
 @media (max-width: 767px) {
   .hero-banner-card .banner-subtitle {
     font-size: 13.5px;
     margin-bottom: 22px;
+    max-width: 100%;
   }
 }
 
