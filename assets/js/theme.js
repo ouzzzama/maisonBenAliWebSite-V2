@@ -590,29 +590,18 @@ Version: 1.0
         let cards = gsap.utils.toArray(".renvia-proiect-list .renvia-project-item");
         if (!cards.length) return;
 
-        function calcProjectPinEnd() {
-            let $sec = $(".renvia-project_one");
-            let $box = $(".renvia-project_one .renvia-content-box");
-            if (!$sec.length) return 7000;
-            
-            let secDocBottom = $sec.offset().top + $sec.outerHeight();
-            let curveRise = ($(window).width() * 0.075) + ($sec.outerHeight() * 0.05);
-            let separationDocTop = secDocBottom - curveRise;
-            
-            let boxHeight = $box.outerHeight(true) || 420;
-            let cardHeights = cards.map(c => $(c).outerHeight(true) || 330);
-            let maxCardHeight = Math.max(...cardHeights, 330);
-            let maxCompViewportBottom = pinTopOffset + Math.max(boxHeight, maxCardHeight);
-            
-            // Stop scroll separation before it reaches 50px distance from components (safe buffer: 75px)
-            let safeMaxEnd = separationDocTop - maxCompViewportBottom - 75;
-            return Math.floor(safeMaxEnd);
-        }
+        let stickDistance = 530;
+        let lastCardST = ScrollTrigger.create({
+            trigger: cards[cards.length - 1],
+            start: "bottom bottom",
+            markers: false
+        });
 
+        // Restored original content-box scroll animation
         ScrollTrigger.create({
             trigger: ".renvia-project_one .renvia-content-box",
             start: "top " + pinTopOffset + "px",
-            end: calcProjectPinEnd,
+            end: () => lastCardST.start + stickDistance,
             pin: ".renvia-project_one .renvia-content-box",
             pinSpacing: false,
             markers: false
@@ -622,7 +611,7 @@ Version: 1.0
             ScrollTrigger.create({
                 trigger: card,
                 start: "top " + pinTopOffset + "px",
-                end: calcProjectPinEnd,
+                end: () => lastCardST.start + stickDistance,
                 pin: true,
                 pinSpacing: false,
                 scrub: true,
