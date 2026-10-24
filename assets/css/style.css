@@ -7447,10 +7447,8 @@ input:focus, textarea:focus, select:focus {
    ========================================================================== */
 .renvia-project_one {
   background-color: #15483d !important;
-  padding-bottom: 250px !important;
-  margin-bottom: 80px !important;
-  clip-path: none !important;
-  -webkit-clip-path: none !important;
+  padding-bottom: 340px !important;
+  margin-bottom: 0 !important;
   overflow: visible !important;
   position: relative;
 }
@@ -7501,8 +7499,8 @@ input:focus, textarea:focus, select:focus {
 /* 2. Image styling now handled cleanly by .renvia-project-item.style-one */
 @media (max-width: 991px) {
   .renvia-project_one {
-    padding-bottom: 120px !important; /* Normal padding on mobile since GSAP is disabled */
-    margin-bottom: 40px !important;
+    padding-bottom: 180px !important;
+    margin-bottom: 0 !important;
   }
 }
 
