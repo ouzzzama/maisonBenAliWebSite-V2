@@ -995,7 +995,128 @@ Version: 1.0
     }
 
     // ===== Steps Roadmap Parallax Scroll Animation =====
-        // ===== Bento Grid Parallax Scroll Animation (Blocks Coming from Sides) =====
+    // ===== Bento Grid Parallax Scroll Animation (Blocks Coming from Sides) =====
+    function initBentoGridAnimation() {
+        var section = document.querySelector('.bento-section');
+        if (!section) return;
+
+        if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+        // Respect reduced-motion: leave the grid in its static, fully visible state.
+        if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+        var rows = section.querySelectorAll('.bento-row');
+        if (rows.length < 2) return;
+
+        var teamCard = rows[0].querySelector('.bento-card-team');
+        var creamCard = rows[0].querySelector('.bento-card-cream');
+        var coralCard = rows[1].querySelector('.bento-card-coral') || rows[1].querySelector('.bento-card-sand');
+        var navyCard = rows[1].querySelector('.bento-card-navy');
+        var statsBand = section.querySelector('.bento-stats-band');
+        var sectionTitle = section.querySelector('.section-title');
+
+        // Cards enter from the sides, then hold their place.
+        var entrance = gsap.timeline({
+            scrollTrigger: {
+                trigger: section,
+                start: 'top 78%',
+                toggleActions: 'play none none reverse'
+            }
+        });
+
+        if (sectionTitle) {
+            entrance.fromTo(sectionTitle,
+                { y: 28, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.7, ease: 'power2.out' },
+                0
+            );
+        }
+
+        if (teamCard) {
+            entrance.fromTo(teamCard,
+                { x: -110, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+                0.12
+            );
+        }
+
+        if (creamCard) {
+            entrance.fromTo(creamCard,
+                { x: 110, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+                0.22
+            );
+        }
+
+        if (statsBand) {
+            entrance.fromTo(statsBand,
+                { y: 55, opacity: 0, scale: 0.97 },
+                { y: 0, opacity: 1, scale: 1, duration: 0.9, ease: 'power3.out' },
+                0.34
+            );
+        }
+
+        if (coralCard) {
+            entrance.fromTo(coralCard,
+                { x: -110, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+                0.46
+            );
+        }
+
+        if (navyCard) {
+            entrance.fromTo(navyCard,
+                { x: 110, opacity: 0 },
+                { x: 0, opacity: 1, duration: 1, ease: 'power3.out' },
+                0.56
+            );
+        }
+
+        // Text settles in just behind its card.
+        var cardTexts = section.querySelectorAll('.bento-card-title, .bento-card-desc');
+        if (cardTexts.length) {
+            entrance.fromTo(cardTexts,
+                { y: 18, opacity: 0 },
+                { y: 0, opacity: 1, duration: 0.65, stagger: 0.05, ease: 'power2.out' },
+                0.45
+            );
+        }
+
+        // Continuous depth while scrolling: inner imagery drifts against the layout.
+        var teamBg = section.querySelector('.bento-card-bg-img');
+        if (teamBg) {
+            gsap.fromTo(teamBg,
+                { y: -26 },
+                {
+                    y: 26,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1.1
+                    }
+                }
+            );
+        }
+
+        var portrait = section.querySelector('.bento-card-portrait img');
+        if (portrait) {
+            gsap.fromTo(portrait,
+                { y: 22 },
+                {
+                    y: -18,
+                    ease: 'none',
+                    scrollTrigger: {
+                        trigger: section,
+                        start: 'top bottom',
+                        end: 'bottom top',
+                        scrub: 1.1
+                    }
+                }
+            );
+        }
+    }
     
     
     // ===== 360 Ecosystem Roadmap Parallax Scroll & Line Drawing Animation =====
@@ -1535,6 +1656,7 @@ Version: 1.0
         initFeaturedArch();
         initMinimalistFooterReveal();
         if (typeof initFounderScrollPopout === 'function') initFounderScrollPopout();
+        if (typeof initBentoGridAnimation === 'function') initBentoGridAnimation();
         if (typeof initEditorialAboutAnimation === 'function') initEditorialAboutAnimation();
         if (typeof initEcosystemHeroParallax === 'function') initEcosystemHeroParallax();
         if (typeof initRoadmapParallaxAndDraw === 'function') initRoadmapParallaxAndDraw();
