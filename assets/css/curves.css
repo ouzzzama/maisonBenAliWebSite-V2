@@ -1,0 +1,154 @@
+/* ==========================================================================
+   UNIFIED SECTION CURVES — single source of truth
+
+   SHAPE NAME: "Soft Arch" / « Arche douce »
+   A shallow elliptical arch whose apex sits at the centre of the seam: the
+   section below rises into the section above by exactly --mb-curve, so the
+   boundary is high in the middle and level at both edges.
+
+   (The previous shape was a "dome" — the section above bulged down at the
+   centre. This arch is its mirror image, matching the reference design.)
+
+   --mb-curve is the only knob: 72px desktop / 46px mobile.
+   ========================================================================== */
+
+:root {
+  --mb-curve: 72px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --mb-curve: 46px;
+  }
+}
+
+/* Every curved section: cut the bottom in a soft arch so the following
+   section (pulled up by the negative margin) shows through it. */
+.curve-bottom,
+.page-hero.curve-bottom,
+section.page-hero.curve-bottom,
+.contact-hero.curve-bottom,
+.renvia-service_one.curve-bottom,
+.renvia-project_one.curve-bottom,
+.renvia-feature_one.curve-bottom,
+.renvia-choose-sec.curve-bottom,
+.renvia-blog-sec.curve-bottom,
+.renvia-project-details-sec.curve-bottom,
+.renvia-service-details-sec.curve-bottom,
+.renvia-contact_two.curve-bottom,
+.renvia-work-sec.curve-bottom,
+.properties-showcase-section.curve-bottom,
+.ecosystem-roadmap-section.curve-bottom,
+.ecosystem-hero.curve-bottom,
+.benali-cars-banner-sec.curve-bottom,
+.contact-map-sec,
+.curve-bottom.ecosystem-hero,
+section.curve-bottom {
+  border-radius: 0 !important;
+  overflow: hidden !important;
+  position: relative !important;
+  z-index: 10 !important;
+  margin-bottom: -7.5vw !important;
+  -webkit-clip-path: var(--mb-arch) !important;
+  clip-path: var(--mb-arch) !important;
+}
+
+/* Keep the section underneath from colliding with the arch */
+.curve-bottom + section,
+.contact-map-sec + section {
+  padding-top: clamp(140px, 11vw, 200px) !important;
+}
+
+/* Internal navy backdrop on the À-propos showcase uses the same arch */
+.about-hero-showcase-section::before {
+  border-radius: 0 !important;
+  -webkit-clip-path: var(--mb-arch) !important;
+  clip-path: var(--mb-arch) !important;
+}
+
+/* SVG divider under the video section: same arch, same depth */
+.intro-curve-inverted-divider,
+.intro-curve-inverted-divider svg {
+  height: var(--mb-curve) !important;
+}
+
+@media (max-width: 768px) {
+  .curve-bottom,
+  .page-hero.curve-bottom,
+  section.page-hero.curve-bottom,
+  .contact-hero.curve-bottom,
+  .renvia-service_one.curve-bottom,
+  .renvia-project_one.curve-bottom,
+  .renvia-feature_one.curve-bottom,
+  .renvia-choose-sec.curve-bottom,
+  .renvia-blog-sec.curve-bottom,
+  .renvia-project-details-sec.curve-bottom,
+  .renvia-service-details-sec.curve-bottom,
+  .renvia-contact_two.curve-bottom,
+  .renvia-work-sec.curve-bottom,
+  .properties-showcase-section.curve-bottom,
+  .ecosystem-roadmap-section.curve-bottom,
+  .ecosystem-hero.curve-bottom,
+  .benali-cars-banner-sec.curve-bottom,
+  .contact-map-sec,
+  .curve-bottom.ecosystem-hero,
+  section.curve-bottom {
+    margin-bottom: calc(-1 * var(--mb-curve)) !important;
+  }
+}
+
+/* Services section: more white space above its arch, and the arch must paint
+   over the green project section so the seam stays a soft arch (both used to
+   sit at z-index 10, so the green section's straight top edge hid the curve) */
+.renvia-service_one.curve-bottom {
+  padding-bottom: clamp(170px, 12.5vw, 210px) !important;
+  z-index: 13 !important;
+}
+
+@media (max-width: 768px) {
+  .renvia-service_one.curve-bottom {
+    padding-bottom: 150px !important;
+  }
+}
+
+/* ==========================================================================
+   ONE SMOOTH « Arche douce » FOR EVERY SEAM
+
+   A cos² dome sampled at 6.25% steps: the seam is deepest at the exact centre
+   (a full --mb-curve) and level at both margins, with zero slope at the edges
+   and at the centre, so no seam shows a kink or a faceted corner.
+   ========================================================================== */
+:root {
+  --mb-arch: polygon(
+    0% 0%, 100% 0%, 100% 100%,
+    93.75% calc(100% - var(--mb-curve) * 0.03806),
+    87.5%  calc(100% - var(--mb-curve) * 0.1464),
+    81.25% calc(100% - var(--mb-curve) * 0.3087),
+    75%    calc(100% - var(--mb-curve) * 0.5),
+    68.75% calc(100% - var(--mb-curve) * 0.6913),
+    62.5%  calc(100% - var(--mb-curve) * 0.8536),
+    56.25% calc(100% - var(--mb-curve) * 0.9619),
+    50%    calc(100% - var(--mb-curve) * 1),
+    43.75% calc(100% - var(--mb-curve) * 0.9619),
+    37.5%  calc(100% - var(--mb-curve) * 0.8536),
+    31.25% calc(100% - var(--mb-curve) * 0.6913),
+    25%    calc(100% - var(--mb-curve) * 0.5),
+    18.75% calc(100% - var(--mb-curve) * 0.3087),
+    12.5%  calc(100% - var(--mb-curve) * 0.1464),
+    6.25%  calc(100% - var(--mb-curve) * 0.03806),
+    0% 100%
+  );
+}
+
+.curve-bottom,
+section.curve-bottom,
+.contact-map-sec,
+main > section.curve-bottom:last-child,
+main > section.curve-bottom:last-of-type,
+section.curve-bottom:has(+ footer),
+main > section.contact-map-sec:last-of-type,
+section.contact-map-sec:has(+ footer),
+.renvia-service_one.curve-bottom {
+  -webkit-clip-path: var(--mb-arch) !important;
+  clip-path: var(--mb-arch) !important;
+}

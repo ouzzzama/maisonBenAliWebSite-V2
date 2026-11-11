@@ -512,7 +512,8 @@ label {
   right: 0;
   top: 0;
   width: 100%;
-  z-index: 99999;
+  /* stays above the floating header (z-index 100000) and its hamburger while loading */
+  z-index: 1000005;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3097,13 +3098,15 @@ input:focus, textarea:focus, select:focus {
   display: flex !important;
   flex-direction: column !important;
   justify-content: center !important;
-  text-align: left !important;
+  align-items: center !important;
+  text-align: center !important;
 }
 
 .renvia-project-item.style-one .project-content .project-meta,
 .renvia-project_one .renvia-project-item.style-one .project-content .project-meta {
   display: flex !important;
   align-items: center !important;
+  justify-content: center !important;
   flex-wrap: wrap !important;
   gap: 12px !important;
   margin-bottom: 10px !important;
@@ -4000,25 +4003,27 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent calc(30% - 45px),
-    rgba(0, 0, 0, 0.05) calc(36% - 45px),
-    rgba(0, 0, 0, 0.15) calc(44% - 45px),
-    rgba(0, 0, 0, 0.35) calc(52% - 45px),
-    rgba(0, 0, 0, 0.65) calc(60% - 45px),
-    rgba(0, 0, 0, 0.88) calc(65% - 45px),
-    #000000 calc(72% - 45px),
+    transparent 40%,
+    rgba(0, 0, 0, 0.04) 47%,
+    rgba(0, 0, 0, 0.12) 54%,
+    rgba(0, 0, 0, 0.26) 61%,
+    rgba(0, 0, 0, 0.46) 67%,
+    rgba(0, 0, 0, 0.68) 73%,
+    rgba(0, 0, 0, 0.88) 79%,
+    #000000 85%,
     #000000 100%
   );
   mask-image: linear-gradient(
     to right,
     transparent 0%,
-    transparent calc(30% - 45px),
-    rgba(0, 0, 0, 0.05) calc(36% - 45px),
-    rgba(0, 0, 0, 0.15) calc(44% - 45px),
-    rgba(0, 0, 0, 0.35) calc(52% - 45px),
-    rgba(0, 0, 0, 0.65) calc(60% - 45px),
-    rgba(0, 0, 0, 0.88) calc(65% - 45px),
-    #000000 calc(72% - 45px),
+    transparent 40%,
+    rgba(0, 0, 0, 0.04) 47%,
+    rgba(0, 0, 0, 0.12) 54%,
+    rgba(0, 0, 0, 0.26) 61%,
+    rgba(0, 0, 0, 0.46) 67%,
+    rgba(0, 0, 0, 0.68) 73%,
+    rgba(0, 0, 0, 0.88) 79%,
+    #000000 85%,
     #000000 100%
   );
 }
@@ -4175,26 +4180,52 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     bottom: -20px !important;
   }
 }
+/* Mobile hero: buildings cross the top edge, feathered downwards, copy centred */
 @media (max-width: 767px) {
   .hero-banner-card {
+    margin-top: 58px;
     border-radius: 28px;
+    align-items: stretch;
+  }
+  .hero-banner-card .banner-content {
+    width: 100%;
+    max-width: none;
+    padding: 246px 22px 36px;
+    text-align: center;
+  }
+  .hero-banner-card .banner-subtitle {
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 34ch;
+  }
+  .hero-banner-card .banner-actions {
+    justify-content: center;
+    gap: 14px 18px;
   }
   .hero-banner-img-wrap {
-    -webkit-clip-path: inset(-250px 0px 0px 0px round 0px 0px 28px 28px);
-    clip-path: inset(-250px 0px 0px 0px round 0px 0px 28px 28px);
+    top: -88px !important;
+    bottom: auto !important;
+    height: 400px !important;
+    overflow: visible;
+    -webkit-clip-path: none !important;
+    clip-path: none !important;
   }
-  .hero-banner-building {
-    width: 95%;
-    max-width: 95%;
-    height: 260px;
-    border-bottom-right-radius: 28px;
-  }
+  .hero-banner-building,
+  .bg-navy .hero-banner-building,
+  .bg-coral .hero-banner-building,
   .bg-green .hero-banner-building {
-    width: 98% !important;
-    max-width: 98% !important;
-    height: 290px !important;
-    right: -20px !important;
-    bottom: -15px !important;
+    top: 0 !important;
+    bottom: auto !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    height: 350px !important;
+    object-fit: contain;
+    object-position: center top;
+    border-radius: 0 !important;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 44%, rgba(0, 0, 0, 0.78) 60%, rgba(0, 0, 0, 0.38) 76%, rgba(0, 0, 0, 0.12) 88%, rgba(0, 0, 0, 0) 100%) !important;
+    mask-image: linear-gradient(to bottom, #000 0%, #000 44%, rgba(0, 0, 0, 0.78) 60%, rgba(0, 0, 0, 0.38) 76%, rgba(0, 0, 0, 0.12) 88%, rgba(0, 0, 0, 0) 100%) !important;
   }
 }
 
@@ -4732,11 +4763,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 /* Floating Circular Spinning Badge on Left Card */
 .editorial-spinning-seal {
   position: absolute;
-  bottom: -30px;
   right: -25px;
+  bottom: -30px;
   z-index: 3;
   width: 160px;
   height: 160px;
+  pointer-events: none;
 }
 .editorial-spinning-seal img.rotating-circle-badge {
   width: 100%;
@@ -4871,9 +4903,20 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     max-width: 480px;
     margin-left: auto;
   }
+  /* mobile: badge sits low on the photo, centred under the villas */
   .editorial-spinning-seal {
-    right: 20px;
-    bottom: -20px;
+    inset: 0;
+    width: 480px;
+    max-width: 100%;
+    height: auto;
+    display: grid;
+    place-items: end center;
+  }
+
+  .editorial-spinning-seal img.rotating-circle-badge {
+    width: 150px;
+    height: 150px;
+    margin-bottom: -20px;
   }
 }
 
@@ -4892,10 +4935,10 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     border-top-left-radius: 32px !important;
     border-bottom-left-radius: 32px !important;
   }
-  .editorial-spinning-seal {
-    width: 110px;
-    height: 110px;
-    right: 10px;
+  .editorial-spinning-seal img.rotating-circle-badge {
+    width: 132px;
+    height: 132px;
+    margin-bottom: -16px;
   }
   .editorial-feature-item {
     padding: 18px;
@@ -5836,7 +5879,7 @@ footer.main-footer.footer-minimalist {
 .renvia-project_one {
   background-color: #15483d !important;
   padding-top: clamp(140px, 12vw, 180px) !important;
-  padding-bottom: clamp(680px, 48vw, 860px) !important; /* Spacious cushion allowing full card scroll while separation stays safely >50px away */
+  padding-bottom: clamp(110px, 8.5vw, 150px) !important; /* Just enough cushion: the video section follows the settled last card directly */
   margin-bottom: -7.5vw !important;
   position: relative !important;
 }
@@ -5861,7 +5904,7 @@ footer.main-footer.footer-minimalist {
   content: "" !important;
   position: absolute !important;
   inset: 0 !important;
-  background: linear-gradient(180deg, rgba(8, 20, 32, 0.78) 0%, rgba(6, 15, 24, 0.88) 100%) !important;
+  background: linear-gradient(180deg, rgba(8, 20, 32, 0.32) 0%, rgba(6, 15, 24, 0.55) 100%) !important;
   z-index: 1 !important;
   pointer-events: none !important;
 }
@@ -9883,4 +9926,2048 @@ section.about-hero-showcase-section {
   border-color: #0c2136 !important;
   transform: translateY(-2px) !important;
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.35) !important;
+}
+
+/* ========================================================
+   HERO ANNOUNCEMENT ALERT BAR — "Nouveaux projets"
+   Solid coral rectangle aligned with the hero card, sitting
+   in the same gap under the navbar, fading out rightward
+   into the PNG building cut-outs.
+   ======================================================== */
+.hero-announce-bar {
+  position: fixed;
+  top: 150px;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.hero-announce-bar .announce-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 72px;
+  padding: 0 20px;
+  border-radius: 22px;
+  background: linear-gradient(90deg, #e83f2a 0%, #ff6b35 100%);
+  box-shadow: 0 12px 30px rgba(232, 63, 42, 0.22);
+}
+
+/* Announce bar elements — locked in place, no animation */
+.announce-inner {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 72px;
+  padding: 0 20px;
+  border-radius: 22px;
+  background: linear-gradient(90deg, #e83f2a 0%, #ff6b35 100%);
+  box-shadow: 0 12px 30px rgba(232, 63, 42, 0.22);
+  white-space: nowrap;
+}
+
+.announce-icon {
+  flex-shrink: 0;
+}
+
+.announce-badge {
+  flex-shrink: 0;
+  padding: 5px 11px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #e83f2a;
+  font-weight: 700;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+.announce-text {
+  flex: 1;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.announce-cta {
+  flex-shrink: 0;
+}
+
+/* Feather mask animation - move smoothly to the left */
+.bg-navy .hero-banner-building {
+  width: 86%;
+  max-width: 86%;
+  height: calc(100% + 90px);
+  right: -12px;
+  bottom: -8px;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.04) 47%,
+    rgba(0, 0, 0, 0.12) 54%,
+    rgba(0, 0, 0, 0.26) 61%,
+    rgba(0, 0, 0, 0.46) 67%,
+    rgba(0, 0, 0, 0.68) 73%,
+    rgba(0, 0, 0, 0.88) 79%,
+    #000000 85%,
+    #000000 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    transparent 40%,
+    rgba(0, 0, 0, 0.04) 47%,
+    rgba(0, 0, 0, 0.12) 54%,
+    rgba(0, 0, 0, 0.26) 61%,
+    rgba(0, 0, 0, 0.46) 67%,
+    rgba(0, 0, 0, 0.68) 73%,
+    rgba(0, 0, 0, 0.88) 79%,
+    #000000 85%,
+    #000000 100%
+  );
+  /* Static feather: no mask movement (a moving mask used to expose the PNG's left edge) */
+  animation: none;
+}
+
+/* featherShift keyframes removed: the sliding mask made the PNG edge visible */
+
+/* Slide 2 (Coral Villa): Smooth progressive feather mask shifted right to fade the pool transition */
+.bg-coral .hero-banner-building {
+  width: auto;
+  max-width: 75%;
+  height: calc(100% + 85px);
+  pointer-events: auto;
+  overflow: hidden;
+  /* Reversed feather: the villa dissolves into the coral card on the left,
+     solid on the right edge */
+  -webkit-mask-image: linear-gradient(to left, #000 0%, #000 62%, rgba(0, 0, 0, 0.55) 84%, transparent 100%);
+  mask-image: linear-gradient(to left, #000 0%, #000 62%, rgba(0, 0, 0, 0.55) 84%, transparent 100%);
+}
+
+.hero-announce-bar .announce-icon {
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.34);
+  color: #ffffff;
+  font-size: 12.5px;
+}
+
+.hero-announce-bar .announce-badge {
+  flex: 0 0 auto;
+  display: grid;
+  grid-template-areas: "label";
+  place-items: center;
+  padding: 5px 11px;
+  border-radius: 8px;
+  background: #ffffff;
+  color: #e83f2a;
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.hero-announce-bar .announce-text {
+  display: flex;
+  align-items: baseline;
+  gap: 7px;
+  margin: 0;
+  min-width: 0;
+  max-width: 470px;
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.2;
+  color: rgba(255, 255, 255, 0.82);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.hero-announce-bar .announce-text strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.hero-announce-bar .announce-sep {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.hero-announce-bar .announce-cta {
+  flex: 0 0 auto;
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 32px;
+  padding: 0 15px;
+  border-radius: 12px;
+  background: #ffffff;
+  color: #e83f2a;
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.hero-announce-bar .announce-cta:hover {
+  background: #0c2136;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.hero-announce-bar .announce-cta i {
+  font-size: 11px;
+  transition: transform 0.25s ease;
+}
+
+.hero-announce-bar .announce-cta:hover i {
+  transform: translateX(3px);
+}
+
+/* Badge word cycles in sync with the slides: each label shows for 11.4s
+   (one slide of the 45.6s track), the widest label fixes the badge width. */
+.hero-announce-bar .announce-label {
+  grid-area: label;
+  opacity: 0;
+  white-space: nowrap;
+  animation: announceBadgeCycle 45.6s linear infinite;
+}
+
+.hero-announce-bar .announce-label:first-child {
+  opacity: 1;
+}
+
+.hero-announce-bar .announce-label:nth-child(2) {
+  animation-delay: 11.4s;
+}
+
+.hero-announce-bar .announce-label:nth-child(3) {
+  animation-delay: 22.8s;
+}
+
+.hero-announce-bar .announce-label:nth-child(4) {
+  animation-delay: 34.2s;
+}
+
+@keyframes announceBadgeCycle {
+  0% {
+    opacity: 0;
+  }
+  1% {
+    opacity: 1;
+  }
+  23% {
+    opacity: 1;
+  }
+  25% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Announcement slideshow: each headline holds 10s, then the strip slides
+   horizontally to the next one. The icon, badge and CTA stay fixed in place. */
+.hero-announce-bar .announce-marquee {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  /* Feather the two sides: headlines fade in on the right and dissolve on the left */
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.45) 10px,
+    #000000 26px,
+    #000000 calc(100% - 26px),
+    rgba(0, 0, 0, 0.45) calc(100% - 10px),
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0,
+    rgba(0, 0, 0, 0.45) 10px,
+    #000000 26px,
+    #000000 calc(100% - 26px),
+    rgba(0, 0, 0, 0.45) calc(100% - 10px),
+    transparent 100%
+  );
+}
+
+.hero-announce-bar .announce-track {
+  display: flex;
+  width: 100%;
+  animation: announceTicker 45.6s linear infinite;
+}
+
+.hero-announce-bar .announce-item {
+  flex: 0 0 100%;
+  min-width: 100%;
+  box-sizing: border-box;
+  padding-left: 26px;
+  display: inline-flex;
+  align-items: baseline;
+  gap: 7px;
+  white-space: nowrap;
+  color: rgba(255, 255, 255, 0.82);
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.hero-announce-bar .announce-item strong {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.hero-announce-bar .announce-icon {
+  animation: none;
+}
+
+/* 4 slides x (10s hold + 1.4s ease-in-out slide) = 45.6s; the 5th slide is a
+   copy of the first so the loop restarts seamlessly. */
+@keyframes announceTicker {
+  0% {
+    transform: translateX(0);
+  }
+  21.9298% {
+    transform: translateX(0);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  25% {
+    transform: translateX(-100%);
+  }
+  46.9298% {
+    transform: translateX(-100%);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  50% {
+    transform: translateX(-200%);
+  }
+  71.9298% {
+    transform: translateX(-200%);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  75% {
+    transform: translateX(-300%);
+  }
+  96.9298% {
+    transform: translateX(-300%);
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+  }
+  100% {
+    transform: translateX(-400%);
+  }
+}
+
+@media (max-width: 1650px) {
+  .hero-announce-bar {
+    left: 30px;
+    right: 30px;
+  }
+}
+
+/* No vertical room for the bar under the navbar on small screens */
+@media (max-width: 1199.98px) {
+  .hero-announce-bar {
+    display: none;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-announce-bar,
+  .hero-announce-bar * {
+    animation: none !important;
+  }
+}
+
+/* ========================================================
+   AGADIR LIFESTYLE GALLERY — four portrait photos of the
+   Agadir Bay / Taghazout area on the homepage.
+   ========================================================= */
+.benali-gallery-sec {
+  position: relative;
+  background: #ffffff;
+}
+
+.benali-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.benali-gallery-card {
+  position: relative;
+  margin: 0;
+  padding: 0;
+  isolation: isolate;
+  aspect-ratio: 3 / 4;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #0c2136;
+  box-shadow: 0 18px 40px rgba(12, 33, 54, 0.16);
+}
+
+.benali-gallery-card img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.7s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.benali-gallery-card figcaption {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  padding: 26px 20px 20px;
+  color: #ffffff;
+  background: linear-gradient(
+    to top,
+    rgba(8, 24, 40, 0.94) 0%,
+    rgba(8, 24, 40, 0.62) 52%,
+    rgba(8, 24, 40, 0) 100%
+  );
+}
+
+.benali-gallery-card .gallery-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  border-radius: 8px;
+  background: #e83f2a;
+  color: #ffffff;
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.benali-gallery-card h3 {
+  margin: 0 0 4px;
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.benali-gallery-card p {
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.3;
+  color: rgba(255, 255, 255, 0.74);
+}
+
+.benali-gallery-card:hover img,
+.benali-gallery-card:focus-within img {
+  transform: scale(1.06);
+}
+
+@media (max-width: 1199.98px) {
+  .benali-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .benali-gallery-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .benali-gallery-card {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/*=====  SVG brand logo sizing (replaces fixed-size PNG logos)  =====*/
+.header-area .brand-logo,
+.renvia-offcanvas-panel .brand-logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 0;
+}
+.header-area .brand-logo img,
+.renvia-offcanvas-panel .brand-logo img {
+  width: auto !important;
+  height: 36px !important;
+  max-width: 100%;
+  display: block;
+}
+@media (max-width: 1199.98px) {
+  .header-area .brand-logo img {
+    height: 32px !important;
+  }
+}
+@media (max-width: 767.98px) {
+  .header-area .brand-logo img {
+    height: 28px !important;
+  }
+}
+.footer-brand-box img {
+  width: auto !important;
+  max-width: 100%;
+  display: block;
+}
+
+/*=====  Contact page — editorial UI aligned with the homepage  =====*/
+.contact-hero { padding: 210px 0 120px; }
+.contact-hero .contact-hero-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 18px;
+}
+.contact-hero .contact-hero-kicker img { height: 10px; width: auto; opacity: 0.65; }
+.contact-hero .page-content h1 {
+  color: #ffffff;
+  font-size: 64px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+.contact-hero .contact-hero-sub {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 16.5px;
+  line-height: 1.7;
+  max-width: 620px;
+  margin: 0 auto 24px;
+}
+.contact-hero .page-content ul { margin-top: 4px; }
+.contact-page-head .sub-title { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.contact-page-head .featured-main-title { margin-bottom: 16px; }
+.contact-page-grid { margin-top: 46px; }
+.contact-info-stack { display: grid; gap: 18px; height: 100%; }
+.contact-info-card {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+  padding: 26px;
+  background: #ffffff;
+  border: 1px solid rgba(18, 43, 67, 0.08);
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(12, 33, 54, 0.06);
+  transition: transform 0.45s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.45s ease;
+}
+.contact-info-card:hover { transform: translateY(-4px); box-shadow: 0 26px 60px rgba(12, 33, 54, 0.12); }
+.contact-info-card__icon {
+  flex: 0 0 52px;
+  width: 52px;
+  height: 52px;
+  border-radius: 16px;
+  display: grid;
+  place-items: center;
+  background: rgba(239, 69, 59, 0.1);
+  color: #ef453b;
+  font-size: 19px;
+}
+.contact-info-card h5 {
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #122b43;
+  margin-bottom: 10px;
+}
+.contact-info-card p, .contact-info-card p a { color: #5b6b7b; font-size: 15px; line-height: 1.65; margin: 0; text-decoration: none; }
+.contact-info-card p a:hover { color: #ef453b; }
+.contact-info-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ef453b;
+  text-decoration: none;
+}
+.contact-info-link:hover { color: #122b43; }
+.contact-social-row { display: flex; gap: 10px; }
+.contact-social-row a {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: grid;
+  place-items: center;
+  background: rgba(18, 43, 67, 0.06);
+  color: #122b43;
+  text-decoration: none;
+  transition: background 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+.contact-social-row a:hover { background: #ef453b; color: #ffffff; transform: translateY(-2px); }
+.contact-map-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 540px;
+  border-radius: 24px;
+  overflow: hidden;
+  background: #eef1f4;
+  box-shadow: 0 25px 60px rgba(12, 33, 54, 0.14);
+}
+.contact-map-card iframe { flex: 1 1 auto; width: 100%; min-height: 400px; border: 0; display: block; }
+.contact-map-card__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 20px 24px;
+  background: #ffffff;
+}
+.contact-map-card__bar h5 { margin: 0 0 4px; font-size: 16px; color: #122b43; }
+.contact-map-card__bar p { margin: 0; font-size: 13.5px; color: #6b7c8c; }
+.contact-map-card__bar .editorial-pill-btn { flex: 0 0 auto; margin: 0; }
+@media (max-width: 1199.98px) {
+  .contact-hero { padding: 180px 0 100px; }
+  .contact-hero .page-content h1 { font-size: 52px; }
+  .contact-map-card { min-height: 460px; margin-top: 10px; }
+}
+@media (max-width: 767.98px) {
+  .contact-hero .page-content h1 { font-size: 40px; }
+  .contact-map-card { min-height: 420px; }
+  .contact-map-card__bar { flex-direction: column; align-items: flex-start; }
+}
+/* ==========================================================================
+   EDITORIAL TRUST CARDS — signature guarantees (replaces the old strip)
+   ========================================================================== */
+.editorial-trust {
+  max-width: 1156px;
+  margin: 84px auto 0;
+  padding: 58px 8px 0;
+  border-top: 1px solid rgba(12, 33, 54, 0.09);
+}
+
+.editorial-trust-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 26px;
+}
+
+.editorial-trust-card {
+  position: relative;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid rgba(12, 33, 54, 0.08);
+  border-radius: 26px;
+  padding: 30px 32px 32px;
+  box-shadow: 0 10px 30px rgba(12, 33, 54, 0.05);
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.45s ease, border-color 0.45s ease;
+}
+
+.editorial-trust-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: #e83f2a;
+  transition: width 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.editorial-trust-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(232, 63, 42, 0.24);
+  box-shadow: 0 26px 52px rgba(12, 33, 54, 0.10);
+}
+
+.editorial-trust-card:hover::before {
+  width: 100%;
+}
+
+.editorial-trust-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.editorial-trust-icon {
+  width: 58px;
+  height: 58px;
+  padding: 13px;
+  border-radius: 18px;
+  background: #f7f5ef;
+  border: 1px solid rgba(12, 33, 54, 0.06);
+  display: grid;
+  place-items: center;
+}
+
+.editorial-trust-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.editorial-trust-num {
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  color: rgba(12, 33, 54, 0.26);
+}
+
+.editorial-trust-card h5 {
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.32;
+  color: #0c2136;
+  margin: 0 0 10px;
+}
+
+.editorial-trust-card p {
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #5b6b7a;
+  margin: 0;
+  max-width: 46ch;
+}
+
+.editorial-trust-note {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 34px;
+}
+
+.editorial-trust-note span {
+  flex: 0 1 90px;
+  height: 1px;
+  background: linear-gradient(to right, rgba(12, 33, 54, 0), rgba(12, 33, 54, 0.22));
+}
+
+.editorial-trust-note span:last-child {
+  background: linear-gradient(to left, rgba(12, 33, 54, 0), rgba(12, 33, 54, 0.22));
+}
+
+.editorial-trust-note p {
+  margin: 0;
+  max-width: 720px;
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 13.5px;
+  letter-spacing: 0.02em;
+  color: #6b7785;
+  text-align: center;
+}
+
+@media (max-width: 991.98px) {
+  .editorial-trust-card {
+    padding: 24px 24px 26px;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .editorial-trust {
+    margin-top: 56px;
+    padding: 40px 4px 0;
+  }
+
+  .editorial-trust-grid {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .editorial-trust-card {
+    border-radius: 22px;
+  }
+
+  .editorial-trust-card h5 {
+    font-size: 17px;
+  }
+
+  .editorial-trust-note {
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 28px;
+  }
+
+  .editorial-trust-note span {
+    flex: 0 0 auto;
+    width: 80px;
+  }
+}
+
+/* ==========================================================================
+   Agadir lifestyle cards — smaller titles (were oversized on the photo cards)
+   ========================================================================== */
+.benali-gallery-card figcaption h3,
+section.benali-gallery-sec .benali-gallery-card h3,
+section.benali-gallery-sec .benali-gallery-card figcaption h3 {
+  font-size: 26px !important;
+  line-height: 1.16 !important;
+}
+
+@media (max-width: 767.98px) {
+  .benali-gallery-card figcaption h3,
+  section.benali-gallery-sec .benali-gallery-card h3,
+  section.benali-gallery-sec .benali-gallery-card figcaption h3 {
+    font-size: 21px !important;
+  }
+}
+
+/* ==========================================================================
+   Footer brand block — logo moved to the middle of its column and centred
+   ========================================================================== */
+.footer-brand-box {
+  margin-left: auto !important;
+  margin-right: auto !important;
+  text-align: center !important;
+}
+
+.footer-brand-box > a {
+  display: block !important;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.footer-brand-box img {
+  display: block !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.footer-brand-box .footer-badge-pill {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+@media (max-width: 767.98px) {
+  .footer-brand-box {
+    max-width: 100%;
+  }
+}
+/* ==========================================================================
+   « Parcours » — 4-step process block (homepage feature section)
+   Equal-height cards on a numbered rail, coral icon tiles, hover lift.
+   ========================================================================== */
+.benali-steps {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  position: relative;
+  margin-top: 58px;
+}
+
+/* the rail that links the four steps */
+.benali-steps::before {
+  content: "";
+  position: absolute;
+  top: 54px;
+  left: 7%;
+  right: 7%;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(18, 43, 67, 0.13) 10%,
+    rgba(18, 43, 67, 0.13) 90%,
+    transparent 100%);
+  z-index: 0;
+}
+
+.benali-step {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 26px 26px 30px;
+  background: #ffffff;
+  border: 1px solid rgba(18, 43, 67, 0.09);
+  border-radius: 26px;
+  box-shadow: 0 16px 38px rgba(12, 33, 54, 0.05);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+}
+
+/* coral line that wipes across the top edge on hover */
+.benali-step::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 26px;
+  right: 26px;
+  height: 3px;
+  border-radius: 0 0 3px 3px;
+  background: #e83f2a;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.benali-step:hover,
+.benali-step:focus-within {
+  transform: translateY(-6px);
+  box-shadow: 0 26px 54px rgba(12, 33, 54, 0.10);
+  border-color: rgba(18, 43, 67, 0.16);
+}
+
+.benali-step:hover::after,
+.benali-step:focus-within::after {
+  transform: scaleX(1);
+}
+
+.benali-step__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.benali-step__icon {
+  width: 54px;
+  height: 54px;
+  flex: 0 0 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  background: #fdf2ef;
+  border: 1px solid rgba(232, 63, 42, 0.16);
+}
+
+.benali-step__icon img {
+  width: 25px;
+  height: 25px;
+  object-fit: contain;
+  opacity: 1 !important;
+  filter: none !important;
+}
+
+.benali-step__num {
+  font-family: 'Cal Sans', sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(18, 43, 67, 0.34);
+}
+
+.benali-step__title {
+  margin: 0 0 10px !important;
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: 18px !important;
+  font-weight: 700 !important;
+  line-height: 1.3 !important;
+  color: #122b43 !important;
+}
+
+.benali-step__text {
+  margin: 0 !important;
+  font-size: 14px !important;
+  line-height: 1.62 !important;
+  color: rgba(18, 43, 67, 0.62) !important;
+}
+
+@media (max-width: 1199.98px) {
+  .benali-steps {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+  .benali-steps::before {
+    display: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .benali-steps {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    margin-top: 40px;
+  }
+  .benali-step {
+    padding: 22px 22px 24px;
+    border-radius: 22px;
+  }
+  .benali-step__title {
+    font-size: 17px !important;
+  }
+}
+
+/* ==========================================================================
+   Benali Cars banner — remove the outer glow and the clipped car roof
+   1. No outer glow: the card's ambient box-shadow and the cutout's
+      drop-shadow (static and hover) are gone.
+   2. No top clipping: the car cutout used to rise ~430px above the card,
+      i.e. above the section's top edge, where the section's clip cut its
+      roof flat. The overhang is trimmed slightly and the section now
+      reserves room for it, so the whole car renders.
+   ========================================================================== */
+.benali-cars-road-frame,
+.benali-cars-3d-wrapper:hover .benali-cars-road-frame {
+  box-shadow: none !important;
+}
+
+.benali-cars-floating-car,
+.benali-cars-3d-wrapper:hover .benali-cars-floating-car {
+  height: clamp(620px, 50vw, 820px) !important;
+  filter: none !important;
+}
+
+main > section.benali-cars-banner-sec,
+section.benali-cars-banner-sec,
+.benali-cars-banner-sec {
+  padding-top: clamp(56px, 6.5vw, 100px) !important;
+}
+
+/* Looping Pixabay architecture / building-project footage behind the intro */
+.renvia-intro_one .intro-bg-video {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center center !important;
+  z-index: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ==========================================================================
+   CONTACT INFO CARDS — rebuilt: compact 2×2 grid, one alignment grid inside
+   each card (icon → label → value → action), no stretched empty space.
+   ========================================================================== */
+.contact-info-stack {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  gap: 16px !important;
+  height: 100% !important;
+  align-content: stretch !important;
+}
+
+.contact-info-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  gap: 14px !important;
+  padding: 24px !important;
+  border-radius: 20px !important;
+  border: 1px solid rgba(18, 43, 67, 0.08) !important;
+  box-shadow: 0 10px 26px rgba(12, 33, 54, 0.05) !important;
+}
+
+.contact-info-card:hover {
+  transform: translateY(-3px) !important;
+  box-shadow: 0 20px 44px rgba(12, 33, 54, 0.11) !important;
+}
+
+.contact-info-card__icon {
+  flex: 0 0 44px !important;
+  width: 44px !important;
+  height: 44px !important;
+  border-radius: 13px !important;
+  font-size: 17px !important;
+  background: linear-gradient(140deg, rgba(239, 69, 59, 0.16), rgba(239, 69, 59, 0.06)) !important;
+}
+
+.contact-info-card > div:last-child {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+  gap: 6px !important;
+  min-width: 0;
+  width: 100%;
+}
+
+.contact-info-card h5 {
+  margin: 0 !important;
+  font-size: 11px !important;
+  line-height: 1.3 !important;
+  letter-spacing: 0.16em !important;
+  font-weight: 700 !important;
+  color: #6b7c8c !important;
+}
+
+.contact-info-card p,
+.contact-info-card p a {
+  font-size: 15px !important;
+  line-height: 1.5 !important;
+  color: #122b43 !important;
+  font-weight: 500 !important;
+  overflow-wrap: anywhere;
+  margin: 0 !important;
+}
+
+.contact-info-card p + p { margin-top: 2px !important; }
+.contact-info-card p a { transition: color 0.2s ease !important; }
+.contact-info-card p a:hover { color: #ef453b !important; }
+
+.contact-info-link {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 7px !important;
+  margin-top: 4px !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #ef453b !important;
+}
+
+.contact-info-link i { font-size: 12px !important; transition: transform 0.25s ease !important; }
+.contact-info-link:hover i { transform: translateX(3px) !important; }
+.contact-info-link:hover { color: #122b43 !important; }
+
+.contact-social-row { gap: 8px !important; margin-top: 2px !important; }
+.contact-social-row a { width: 36px !important; height: 36px !important; border-radius: 10px !important; }
+
+@media (max-width: 1199.98px) {
+  .contact-info-stack {
+    grid-template-columns: 1fr !important;
+    height: auto !important;
+    align-content: start !important;
+    gap: 14px !important;
+  }
+
+  .contact-info-card {
+    display: grid !important;
+    grid-template-columns: 44px minmax(0, 1fr) !important;
+    align-items: start !important;
+    column-gap: 16px !important;
+    row-gap: 0 !important;
+    padding: 20px !important;
+  }
+
+  .contact-info-card__icon { grid-row: span 2; }
+  .contact-info-card > div:last-child { gap: 4px !important; }
+}
+
+/* Desktop: one aligned column of compact cards, evenly spread to the photo */
+@media (min-width: 1200px) {
+  .contact-info-stack {
+    grid-template-columns: 1fr !important;
+    height: 100% !important;
+    align-content: space-between !important;
+    gap: 16px !important;
+  }
+
+  .contact-info-card {
+    display: grid !important;
+    grid-template-columns: 44px minmax(0, 1fr) !important;
+    align-items: start !important;
+    column-gap: 16px !important;
+    row-gap: 0 !important;
+    padding: 22px 24px !important;
+  }
+
+  .contact-info-card__icon { grid-row: 1 !important; }
+  .contact-info-card > div:last-child { gap: 4px !important; }
+}
+
+/* Keep the storefront photo close to the card stack so the even gaps stay tight */
+@media (min-width: 1200px) {
+  .contact-photo-card { max-height: 620px !important; }
+  .contact-photo-card img { height: 100% !important; object-fit: cover !important; }
+}
+
+/* ==========================================================================
+   PROJECT DETAILS — rebuilt UI/UX
+   Full-width hero media, a facts strip, a compact amenities grid and a
+   sticky project-information panel — replacing the unstyled stacked blocks.
+   ========================================================================== */
+.renvia-project-details-sec {
+  padding-top: clamp(64px, 6vw, 96px) !important;
+}
+
+.renvia-project-details-sec .project-hero-row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  row-gap: 18px !important;
+  margin-bottom: 34px !important;
+}
+
+.renvia-project-details-sec .project-hero-row > .col-lg-10,
+.renvia-project-details-sec .project-hero-row > .col-lg-2 {
+  flex: 0 0 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+.renvia-project-details-sec .project-thumbnail {
+  position: relative !important;
+  border-radius: 26px !important;
+  overflow: hidden !important;
+  box-shadow: 0 26px 60px rgba(12, 33, 54, 0.14) !important;
+}
+
+.renvia-project-details-sec .project-thumbnail > img {
+  display: block !important;
+  width: 100% !important;
+  height: clamp(320px, 40vw, 520px) !important;
+  object-fit: cover !important;
+}
+
+.renvia-project-details-sec .project-booking-btns {
+  position: absolute !important;
+  left: 20px !important;
+  bottom: 20px !important;
+  z-index: 3 !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 10px !important;
+}
+
+.renvia-project-details-sec .project-booking-btns .theme-btn {
+  margin: 0 !important;
+  padding: 11px 20px !important;
+  border-radius: 999px !important;
+  font-size: 13.5px !important;
+  box-shadow: 0 12px 28px rgba(8, 20, 32, 0.28) !important;
+}
+
+/* Facts strip */
+.renvia-project-details-sec .project-meta-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+  gap: 14px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+.renvia-project-details-sec .project-meta-list .renvia-info-item.style-three {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  padding: 16px 18px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 43, 67, 0.08) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 20px rgba(12, 33, 54, 0.05) !important;
+}
+
+.renvia-project-details-sec .project-meta-list .style-three .icon {
+  flex: 0 0 42px !important;
+  width: 42px !important;
+  height: 42px !important;
+  border-radius: 12px !important;
+  display: grid !important;
+  place-items: center !important;
+  background: rgba(239, 69, 59, 0.08) !important;
+}
+
+.renvia-project-details-sec .project-meta-list .style-three .icon img {
+  max-width: 22px !important;
+  max-height: 22px !important;
+  filter: none !important;
+}
+
+.renvia-project-details-sec .project-meta-list .info span {
+  display: block !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  color: #7b8a99 !important;
+  margin-bottom: 2px !important;
+}
+
+.renvia-project-details-sec .project-meta-list .info h6 {
+  margin: 0 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #122b43 !important;
+}
+
+/* Project intro */
+.renvia-project-details-sec .project-content {
+  margin-top: 4px !important;
+}
+
+.renvia-project-details-sec .project-content .location {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 10px !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #7b8a99 !important;
+}
+
+.renvia-project-details-sec .project-content .location i {
+  color: #ef453b !important;
+  margin: 0 !important;
+}
+
+.renvia-project-details-sec .project-content .title {
+  font-size: clamp(30px, 3.2vw, 42px) !important;
+  line-height: 1.1 !important;
+  letter-spacing: -0.02em !important;
+  margin: 0 0 14px !important;
+}
+
+.renvia-project-details-sec .project-content > p {
+  max-width: 76ch !important;
+  margin-bottom: 12px !important;
+  font-size: 16px !important;
+  line-height: 1.75 !important;
+  color: #5b6b7b !important;
+}
+
+.renvia-project-details-sec .content-box {
+  margin-top: 30px !important;
+  padding: clamp(26px, 3vw, 42px) 0 !important;
+  border-top: 1px solid rgba(18, 43, 67, 0.08) !important;
+  border-bottom: 1px solid rgba(18, 43, 67, 0.08) !important;
+}
+
+.renvia-project-details-sec .content-box h3 {
+  font-size: clamp(22px, 2vw, 28px) !important;
+  letter-spacing: -0.01em !important;
+  margin: 0 0 14px !important;
+}
+
+.renvia-project-details-sec .content-box p {
+  max-width: 76ch !important;
+  font-size: 15.5px !important;
+  line-height: 1.75 !important;
+  color: #5b6b7b !important;
+  margin-bottom: 26px !important;
+}
+
+/* Amenities grid */
+.renvia-project-details-sec .features-amenities-list {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+  gap: 12px !important;
+  padding: 20px !important;
+  margin: 0 !important;
+  background: #f8fafc !important;
+  border: 1px solid rgba(18, 43, 67, 0.06) !important;
+  border-radius: 20px !important;
+}
+
+.renvia-project-details-sec .features-amenities-list .renvia-info-item.style-four {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  margin: 0 !important;
+  padding: 12px 14px !important;
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 43, 67, 0.06) !important;
+  border-radius: 14px !important;
+}
+
+.renvia-project-details-sec .features-amenities-list .style-four .icon {
+  flex: 0 0 38px !important;
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 11px !important;
+  display: grid !important;
+  place-items: center !important;
+  background: rgba(239, 69, 59, 0.08) !important;
+}
+
+.renvia-project-details-sec .features-amenities-list .style-four .icon img {
+  max-width: 21px !important;
+  max-height: 21px !important;
+  filter: none !important;
+}
+
+.renvia-project-details-sec .features-amenities-list .style-four h6 {
+  margin: 0 !important;
+  font-size: 10.5px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+  color: #7b8a99 !important;
+}
+
+.renvia-project-details-sec .features-amenities-list .style-four p {
+  margin: 0 !important;
+  font-size: 15px !important;
+  font-weight: 600 !important;
+  color: #122b43 !important;
+}
+
+/* Project information panel */
+.renvia-project-details-sec .project-info-box {
+  background: #ffffff !important;
+  border: 1px solid rgba(18, 43, 67, 0.08) !important;
+  border-radius: 20px !important;
+  padding: 24px !important;
+  box-shadow: 0 16px 40px rgba(12, 33, 54, 0.07) !important;
+}
+
+.renvia-project-details-sec .project-info-box h5 {
+  margin: 0 0 12px !important;
+  padding-bottom: 12px !important;
+  border-bottom: 1px solid rgba(18, 43, 67, 0.08) !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.16em !important;
+  text-transform: uppercase !important;
+  color: #6b7c8c !important;
+}
+
+.renvia-project-details-sec .project-info-box ul {
+  margin: 0 !important;
+  padding: 0 !important;
+  list-style: none !important;
+}
+
+.renvia-project-details-sec .project-info-box li {
+  display: flex !important;
+  align-items: baseline !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  margin: 0 !important;
+  padding: 9px 0 !important;
+  border-bottom: 1px dashed rgba(18, 43, 67, 0.08) !important;
+  font-size: 13.5px !important;
+  color: #7b8a99 !important;
+}
+
+.renvia-project-details-sec .project-info-box li:last-child { border-bottom: 0 !important; }
+
+.renvia-project-details-sec .project-info-box li span {
+  color: #122b43 !important;
+  font-weight: 600 !important;
+  text-align: right !important;
+}
+
+@media (min-width: 1200px) {
+  .renvia-project-details-sec .project-info-box {
+    position: sticky !important;
+    top: 120px !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .renvia-project-details-sec .project-booking-btns {
+    left: 12px !important;
+    bottom: 12px !important;
+    gap: 8px !important;
+  }
+  .renvia-project-details-sec .project-booking-btns .theme-btn {
+    padding: 9px 14px !important;
+    font-size: 12.5px !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .renvia-project-details-sec .features-amenities-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .renvia-project-details-sec .features-amenities-list .renvia-info-item.style-four {
+    padding: 10px !important;
+    gap: 9px !important;
+  }
+  .renvia-project-details-sec .features-amenities-list .style-four .icon {
+    flex: 0 0 32px !important;
+    width: 32px !important;
+    height: 32px !important;
+  }
+  .renvia-project-details-sec .features-amenities-list .style-four p {
+    font-size: 14px !important;
+  }
+}
+
+/* ==========================================================================
+   PROJECT DETAILS — bento grid pass
+   ========================================================================== */
+@media (min-width: 992px) {
+  .renvia-project-details-sec .project-meta-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(98px, auto) !important;
+  }
+
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item.style-three:nth-child(1) {
+    grid-column: span 2 !important;
+    background: linear-gradient(135deg, #122b43 0%, #1d3f5e 100%) !important;
+    border-color: transparent !important;
+    box-shadow: 0 16px 34px rgba(12, 33, 54, 0.18) !important;
+  }
+
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item.style-three:nth-child(6) {
+    grid-column: span 2 !important;
+    background: linear-gradient(135deg, #ef453b 0%, #d93c33 100%) !important;
+    border-color: transparent !important;
+    box-shadow: 0 16px 34px rgba(217, 60, 51, 0.22) !important;
+  }
+
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(1) .info span,
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(6) .info span {
+    color: rgba(255, 255, 255, 0.72) !important;
+  }
+
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(1) .info h6,
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(6) .info h6 {
+    color: #ffffff !important;
+  }
+
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(1) .icon,
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(6) .icon {
+    background: rgba(255, 255, 255, 0.14) !important;
+  }
+
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(1) .icon img,
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item:nth-child(6) .icon img {
+    filter: invert(1) !important;
+  }
+
+  .renvia-project-details-sec .content-box {
+    border: 0 !important;
+    padding: 0 !important;
+  }
+
+  .renvia-project-details-sec .content-box > .row {
+    row-gap: 18px !important;
+  }
+
+  .renvia-project-details-sec .content-box > .row > .col-xl-8 {
+    background: #f8fafc !important;
+    border: 1px solid rgba(18, 43, 67, 0.06) !important;
+    border-radius: 24px !important;
+    padding: clamp(24px, 2.4vw, 34px) !important;
+  }
+
+  .renvia-project-details-sec .content-box > .row > .col-xl-4 {
+    display: flex !important;
+  }
+
+  .renvia-project-details-sec .content-box > .row > .col-xl-4 > .project-info-box {
+    width: 100% !important;
+  }
+
+  .renvia-project-details-sec .features-amenities-list {
+    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+    grid-auto-rows: minmax(84px, auto) !important;
+  }
+
+  .renvia-project-details-sec .features-amenities-list > .renvia-info-item.style-four:nth-child(1),
+  .renvia-project-details-sec .features-amenities-list > .renvia-info-item.style-four:nth-child(7) {
+    grid-column: span 2 !important;
+  }
+
+  .renvia-project-details-sec .features-amenities-list > .renvia-info-item.style-four:nth-child(1) {
+    background: linear-gradient(135deg, #fff6f5 0%, #ffe9e6 100%) !important;
+    border-color: rgba(239, 69, 59, 0.18) !important;
+  }
+}
+
+/* Project photo carousel */
+.renvia-project-details-sec .pg-carousel {
+  position: relative !important;
+  border-radius: 24px !important;
+  overflow: hidden !important;
+  background: #0c2136 !important;
+  box-shadow: 0 20px 46px rgba(12, 33, 54, 0.14) !important;
+}
+
+.renvia-project-details-sec .pg-slide { margin: 0 !important; }
+
+.renvia-project-details-sec .pg-slide img {
+  display: block !important;
+  width: 100% !important;
+  height: clamp(300px, 42vw, 540px) !important;
+  object-fit: cover !important;
+}
+
+.renvia-project-details-sec .pg-nav {
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  z-index: 2 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 16px !important;
+  padding: 14px 18px 16px !important;
+  background: linear-gradient(to top, rgba(8, 20, 32, 0.74) 0%, rgba(8, 20, 32, 0) 100%) !important;
+}
+
+.renvia-project-details-sec .pg-btn {
+  flex: 0 0 42px !important;
+  width: 42px !important;
+  height: 42px !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.4) !important;
+  border-radius: 50% !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  color: #ffffff !important;
+  font-size: 14px !important;
+  cursor: pointer !important;
+  -webkit-backdrop-filter: blur(6px) !important;
+  backdrop-filter: blur(6px) !important;
+  transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease !important;
+}
+
+.renvia-project-details-sec .pg-btn:hover {
+  background: #ffffff !important;
+  color: #122b43 !important;
+  transform: translateY(-1px) !important;
+}
+
+.renvia-project-details-sec .pg-dots {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+}
+
+.renvia-project-details-sec .pg-dot {
+  width: 8px !important;
+  height: 8px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: rgba(255, 255, 255, 0.45) !important;
+  cursor: pointer !important;
+  transition: width 0.3s ease, background 0.3s ease !important;
+}
+
+.renvia-project-details-sec .pg-dot.is-active {
+  width: 26px !important;
+  background: #ffffff !important;
+}
+
+/* Property media: segmented pill tabs */
+.renvia-project-details-sec .property-media-box { margin-top: 54px !important; }
+
+.renvia-project-details-sec .property-tabs .nav-tabs {
+  display: inline-flex !important;
+  gap: 6px !important;
+  padding: 6px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: #f1f4f7 !important;
+}
+
+.renvia-project-details-sec .property-tabs .nav-link {
+  margin: 0 !important;
+  padding: 10px 20px !important;
+  border: 0 !important;
+  border-radius: 999px !important;
+  background: transparent !important;
+  color: #5b6b7b !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+}
+
+.renvia-project-details-sec .property-tabs .nav-link.active {
+  background: #122b43 !important;
+  color: #ffffff !important;
+}
+
+@media (max-width: 991.98px) {
+  .renvia-project-details-sec .project-meta-list > .renvia-info-item,
+  .renvia-project-details-sec .features-amenities-list > .renvia-info-item {
+    grid-column: auto !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .renvia-project-details-sec .pg-btn {
+    flex: 0 0 38px !important;
+    width: 38px !important;
+    height: 38px !important;
+  }
+  .renvia-project-details-sec .pg-slide img { height: 280px !important; }
+}
+/* ==========================================================================
+   PROJECT PAGE — reference layout (split hero, values grid, plan tabs)
+   Scoped entirely to .bp-page, rendered by assets/js/project-bento.js
+   ========================================================================== */
+.bp-page { background: #ffffff; position: relative; z-index: 2; }
+
+.bp-page .bp-kicker {
+  display: inline-block;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #ef453b;
+}
+
+.bp-page .bp-head {
+  text-align: center;
+  max-width: 620px;
+  margin: 0 auto clamp(28px, 3.2vw, 42px);
+}
+
+.bp-page .bp-head h2 {
+  margin: 0;
+  font-size: clamp(23px, 2.4vw, 32px);
+  line-height: 1.28;
+  letter-spacing: -0.01em;
+  color: #122b43;
+}
+
+/* 1. Split hero */
+.bp-page .bp-hero-sec {
+  padding: clamp(128px, 12vw, 172px) 0 clamp(44px, 5vw, 70px);
+  background: #ffffff;
+}
+
+.bp-page .bp-hero-grid {
+  display: grid;
+  grid-template-columns: 1.02fr 1fr;
+  gap: clamp(26px, 4vw, 54px);
+  align-items: center;
+}
+
+.bp-page .bp-hero-media {
+  margin: 0;
+  border-radius: 28px;
+  overflow: hidden;
+  background: #e9edf4;
+  box-shadow: 0 30px 60px rgba(12, 33, 54, 0.16);
+}
+
+.bp-page .bp-hero-media img {
+  display: block;
+  width: 100%;
+  height: clamp(300px, 34vw, 460px);
+  object-fit: cover;
+}
+
+.bp-page .bp-hero-copy h1 {
+  margin: 0 0 14px;
+  font-size: clamp(26px, 2.5vw, 37px);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #122b43;
+}
+
+.bp-page .bp-hero-copy > p {
+  margin: 0 0 22px;
+  max-width: 58ch;
+  font-size: 14px;
+  line-height: 1.7;
+  color: #6b7c8c;
+}
+
+.bp-page .bp-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px 22px;
+  margin: 0 0 24px;
+  padding: 0;
+  list-style: none;
+}
+
+.bp-page .bp-stat {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.bp-page .bp-stat-icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(239, 69, 59, 0.12);
+  color: #ef453b;
+  font-size: 15px;
+}
+
+.bp-page .bp-stat-body {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.bp-page .bp-stat-body strong {
+  font-size: 16.5px;
+  font-weight: 700;
+  color: #122b43;
+}
+
+.bp-page .bp-stat-body small {
+  font-size: 11px;
+  color: #7b8a99;
+}
+
+.bp-page .bp-thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.bp-page .bp-thumb {
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #e9edf4;
+  cursor: pointer;
+  aspect-ratio: 16 / 10;
+  transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.bp-page .bp-thumb img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.bp-page .bp-thumb.is-active {
+  border-color: #ef453b;
+  box-shadow: 0 10px 22px rgba(239, 69, 59, 0.22);
+}
+
+.bp-page .bp-thumb:hover { transform: translateY(-2px); }
+
+/* 2. Values */
+.bp-page .bp-values-sec {
+  background: #e9edf4;
+  padding: clamp(52px, 6vw, 84px) 0;
+}
+
+.bp-page .bp-values-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.bp-page .bp-value {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  align-items: center;
+  padding: 18px 20px;
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 10px 26px rgba(12, 33, 54, 0.05);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.bp-page .bp-value:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 18px 38px rgba(12, 33, 54, 0.1);
+}
+
+.bp-page .bp-value-copy {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 2px 8px;
+  align-items: baseline;
+  min-width: 0;
+}
+
+.bp-page .bp-value-num {
+  font-size: 16px;
+  font-weight: 700;
+  color: #c3ceda;
+}
+
+.bp-page .bp-value-copy h3 {
+  margin: 0;
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #122b43;
+}
+
+.bp-page .bp-value-copy p {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.55;
+  color: #7b8a99;
+  overflow-wrap: anywhere;
+}
+
+.bp-page .bp-value-icon {
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid #e6ebf2;
+  background: #f4f6fa;
+}
+
+.bp-page .bp-value-icon img {
+  max-width: 24px;
+  max-height: 24px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+/* 3. Plans */
+.bp-page .bp-plans-sec {
+  padding: clamp(52px, 6vw, 84px) 0 clamp(60px, 7vw, 100px);
+  background: #ffffff;
+}
+
+.bp-page .bp-plan-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 0 clamp(22px, 3vw, 34px);
+}
+
+.bp-page .bp-plan-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px 6px 6px;
+  border: 1px solid #e2e8f0;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #122b43;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.bp-page .bp-plan-tab img {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.bp-page .bp-plan-tab.is-active {
+  background: #ef453b;
+  border-color: #ef453b;
+  color: #ffffff;
+}
+
+.bp-page .bp-plan-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+  gap: 22px;
+  align-items: stretch;
+}
+
+.bp-page .bp-plan-media {
+  display: flex;
+  margin: 0;
+  padding: clamp(16px, 2vw, 26px);
+  background: #eef1f6;
+  border-radius: 24px;
+}
+
+.bp-page .bp-plan-media img {
+  width: 100%;
+  height: clamp(300px, 34vw, 450px);
+  object-fit: cover;
+  border-radius: 16px;
+}
+
+.bp-page .bp-plan-panel {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(22px, 2.4vw, 30px);
+  background: #ffffff;
+  border-radius: 24px;
+  box-shadow: 0 18px 44px rgba(12, 33, 54, 0.1);
+}
+
+.bp-page .bp-plan-panel h3 {
+  margin: 0 0 8px;
+  font-size: 22px;
+  color: #122b43;
+}
+
+.bp-page .bp-plan-panel > p {
+  margin: 0 0 16px;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: #7b8a99;
+}
+
+.bp-page .bp-specs { border-top: 1px solid #eef2f6; }
+
+.bp-page .bp-spec {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eef2f6;
+  font-size: 12.5px;
+  color: #7b8a99;
+}
+
+.bp-page .bp-spec strong {
+  color: #122b43;
+  font-weight: 600;
+  text-align: right;
+}
+
+.bp-page .bp-plan-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 13px 20px;
+  border-radius: 999px;
+  background: #ef453b;
+  color: #ffffff;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.bp-page .bp-plan-cta:hover {
+  background: #d93c33;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 991.98px) {
+  .bp-page .bp-hero-grid { grid-template-columns: 1fr; }
+  .bp-page .bp-values-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bp-page .bp-plan-body { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 575.98px) {
+  .bp-page .bp-hero-sec { padding-top: 116px; }
+  .bp-page .bp-values-grid { grid-template-columns: 1fr; }
+  .bp-page .bp-thumbs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bp-page .bp-hero-media img { height: 280px; }
+  .bp-page .bp-plan-media img { height: 260px; }
+}
+
+.bp-page .bp-value-copy p strong {
+  color: #122b43;
+  font-weight: 600;
+}
+
+/* Minimalist line icon set (replaces the 3D PNG badge icons) */
+img.mb-mini-icon {
+  filter: none !important;
+  object-fit: contain;
+}
+
+.bp-page .bp-value-icon svg {
+  width: 24px;
+  height: 24px;
+  color: #122b43;
 }

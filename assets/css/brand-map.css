@@ -1,0 +1,356 @@
+/* ==========================================================================
+   MAISON BEN ALI — BRAND MAP (grey cartography, no vendor UI)
+   The OSM basemap is desaturated and multiplied over a grey gradient:
+   the ground becomes the gradient, streets and labels a darker grey.
+   ========================================================================== */
+
+/* --- canvas ---------------------------------------------------------------- */
+.mb-map {
+  position: relative;
+  width: 100%;
+  height: clamp(500px, 42vw, 620px);
+  background: #eef1f4;
+  overflow: hidden;
+}
+
+/* the project / reservation card keeps its own rounded frame */
+.product-map-card .mb-map {
+  height: 100%;
+  min-height: 440px;
+}
+
+/* the contact map box has a fixed height (540px + 8vw): the map must fill it
+   to the last pixel, otherwise the arch reveals a white band above the footer */
+.contact-map-sec .map-box .mb-map {
+  height: 100%;
+}
+
+.mb-map.leaflet-container {
+  background: #eef1f4;
+  font-family: inherit;
+  outline: none;
+  cursor: grab;
+}
+
+.mb-map.leaflet-container:active {
+  cursor: grabbing;
+}
+
+/* desaturated basemap; heavy contrast pushes street casings and labels
+   well below land so they multiply into a deeper grey */
+.mb-map .leaflet-tile-pane {
+  filter: grayscale(1) brightness(1.02) contrast(1.42);
+}
+
+/* no vendor controls of any kind */
+.mb-map .leaflet-control-container {
+  display: none !important;
+}
+
+/* the grey gradient is multiplied over the desaturated basemap: pale ground
+   becomes the gradient itself, streets and labels a darker grey */
+.mb-map-tint {
+  position: absolute;
+  inset: 0;
+  z-index: 400;
+  pointer-events: none;
+  background: linear-gradient(140deg, #f8fafc 0%, #edf1f5 34%, #e0e6ec 68%, #cfd7df 100%);
+  mix-blend-mode: multiply;
+}
+
+.mb-map::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 401;
+  pointer-events: none;
+  box-shadow: inset 0 0 140px rgba(18, 43, 67, 0.1);
+}
+
+/* --- our own pin: navy line glyph inside a soft white pill ----------------- */
+.mb-map-marker {
+  background: none;
+  border: 0;
+}
+
+.mb-map-pill {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: #e8563f;
+  color: #ffffff;
+  border: 1px solid rgba(232, 86, 63, 0.4);
+  box-shadow: 0 10px 24px rgba(232, 86, 63, 0.34);
+}
+
+.mb-map-pill svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+}
+
+/* the project name rides in a white block whose tail points at the pin */
+.mb-map-tag {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 10px);
+  transform: translateX(-50%);
+  z-index: 3;
+  max-width: 250px;
+  padding: 6px 12px;
+  border-radius: 9px;
+  background: #ffffff;
+  border: 1px solid rgba(18, 43, 67, 0.06);
+  box-shadow: 0 10px 24px rgba(18, 43, 67, 0.18);
+  color: #122b43;
+  font-size: 11.5px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: 0.01em;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.mb-map-tag__text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mb-map-tag::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -4px;
+  width: 8px;
+  height: 8px;
+  background: #ffffff;
+  border-right: 1px solid rgba(18, 43, 67, 0.06);
+  border-bottom: 1px solid rgba(18, 43, 67, 0.06);
+  transform: translateX(-50%) rotate(45deg);
+  border-radius: 1px;
+}
+
+/* a soft, slow light pulse behind the pin */
+.mb-map-halo {
+  position: absolute;
+  inset: -16px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(232, 86, 63, 0.34) 0%, rgba(232, 86, 63, 0) 70%);
+  animation: mb-map-pulse 3.4s ease-out infinite;
+}
+
+@keyframes mb-map-pulse {
+  0% { transform: scale(0.62); opacity: 0.8; }
+  70% { transform: scale(1.1); opacity: 0; }
+  100% { transform: scale(1.1); opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mb-map-halo { animation: none; opacity: 0.45; }
+}
+
+/* --- address card: orange block, moved to the bottom-left ---------------- */
+.mb-map-card {
+  position: absolute;
+  left: 24px;
+  /* the map section is clipped by the « Arche douce »: the block has to sit
+     above that cut, otherwise the arch slices its bottom edge */
+  bottom: calc(var(--mb-curve, 72px) + 16px);
+  z-index: 500;
+  width: min(330px, calc(100% - 48px));
+  padding: 18px 20px 19px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #f4743f 0%, #e8563f 58%, #d0472e 100%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow: 0 20px 44px rgba(140, 40, 20, 0.32);
+  color: #ffffff;
+}
+
+.mb-map-card__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.mb-map-card__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ffffff;
+}
+
+.mb-map-card__title {
+  margin: 6px 0 0;
+  font-size: 17px;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.mb-map-card__address {
+  margin: 5px 0 0;
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.mb-map-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.mb-map-card__cta,
+.mb-map-card__fav {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 14px;
+  border-radius: 999px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.01em;
+  text-decoration: none !important;
+  cursor: pointer;
+  transition: transform 0.22s ease, background 0.22s ease, color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.mb-map-card__cta {
+  background: #ffffff;
+  border: 1px solid #ffffff;
+  color: #d64a32 !important;
+  box-shadow: 0 8px 18px rgba(120, 30, 15, 0.18);
+}
+
+.mb-map-card__cta:hover {
+  background: #fff4ef;
+  transform: translateY(-1px);
+}
+
+.mb-map-card__fav {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  color: #ffffff !important;
+}
+
+.mb-map-card__fav:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.mb-map-card__fav[aria-pressed="true"] {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #d64a32 !important;
+}
+
+.mb-map-card__fav[aria-pressed="true"] svg {
+  fill: currentColor;
+}
+
+.mb-map-card__cta svg,
+.mb-map-card__fav svg {
+  width: 14px;
+  height: 14px;
+  flex: none;
+}
+
+.mb-map-card__cta:focus-visible,
+.mb-map-card__fav:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
+/* --- discreet tile credit (text only) -------------------------------------- */
+.mb-map-credit {
+  position: absolute;
+  right: 14px;
+  bottom: 10px;
+  z-index: 500;
+  margin: 0;
+  font-size: 9.5px;
+  letter-spacing: 0.02em;
+  color: rgba(18, 43, 67, 0.6);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+.mb-map-credit a {
+  color: inherit !important;
+  text-decoration: none !important;
+}
+
+.mb-map-credit a:hover {
+  text-decoration: underline !important;
+}
+
+/* --- responsive ------------------------------------------------------------ */
+@media (max-width: 991.98px) {
+  .mb-map {
+    height: 460px;
+  }
+}
+
+@media (max-width: 768px) {
+  .product-map-card .mb-map,
+  .product-map-card {
+    min-height: 360px;
+  }
+
+  .mb-map {
+    height: 360px;
+  }
+
+  .mb-map-tag {
+    max-width: 200px;
+    padding: 5px 10px;
+    font-size: 10.5px;
+    bottom: calc(100% + 8px);
+  }
+
+  /* on phones the block becomes a compact orange action bar */
+  .mb-map-card {
+    left: 12px;
+    right: 12px;
+    bottom: calc(var(--mb-curve, 46px) + 12px);
+    width: auto;
+    padding: 12px 14px;
+    border-radius: 16px;
+  }
+
+  .mb-map-card__eyebrow,
+  .mb-map-card__title,
+  .mb-map-card__address {
+    display: none;
+  }
+
+  .mb-map-card__actions {
+    margin: 0;
+    justify-content: flex-end;
+  }
+
+  .mb-map-card__cta,
+  .mb-map-card__fav {
+    padding: 10px 13px;
+    font-size: 11.5px;
+  }
+
+  .mb-map-credit {
+    top: 10px;
+    right: 10px;
+    bottom: auto;
+    font-size: 9px;
+  }
+}

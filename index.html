@@ -49,7 +49,8 @@
 <!--====== Default css ======-->
 <link href="assets/css/spacings.css" rel="stylesheet"/>
 <!--====== Default css ======-->
-<link href="assets/css/style.css?v=7.0" rel="stylesheet"/>
+<link href="assets/css/style.css?v=49" rel="stylesheet"/>
+        <link rel="stylesheet" href="assets/css/curves.css?v=9">
 
   
 
@@ -161,7 +162,10 @@
     .stroke-text { -webkit-text-stroke: 1px #C5A265 !important; }
   }
 </style>
-
+        <link rel="stylesheet" href="assets/css/titles.css?v=1">
+        <link rel="stylesheet" href="assets/css/navbar.css?v=25">
+<link rel="stylesheet" href="assets/css/fab-menu.css?v=2">
+        <script src="assets/js/minimal-icons.js?v=2"></script>
 </head>
 <body>
 <!--====== Start Preloader ======-->
@@ -182,14 +186,14 @@
 <div class="primary-menu">
 <!--====  Site Branding  ===-->
 <div class="site-branding">
-<a class="brand-logo" href="/"><img alt="Maison Benali Logo" src="assets/images/home-one/logo/logo-main.png"/></a>
+<a class="brand-logo" href="/"><img alt="Maison Benali Logo" src="assets/images/home-one/logo/maison-benali-logo.svg"/></a>
 </div>
 <!--=== Main Menu ===-->
 <div class="theme-nav-menu">
 <!--=== Menu Top ===-->
 <div class="theme-menu-top d-block d-xl-none">
 <div class="site-branding">
-<a class="brand-logo" href="/"><img alt="Maison Benali Logo" src="assets/images/home-one/logo/logo-main.png"/></a>
+<a class="brand-logo" href="/"><img alt="Maison Benali Logo" src="assets/images/home-one/logo/maison-benali-logo.svg"/></a>
 </div>
 </div>
 <!--=== Main Menu ===-->
@@ -238,6 +242,28 @@
 <main>
 <!--======  Start Hero Section  ======-->
 <section class="modern-hero-section">
+    <!--======  Announcement Alert Bar (Nouveaux Projets)  ======-->
+    <div class="hero-announce-bar" role="region" aria-label="Alerte nouveaux projets">
+        <div class="announce-inner">
+            <span class="announce-icon" aria-hidden="true"><i class="fas fa-bullhorn"></i></span>
+            <span class="announce-badge">
+                <span class="announce-label">Nouveau</span>
+                <span class="announce-label">Exclusif</span>
+                <span class="announce-label">En vedette</span>
+                <span class="announce-label">Best seller</span>
+            </span>
+            <div class="announce-marquee">
+                <div class="announce-track">
+                    <span class="announce-item"><strong>Alerte nouveaux projets</strong><span class="announce-sep">&middot;</span><span>Agadir &amp; Taghazout Bay</span></span>
+                    <span class="announce-item"><strong>Villas contemporaines</strong><span class="announce-sep">&middot;</span><span>piscines privées en Baie d'Agadir</span></span>
+                    <span class="announce-item"><strong>Investissement clé en main</strong><span class="announce-sep">&middot;</span><span>conciergerie 360°</span></span>
+                    <span class="announce-item"><strong>Estimation gratuite</strong><span class="announce-sep">&middot;</span><span>réponse sous 24 h</span></span>
+                    <span class="announce-item" aria-hidden="true"><strong>Alerte nouveaux projets</strong><span class="announce-sep">&middot;</span><span>Agadir &amp; Taghazout Bay</span></span>
+                </div>
+            </div>
+            <a class="announce-cta" href="proprietes-projets">Voir les lancements <i class="far fa-arrow-right"></i></a>
+        </div>
+    </div>
     <div class="container-fluid banner-container">
         <div class="hero-slider-wrapper">
             <!-- Slide 1: Navy -->
@@ -354,7 +380,7 @@
             <!-- Left Asymmetrical Card (Elevated) -->
             <div class="editorial-card-wrap editorial-card-left">
                 <div class="editorial-card-frame">
-                    <img alt="Maison Benali Architecture Agadir" src="assets/images/home-one/about/about-img1.jpg"/>
+                    <img alt="Résidence balnéaire avec piscine et jardins à Agadir Bay" src="assets/images/home-one/about/about-agadir-bay-pool.jpg"/>
                 </div>
                 <!-- 11 Ans d'Expérience Spinning SVG Badge -->
                 <div class="editorial-spinning-seal">
@@ -402,47 +428,39 @@
             <!-- Right Asymmetrical Card (Lowered, flush to right edge) -->
             <div class="editorial-card-wrap editorial-card-right">
                 <div class="editorial-card-frame">
-                    <img alt="Maison Benali Demeures d'Exception" src="assets/images/home-one/about/about-img2.jpg"/>
+                    <img alt="Entrée illuminée de la résidence Agadir Bay" src="assets/images/home-one/about/about-agadir-bay-entrance.jpg"/>
                 </div>
             </div>
         </div>
 
-        <!-- Integrated Prestige Features Strip Below -->
-        <div class="editorial-prestige-strip" data-aos="fade-up" data-aos-duration="1200">
-            <div class="row g-4 justify-content-center">
-                <div class="col-lg-5 col-md-6">
-                    <div class="editorial-feature-item">
-                        <div class="editorial-feature-icon">
-                            <img alt="Transparence &amp; Prix Nets" src="assets/images/custom-icons/real-estate/Black/10.png"/>
+        <!-- Signature Guarantees — editorial cards -->
+        <div class="editorial-trust" data-aos="fade-up" data-aos-duration="1200">
+            <div class="editorial-trust-grid">
+                <article class="editorial-trust-card">
+                    <div class="editorial-trust-head">
+                        <div class="editorial-trust-icon">
+                            <img alt="Transparence &amp; Prix Nets" src="assets/images/custom-icons/real-estate/Black/10.png"/ loading="lazy">
                         </div>
-                        <div class="editorial-feature-body">
-                            <h5>Transparence &amp; Prix Nets Vendeurs</h5>
-                            <p>Analyses Comparatives de Marché (ACM) pour éviter tout surpaiement.</p>
-                        </div>
+                        <span class="editorial-trust-num">01</span>
                     </div>
-                </div>
-                <div class="col-lg-5 col-md-6">
-                    <div class="editorial-feature-item">
-                        <div class="editorial-feature-icon">
-                            <img alt="Accompagnement Notarié" src="assets/images/custom-icons/inheritance/Black/14.png"/>
+                    <h5>Transparence &amp; Prix Nets Vendeurs</h5>
+                    <p>Analyses Comparatives de Marché (ACM) pour éviter tout surpaiement.</p>
+                </article>
+                <article class="editorial-trust-card">
+                    <div class="editorial-trust-head">
+                        <div class="editorial-trust-icon">
+                            <img alt="Accompagnement Notarié" src="assets/images/custom-icons/inheritance/Black/14.png"/ loading="lazy">
                         </div>
-                        <div class="editorial-feature-body">
-                            <h5>Accompagnement Notarié MRE 360°</h5>
-                            <p>Gestion des formalités administratives et juridiques à 100% à distance.</p>
-                        </div>
+                        <span class="editorial-trust-num">02</span>
                     </div>
-                </div>
+                    <h5>Accompagnement Notarié MRE 360°</h5>
+                    <p>Gestion des formalités administratives et juridiques à 100% à distance.</p>
+                </article>
             </div>
-
-            <!-- Checklist & Assurance Note -->
-            <div class="editorial-checklist-bar">
-                <ul class="check-list style-one d-flex flex-wrap justify-content-center align-items-center gap-4 mb-20">
-                    <li><img alt="icon" src="assets/images/home-one/gallery/icon.png"/> Analyses Comparatives de Marché (ACM) pour éviter tout surpaiement.</li>
-                    <li><img alt="icon" src="assets/images/home-one/gallery/icon.png"/> Gestion des formalités administratives et juridiques à 100% à distance.</li>
-                </ul>
-                <h6 class="editorial-guarantee-text text-center">
-                    Notre méthodologie éprouvée garantit la réussite financière et la sérénité totale de vos transactions.
-                </h6>
+            <div class="editorial-trust-note">
+                <span></span>
+                <p>Notre méthodologie éprouvée garantit la réussite financière et la sérénité totale de vos transactions.</p>
+                <span></span>
             </div>
         </div>
     </div>
@@ -482,12 +500,12 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" aria-label="Ocean View Heights - Taghazout Bay">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-2.jpg" alt="Ocean View Heights">
+                            <img src="assets/images/featured-projects/taghazout-bay-resort.jpg" alt="Ocean View Heights">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" aria-label="Résidence Palm Grove - Sonaba">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-3.jpg" alt="Résidence Palm Grove">
+                            <img src="assets/images/featured-projects/agadir-night-plaza.jpg" alt="Résidence Palm Grove">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" aria-label="Palais Kasbah Horizon - Haut Founty">
@@ -497,7 +515,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" aria-label="Marina Waterfront Suites - Agadir">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-5.jpg" alt="Marina Waterfront Suites">
+                            <img src="assets/images/featured-projects/agadir-bay-night.jpg" alt="Marina Waterfront Suites">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" aria-label="Domaine de l'Atlas - Vallée Prestige">
@@ -507,7 +525,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" aria-label="Villa Sunset Horizon - Tamraght">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-7.jpg" alt="Villa Sunset Horizon">
+                            <img src="assets/images/featured-projects/taghazout-coast-village.jpg" alt="Villa Sunset Horizon">
                         </div>
                     </a>
                 </div>
@@ -521,12 +539,12 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-2.jpg" alt="Ocean View Heights">
+                            <img src="assets/images/featured-projects/taghazout-bay-resort.jpg" alt="Ocean View Heights">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-3.jpg" alt="Résidence Palm Grove">
+                            <img src="assets/images/featured-projects/agadir-night-plaza.jpg" alt="Résidence Palm Grove">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -536,7 +554,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-5.jpg" alt="Marina Waterfront Suites">
+                            <img src="assets/images/featured-projects/agadir-bay-night.jpg" alt="Marina Waterfront Suites">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -546,7 +564,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-7.jpg" alt="Villa Sunset Horizon">
+                            <img src="assets/images/featured-projects/taghazout-coast-village.jpg" alt="Villa Sunset Horizon">
                         </div>
                     </a>
                 </div>
@@ -560,12 +578,12 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-2.jpg" alt="Ocean View Heights">
+                            <img src="assets/images/featured-projects/taghazout-bay-resort.jpg" alt="Ocean View Heights">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-3.jpg" alt="Résidence Palm Grove">
+                            <img src="assets/images/featured-projects/agadir-night-plaza.jpg" alt="Résidence Palm Grove">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -575,7 +593,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-5.jpg" alt="Marina Waterfront Suites">
+                            <img src="assets/images/featured-projects/agadir-bay-night.jpg" alt="Marina Waterfront Suites">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -585,7 +603,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-7.jpg" alt="Villa Sunset Horizon">
+                            <img src="assets/images/featured-projects/taghazout-coast-village.jpg" alt="Villa Sunset Horizon">
                         </div>
                     </a>
                 </div>
@@ -599,12 +617,12 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-2.jpg" alt="Ocean View Heights">
+                            <img src="assets/images/featured-projects/taghazout-bay-resort.jpg" alt="Ocean View Heights">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-3.jpg" alt="Résidence Palm Grove">
+                            <img src="assets/images/featured-projects/agadir-night-plaza.jpg" alt="Résidence Palm Grove">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -614,7 +632,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-5.jpg" alt="Marina Waterfront Suites">
+                            <img src="assets/images/featured-projects/agadir-bay-night.jpg" alt="Marina Waterfront Suites">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -624,7 +642,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-7.jpg" alt="Villa Sunset Horizon">
+                            <img src="assets/images/featured-projects/taghazout-coast-village.jpg" alt="Villa Sunset Horizon">
                         </div>
                     </a>
                 </div>
@@ -638,12 +656,12 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-2.jpg" alt="Ocean View Heights">
+                            <img src="assets/images/featured-projects/taghazout-bay-resort.jpg" alt="Ocean View Heights">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-3.jpg" alt="Résidence Palm Grove">
+                            <img src="assets/images/featured-projects/agadir-night-plaza.jpg" alt="Résidence Palm Grove">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -653,7 +671,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-5.jpg" alt="Marina Waterfront Suites">
+                            <img src="assets/images/featured-projects/agadir-bay-night.jpg" alt="Marina Waterfront Suites">
                         </div>
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
@@ -663,7 +681,7 @@
                     </a>
                     <a href="proprietes-projets" class="featured-arch-card" tabindex="-1">
                         <div class="card-inner">
-                            <img src="assets/images/featured-projects/featured-7.jpg" alt="Villa Sunset Horizon">
+                            <img src="assets/images/featured-projects/taghazout-coast-village.jpg" alt="Villa Sunset Horizon">
                         </div>
                     </a>
                 </div>
@@ -868,7 +886,7 @@
 <p>Prestations haut standing, vue dégagée, sécurité juridique et évaluation précise certifiée par notre cabinet.</p>
 </div>
 <div class="project-thumbnail">
-<img alt="project image" src="assets/images/home-one/project/project-img1.jpg"/>
+<img alt="Villa contemporaine avec piscine privée à Founty" src="assets/images/stock/villa-piscine-founty.jpg"/>
 <a class="icon-btn" href="proprietes-projets"><i class="far fa-arrow-right"></i></a>
 </div>
 </div>
@@ -883,7 +901,7 @@
 <p>Idéal pour résidence secondaire ou rendement locatif fort en conciergerie Airbnb avec gestion 360°.</p>
 </div>
 <div class="project-thumbnail">
-<img alt="project image" src="assets/images/home-one/project/project-img2.jpg"/>
+<img alt="Appartement front de mer avec terrasse panoramique" src="assets/images/stock/appartement-front-de-mer.jpg"/>
 <a class="icon-btn" href="proprietes-projets"><i class="far fa-arrow-right"></i></a>
 </div>
 </div>
@@ -898,7 +916,7 @@
 <p>Programme immobilier neuf en VEFA. Accompagnement bancaire et notarié MRE 100% sécurisé.</p>
 </div>
 <div class="project-thumbnail">
-<img alt="project image" src="assets/images/home-one/project/project-img3.jpg"/>
+<img alt="Résidence éco-luxe aux balcons contemporains" src="assets/images/stock/residence-eco-luxe.jpg"/>
 <a class="icon-btn" href="proprietes-projets"><i class="far fa-arrow-right"></i></a>
 </div>
 </div>
@@ -913,7 +931,7 @@
 <p>Emplacement commercial stratégique au cœur d'Agadir pour entreprises et investisseurs avertis.</p>
 </div>
 <div class="project-thumbnail">
-<img alt="project image" src="assets/images/home-one/project/project-img4.jpg"/>
+<img alt="Plateau de bureaux et showroom modernes" src="assets/images/stock/plateau-bureaux-vip.jpg"/>
 <a class="icon-btn" href="proprietes-projets"><i class="far fa-arrow-right"></i></a>
 </div>
 </div>
@@ -925,6 +943,9 @@
 </section><!--======  End Project Section  ======-->
 <!--======  Start Intro Section  ======-->
 <section class="renvia-intro_one bg_cover dark-bg" data-src="assets/images/home-one/bg/intro-bg1.jpg">
+<video class="intro-bg-video" autoplay muted loop playsinline preload="metadata" poster="assets/images/home-one/bg/intro-bg1.jpg" aria-hidden="true">
+<source src="assets/videos/architecture-project-pixabay.mp4" type="video/mp4"/>
+</video>
 <div class="container">
 <div class="row">
 <div class="col-lg-12">
@@ -936,7 +957,7 @@
 </div>
 <div class="intro-curve-inverted-divider" aria-hidden="true">
 <svg viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-<path d="M0,120 L0,75 Q720,0 1440,75 L1440,120 Z" fill="#ffffff"/>
+<path d="M0,120 L0,120 Q720,-120 1440,120 Z" fill="#ffffff"/>
 </svg>
 </div>
 </section><!--======  End Intro Section  ======-->
@@ -1000,63 +1021,40 @@
 </div>
 </div>
 </div>
-<!-- Renvia Feature Items -->
-<div class="renvia-features-items pt-60">
-<div class="row">
-<div class="col-lg-3 col-md-6 col-sm-12">
-<!-- Renvia Feature Item -->
-<div class="renvia-feature-item style-one mb-40" data-aos="fade-up" data-aos-duration="1000">
-<div class="icon">
-<img alt="Écoute & Budget" src="assets/images/custom-icons/real-estate/Black/18.png"/>
-<div class="sm-icon"><img alt="icon" src="assets/images/home-one/icon/icon7.png"/></div>
+<!-- Process steps -->
+<div class="benali-steps">
+<article class="benali-step" data-aos="fade-up" data-aos-duration="800">
+<div class="benali-step__head">
+<span class="benali-step__icon"><img alt="Écoute & Budget" src="assets/images/custom-icons/real-estate/Black/18.png"/ loading="lazy"></span>
+<span class="benali-step__num">01</span>
 </div>
-<div class="content">
-<h5>1. Écoute &amp; Budget</h5>
-<p>Cadrage précis de vos besoins d'achat, de vente ou d'investissement locatif.</p>
+<h5 class="benali-step__title">Écoute &amp; Budget</h5>
+<p class="benali-step__text">Cadrage précis de vos besoins d'achat, de vente ou d'investissement locatif.</p>
+</article>
+<article class="benali-step" data-aos="fade-up" data-aos-duration="1000">
+<div class="benali-step__head">
+<span class="benali-step__icon"><img alt="Sélection & Visites 3D" src="assets/images/custom-icons/real-estate/Black/22.png"/ loading="lazy"></span>
+<span class="benali-step__num">02</span>
 </div>
+<h5 class="benali-step__title">Sélection &amp; Visites 3D</h5>
+<p class="benali-step__text">Présentation de biens certifiés, opportunités Off-Market et maquettes 3D.</p>
+</article>
+<article class="benali-step" data-aos="fade-up" data-aos-duration="1200">
+<div class="benali-step__head">
+<span class="benali-step__icon"><img alt="Négociation au Juste Prix" src="assets/images/custom-icons/real-estate/Black/3.png"/ loading="lazy"></span>
+<span class="benali-step__num">03</span>
 </div>
+<h5 class="benali-step__title">Négociation au Juste Prix</h5>
+<p class="benali-step__text">Protection de vos intérêts financiers sur la base d'études de marché réelles.</p>
+</article>
+<article class="benali-step" data-aos="fade-up" data-aos-duration="1400">
+<div class="benali-step__head">
+<span class="benali-step__icon"><img alt="Suivi Notarié & 360°" src="assets/images/custom-icons/inheritance/Black/15.png"/ loading="lazy"></span>
+<span class="benali-step__num">04</span>
 </div>
-<div class="col-lg-3 col-md-6 col-sm-12">
-<!-- Renvia Feature Item -->
-<div class="renvia-feature-item style-one mb-40" data-aos="fade-up" data-aos-duration="1200">
-<div class="icon">
-<img alt="Sélection & Visites 3D" src="assets/images/custom-icons/real-estate/Black/22.png"/>
-<div class="sm-icon"><img alt="icon" src="assets/images/home-one/icon/icon8.png"/></div>
-</div>
-<div class="content">
-<h5>2. Sélection &amp; Visites 3D</h5>
-<p>Présentation de biens certifiés, opportunités Off-Market et maquettes 3D.</p>
-</div>
-</div>
-</div>
-<div class="col-lg-3 col-md-6 col-sm-12">
-<!-- Renvia Feature Item -->
-<div class="renvia-feature-item style-one mb-40" data-aos="fade-up" data-aos-duration="1400">
-<div class="icon">
-<img alt="Négociation au Juste Prix" src="assets/images/custom-icons/real-estate/Black/3.png"/>
-<div class="sm-icon"><img alt="icon" src="assets/images/home-one/icon/icon9.png"/></div>
-</div>
-<div class="content">
-<h5>3. Négociation au Juste Prix</h5>
-<p>Protection de vos intérêts financiers sur la base d'études de marché réelles.</p>
-</div>
-</div>
-</div>
-<div class="col-lg-3 col-md-6 col-sm-12">
-<!-- Renvia Feature Item -->
-<div class="renvia-feature-item style-one mb-40" data-aos="fade-up" data-aos-duration="1600">
-<div class="icon">
-<img alt="Suivi Notarié & 360°" src="assets/images/custom-icons/inheritance/Black/15.png"/>
-<div class="sm-icon"><img alt="icon" src="assets/images/home-one/icon/icon10.png"/></div>
-</div>
-<div class="content">
-<h5>4. Suivi Notarié &amp; 360°</h5>
-<p>Prise en charge intégrale des formalités notariées et conciergerie locative.</p>
-</div>
-</div>
-</div>
-</div>
-</div>
+<h5 class="benali-step__title">Suivi Notarié &amp; 360°</h5>
+<p class="benali-step__text">Prise en charge intégrale des formalités notariées et conciergerie locative.</p>
+</article>
 </div>
 </section><!--======  End Feature Section  ======-->
 <!--======  Start Benali Cars Banner Section  ======-->
@@ -1109,6 +1107,54 @@
 </div>
 </div>
 </section><!--======  End Benali Cars Banner Section  ======-->
+<!--======  Start Agadir Lifestyle Gallery Section  ======-->
+<section class="benali-gallery-sec pt-110 pb-100" id="cadre-de-vie">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-xl-8 col-lg-10 text-center">
+                <div class="featured-header-block mb-5" data-aos="fade-up" data-aos-duration="900">
+                    <span class="sub-title" data-aos="fade-down" data-aos-duration="1000"><img alt="line" src="assets/images/line1.png"/>Le Cadre de Vie<img alt="line" src="assets/images/line2.png"/></span>
+                    <h2 class="featured-main-title">Agadir &amp; Taghazout Bay <span class="accent-coral font-awaking">en Images</span></h2>
+                    <p class="featured-subtitle">Résidences balnéaires, marinas animées et littoral préservé : l'environnement de vos futurs biens, photographié sur place par notre équipe.</p>
+                </div>
+            </div>
+        </div>
+        <div class="benali-gallery-grid">
+            <figure class="benali-gallery-card" data-aos="fade-up" data-aos-duration="900">
+                <img src="assets/images/gallery/agadir-bay-residence.jpg" alt="Résidence balnéaire avec piscine et jardins à Agadir Bay" loading="lazy"/>
+                <figcaption>
+                    <span class="gallery-tag">Résidences</span>
+                    <h3>Piscines &amp; Jardins Privés</h3>
+                    <p>Agadir Bay &middot; Front de mer</p>
+                </figcaption>
+            </figure>
+            <figure class="benali-gallery-card" data-aos="fade-up" data-aos-duration="900" data-aos-delay="120">
+                <img src="assets/images/gallery/agadir-bay-plaza.jpg" alt="Place animée de la marina d'Agadir au crépuscule" loading="lazy"/>
+                <figcaption>
+                    <span class="gallery-tag">Quartier</span>
+                    <h3>Marina &amp; Places Animées</h3>
+                    <p>Agadir &middot; Corniche</p>
+                </figcaption>
+            </figure>
+            <figure class="benali-gallery-card" data-aos="fade-up" data-aos-duration="900" data-aos-delay="240">
+                <img src="assets/images/gallery/agadir-bay-signature.jpg" alt="Entrée illuminée de la résidence Agadir Bay" loading="lazy"/>
+                <figcaption>
+                    <span class="gallery-tag">Signature</span>
+                    <h3>L'Adresse Agadir Bay</h3>
+                    <p>Agadir Bay &middot; Entrée principale</p>
+                </figcaption>
+            </figure>
+            <figure class="benali-gallery-card" data-aos="fade-up" data-aos-duration="900" data-aos-delay="360">
+                <img src="assets/images/gallery/taghazout-surf-coast.jpg" alt="Village côtier et boutiques de surf à Taghazout au soleil couchant" loading="lazy"/>
+                <figcaption>
+                    <span class="gallery-tag">Littoral</span>
+                    <h3>Surf &amp; Artisanat Local</h3>
+                    <p>Taghazout &middot; Village côtier</p>
+                </figcaption>
+            </figure>
+        </div>
+    </div>
+</section><!--======  End Agadir Lifestyle Gallery Section  ======-->
 <!--======  Start Blog Section  ======-->
 <section id="blog-section-anchor" class="renvia-blog-sec gray-bg pt-115 pb-80 curve-bottom">
 <div class="container">
@@ -1126,7 +1172,7 @@
 <!-- Renvia Blog Item 1 -->
 <div class="renvia-blog-post-item" data-aos="fade-up" data-aos-duration="1000">
 <div class="post-thumbnail">
-<a href="contact"><img alt="Guide MRE Investissement Immobilier Agadir" src="assets/images/home-one/blog/blog-img1.jpg"/></a>
+<a href="contact"><img alt="Guide MRE Investissement Immobilier Agadir" src="assets/images/stock/blog-guide-mre.jpg"/></a>
 <span class="category-badge">Guide MRE &amp; Diaspora</span>
 </div>
 <div class="post-content">
@@ -1147,7 +1193,7 @@
 <!-- Renvia Blog Item 2 -->
 <div class="renvia-blog-post-item" data-aos="fade-up" data-aos-duration="1200">
 <div class="post-thumbnail">
-<a href="contact"><img alt="Acheter en VEFA Agadir" src="assets/images/home-one/blog/blog-img2.jpg"/></a>
+<a href="contact"><img alt="Acheter en VEFA Agadir" src="assets/images/stock/blog-vefa-chantier.jpg"/></a>
 <span class="category-badge">Programmes Neufs (VEFA)</span>
 </div>
 <div class="post-content">
@@ -1168,7 +1214,7 @@
 <!-- Renvia Blog Item 3 -->
 <div class="renvia-blog-post-item" data-aos="fade-up" data-aos-duration="1400">
 <div class="post-thumbnail">
-<a href="contact"><img alt="Optimisation locative Airbnb Agadir" src="assets/images/home-one/blog/blog-img3.jpg"/></a>
+<a href="contact"><img alt="Optimisation locative Airbnb Agadir" src="assets/images/stock/blog-conciergerie-interieur.jpg"/></a>
 <span class="category-badge">Conciergerie Airbnb 360°</span>
 </div>
 <div class="post-content">
@@ -1202,7 +1248,7 @@
                 <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="800">
                     <div class="footer-brand-box">
                         <a class="d-inline-block mb-25" href="/">
-                            <img alt="Maison Benali Logo" src="assets/images/home-one/logo/logo-white.png" style="height: 48px; width: auto;"/>
+                            <img alt="Maison Benali Logo" src="assets/images/home-one/logo/maison-benali-logo-white.svg" style="height: 48px; width: auto;"/>
                         </a>
                         <p class="footer-resume-text mb-25">
                             Agence d'excellence et conciergerie 360° à Agadir. L'art de valoriser et sécuriser votre patrimoine immobilier en toute sérénité.
@@ -1306,7 +1352,7 @@
 <!--====== Aos js ======-->
 <script src="assets/js/plugins/aos.js"></script>
 <!--====== Theme js ======-->
-<script src="assets/js/theme.js?v=7.0"></script>
+<script src="assets/js/theme.js?v=7.2"></script>
 <!--=== Benali Cars 3D Perspective Tilt ===-->
 <script>
 (function() {
@@ -1396,6 +1442,8 @@
 })();
 </script>
 <!--=== End Benali Cars 3D Perspective Tilt ===-->
+        <script src="assets/js/navbar-overlay.js?v=6"></script>
+<script src="assets/js/fab-menu.js?v=4"></script>
 </body>
 </html>
 
