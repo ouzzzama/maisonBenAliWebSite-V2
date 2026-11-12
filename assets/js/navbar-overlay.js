@@ -226,24 +226,34 @@
   var isDark = null;
 
   function parse(color) {
-    var m = String(color).match(/rgba?(([^)]+))/);
-    if (!m) return null;
-    var parts = m[1].split(",").map(function (v) { return parseFloat(v); });
-    if (parts.length < 3) return null;
-    return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
+    var nums = String(color).match(/[0-9.]+/g);
+    if (!nums || nums.length < 3) return null;
+    var r = parseFloat(nums[0]);
+    var g = parseFloat(nums[1]);
+    var b = parseFloat(nums[2]);
+    if (isNaN(r) || isNaN(g) || isNaN(b)) return null;
+    var a = nums.length > 3 ? parseFloat(nums[3]) : 1;
+    return { r: r, g: g, b: b, a: isNaN(a) ? 1 : a };
   }
 
-  /* The header is see-through on phones and only visible over the page top,
-     so the surface that matters is the page's first hero block. */
+  /* The header is see-through on phones, so read the colour that is actually
+     painted behind it: the first opaque layer under the logo, and as a fallback
+     the top centre of the viewport. */
   function surfaceIsDark() {
-    var nodes = document.querySelectorAll('[class*="hero"], main > section, body > section');
-    for (var i = 0; i < nodes.length; i++) {
-      var el = nodes[i];
-      if (header.contains(el) || !el.getClientRects().length) continue;
-      var c = parse(getComputedStyle(el).backgroundColor);
-      if (!c || c.a < 0.55) continue;
-      var lum = (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) / 255;
-      return lum < 0.45;
+    var rect = logo.getBoundingClientRect();
+    var x = Math.max(Math.min(rect.left + rect.width / 2, window.innerWidth - 8), 8);
+    var y = Math.max(Math.min(rect.top + rect.height / 2, window.innerHeight - 8), 8);
+    var points = [[x, y], [Math.round(window.innerWidth / 2), 40]];
+    for (var i = 0; i < points.length; i++) {
+      var stack = document.elementsFromPoint(points[i][0], points[i][1]);
+      for (var j = 0; j < stack.length; j++) {
+        var el = stack[j];
+        if (header.contains(el)) continue;
+        var c = parse(getComputedStyle(el).backgroundColor);
+        if (!c || c.a < 0.55) continue;
+        var lum = (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) / 255;
+        return lum < 0.45;
+      }
     }
     return null;
   }
