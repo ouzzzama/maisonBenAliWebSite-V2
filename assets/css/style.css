@@ -4438,108 +4438,101 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 
 /* Bottom Feature Triad (3-Column Highlights) */
 /* --------------------------------------------------------------------------
-   Bottom feature triad — three reassurance cards
+   Bottom feature triad — coral cards, icon and step number outside the card
    -------------------------------------------------------------------------- */
 .featured-triad-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 18px;
+  gap: 22px;
   border-top: 0;
   padding-top: 0;
   margin-top: 0;
   counter-reset: triad;
 }
 
+/* the whole block sits in a white frame: coral card left, icon + number right */
 .featured-triad-col {
   position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 78px;
+  gap: 0;
+  padding: 22px;
+  background: #ffffff;
+  border-radius: 44px;
+  box-shadow: 0 30px 60px -42px rgba(12, 33, 54, 0.5);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.4s ease;
+}
+
+.featured-triad-col .triad-card {
+  background: #ef453b;
+  border: 0;
+  border-radius: 34px;
+  padding: 36px 30px 40px;
   display: flex;
   flex-direction: column;
-  padding: 26px 24px 30px;
-  border: 1px solid rgba(19, 43, 69, 0.08);
-  border-radius: 22px;
-  background: #ffffff;
-  box-shadow: 0 20px 44px -36px rgba(12, 33, 54, 0.55);
-  overflow: hidden;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s ease, border-color 0.3s ease;
-}
-
-.featured-triad-col::before {
-  counter-increment: triad;
-  content: "0" counter(triad);
-  position: absolute;
-  top: 26px;
-  right: 24px;
-  font-family: 'Cal Sans', sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  color: rgba(19, 43, 69, 0.26);
-}
-
-.featured-triad-col::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 3px;
-  background: linear-gradient(90deg, #ff8a2b 0%, #e83f2a 100%);
-  transform: scaleX(0);
-  transform-origin: left center;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  justify-content: space-between;
+  gap: 26px;
+  min-height: 100%;
+  box-shadow: 0 18px 38px -28px rgba(232, 67, 43, 0.55);
 }
 
 .featured-triad-col:hover {
-  transform: translateY(-4px);
-  border-color: rgba(232, 63, 42, 0.18);
-  box-shadow: 0 30px 56px -34px rgba(12, 33, 54, 0.58);
+  transform: translateY(-5px);
+  box-shadow: 0 38px 66px -38px rgba(12, 33, 54, 0.55);
 }
 
-.featured-triad-col:hover::after {
-  transform: scaleX(1);
+.triad-aside {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 24px;
 }
 
 .triad-icon-wrap {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  background: #f7f5ef;
-  border: 1px solid rgba(19, 43, 69, 0.06);
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  color: #e83f2a;
-  margin-bottom: 20px;
-  transition: background-color 0.35s ease, color 0.35s ease,
-    transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+  font-size: 42px;
+  line-height: 1;
+  color: #ef453b;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .featured-triad-col:hover .triad-icon-wrap {
-  background: #e83f2a;
-  border-color: #e83f2a;
-  color: #ffffff;
-  transform: translateY(-3px);
-  box-shadow: 0 10px 20px rgba(232, 63, 42, 0.28);
+  transform: translateY(-3px) rotate(-8deg);
 }
 
 .triad-title {
   font-family: 'Awaking', serif;
-  font-size: 21px;
+  font-size: clamp(23px, 1.85vw, 31px);
   font-weight: 700;
-  color: #132b45;
-  margin-bottom: 12px;
-  line-height: 1.28;
+  color: #ffffff;
+  margin: 0;
+  line-height: 1.2;
   letter-spacing: -0.01em;
 }
 
 .triad-desc {
   font-family: 'Cal Sans', sans-serif;
-  font-size: 14px;
-  line-height: 1.68;
-  color: #64748b;
+  font-size: 15.5px;
+  line-height: 1.62;
+  color: rgba(255, 255, 255, 0.94);
   margin: 0;
+}
+
+/* the step number sits in the white margin, bottom right */
+.featured-triad-col::after {
+  counter-increment: triad;
+  content: "0" counter(triad);
+  position: absolute;
+  right: 30px;
+  bottom: 20px;
+  font-family: 'Awaking', serif;
+  font-size: clamp(28px, 2.4vw, 42px);
+  font-weight: 700;
+  line-height: 1;
+  color: #122b43;
 }
 
 /* Responsive Breakpoints */
@@ -4560,7 +4553,11 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     padding-right: 20px;
   }
   .featured-triad-col {
-    padding: 24px 20px 26px;
+    padding: 20px;
+    grid-template-columns: minmax(0, 1fr) 84px;
+  }
+  .featured-triad-col .triad-card {
+    padding: 34px 30px 38px;
   }
 }
 
@@ -4585,13 +4582,30 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
   .featured-triad-row {
     grid-template-columns: 1fr;
-    gap: 14px;
+    gap: 26px;
   }
   .featured-triad-col {
-    padding: 24px 22px 26px;
+    padding: 16px 16px 18px;
+    border-radius: 34px;
+    grid-template-columns: minmax(0, 1fr) 66px;
+  }
+  .featured-triad-col .triad-card {
+    padding: 30px 26px 34px;
+    border-radius: 28px;
   }
   .featured-triad-col:hover {
     transform: none;
+  }
+  .triad-aside {
+    padding-top: 16px;
+  }
+  .triad-icon-wrap {
+    font-size: 34px;
+  }
+  .featured-triad-col::after {
+    right: 18px;
+    bottom: 14px;
+    font-size: 28px;
   }
 }
 
@@ -4958,9 +4972,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   }
 
   .editorial-spinning-seal img.rotating-circle-badge {
-    width: 150px;
-    height: 150px;
-    margin-bottom: -20px;
+    width: 196px;
+    height: 196px;
+    margin-bottom: -46px;
   }
 }
 
@@ -4980,9 +4994,9 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     border-bottom-left-radius: 32px !important;
   }
   .editorial-spinning-seal img.rotating-circle-badge {
-    width: 132px;
-    height: 132px;
-    margin-bottom: -16px;
+    width: 172px;
+    height: 172px;
+    margin-bottom: -42px;
   }
   .editorial-feature-item {
     padding: 18px;
@@ -6495,29 +6509,29 @@ section.benali-cars-banner-sec,
 }
 
 .step-card-01 .flip-card-front {
-  background: linear-gradient(180deg, rgba(12, 33, 54, 0.40) 0%, rgba(12, 33, 54, 0.78) 45%, rgba(12, 33, 54, 0.97) 100%), 
-              url('../images/home-one/services/service-img1.jpg') center/cover no-repeat !important;
+  background: linear-gradient(180deg, rgba(12, 33, 54, 0.30) 0%, rgba(12, 33, 54, 0.70) 45%, rgba(12, 33, 54, 0.94) 100%), 
+              url('../images/home-one/services/service-img1.jpg') center/contain no-repeat #0c2136 !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(12, 33, 54, 0.18) !important;
 }
 
 .step-card-02 .flip-card-front {
-  background: linear-gradient(180deg, rgba(175, 25, 18, 0.35) 0%, rgba(175, 25, 18, 0.75) 45%, rgba(135, 15, 10, 0.97) 100%), 
-              url('../images/home-one/services/service-img2.jpg') center/cover no-repeat !important;
+  background: linear-gradient(180deg, rgba(175, 25, 18, 0.28) 0%, rgba(175, 25, 18, 0.68) 45%, rgba(135, 15, 10, 0.94) 100%), 
+              url('../images/home-one/services/service-img2.jpg') center/contain no-repeat #5d100c !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(175, 25, 18, 0.18) !important;
 }
 
 .step-card-03 .flip-card-front {
-  background: linear-gradient(180deg, rgba(21, 72, 61, 0.35) 0%, rgba(21, 72, 61, 0.75) 45%, rgba(14, 48, 40, 0.97) 100%), 
-              url('../images/home-one/services/service-img3.jpg') center/cover no-repeat !important;
+  background: linear-gradient(180deg, rgba(21, 72, 61, 0.26) 0%, rgba(21, 72, 61, 0.66) 45%, rgba(14, 48, 40, 0.94) 100%), 
+              url('../images/home-one/services/service-img3.jpg') center/contain no-repeat #0e3028 !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(21, 72, 61, 0.18) !important;
 }
 
 .step-card-04 .flip-card-front {
-  background: linear-gradient(180deg, rgba(165, 120, 35, 0.35) 0%, rgba(165, 120, 35, 0.75) 45%, rgba(110, 80, 20, 0.97) 100%), 
-              url('../images/home-one/services/service-img4.jpg') center/cover no-repeat !important;
+  background: linear-gradient(180deg, rgba(165, 120, 35, 0.28) 0%, rgba(165, 120, 35, 0.68) 45%, rgba(110, 80, 20, 0.94) 100%), 
+              url('../images/home-one/services/service-img4.jpg') center/contain no-repeat #4d3812 !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(165, 120, 35, 0.18) !important;
 }
@@ -12036,5 +12050,147 @@ img.mb-mini-icon {
 
   footer.main-footer .footer-top-row {
     padding: 34px 20px 40px !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Service cards: the portrait photo is shown whole (no crop). The space
+   beside it is filled by the same shot out of focus, so the card reads as
+   one image instead of a picture on a flat band.
+   -------------------------------------------------------------------------- */
+.step-card-01 .flip-card-front {
+  --mb-front-img: url('../images/home-one/services/service-img1.jpg');
+  --mb-front-tone: #0c2136;
+  --mb-front-tint: linear-gradient(180deg, rgba(12, 33, 54, 0.20) 0%, rgba(12, 33, 54, 0.62) 48%, rgba(12, 33, 54, 0.93) 100%);
+  background: #0c2136 !important;
+}
+
+.step-card-02 .flip-card-front {
+  --mb-front-img: url('../images/home-one/services/service-img2.jpg');
+  --mb-front-tone: #5d100c;
+  --mb-front-tint: linear-gradient(180deg, rgba(175, 25, 18, 0.18) 0%, rgba(175, 25, 18, 0.60) 48%, rgba(135, 15, 10, 0.93) 100%);
+  background: #5d100c !important;
+}
+
+.step-card-03 .flip-card-front {
+  --mb-front-img: url('../images/home-one/services/service-img3.jpg');
+  --mb-front-tone: #0e3028;
+  --mb-front-tint: linear-gradient(180deg, rgba(21, 72, 61, 0.16) 0%, rgba(21, 72, 61, 0.58) 48%, rgba(14, 48, 40, 0.93) 100%);
+  background: #0e3028 !important;
+}
+
+.step-card-04 .flip-card-front {
+  --mb-front-img: url('../images/home-one/services/service-img4.jpg');
+  --mb-front-tone: #4d3812;
+  --mb-front-tint: linear-gradient(180deg, rgba(165, 120, 35, 0.18) 0%, rgba(165, 120, 35, 0.60) 48%, rgba(110, 80, 20, 0.93) 100%);
+  background: #4d3812 !important;
+}
+
+.flip-card-front {
+  isolation: isolate;
+}
+
+.flip-card-front::before,
+.flip-card-front::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+/* out-of-focus backdrop that hides the empty side margins */
+.flip-card-front::before {
+  background: var(--mb-front-img, none) center/cover no-repeat;
+  filter: blur(26px) brightness(0.82) saturate(1.05);
+  transform: scale(1.18);
+  opacity: 0.95;
+}
+
+/* the whole photo, untouched, plus the tint that keeps the type readable */
+.flip-card-front::after {
+  background: var(--mb-front-tint, none), var(--mb-front-img, none) center/contain no-repeat;
+  z-index: 1;
+}
+
+.flip-card-front > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* --------------------------------------------------------------------------
+   Propriétés & Projets: the CTA sits centred at the foot of the section,
+   clear of the arch cut at its bottom edge.
+   -------------------------------------------------------------------------- */
+.renvia-project_one .renvia-button--end {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: clamp(38px, 4vw, 56px);
+}
+
+.renvia-project_one .renvia-button--end .theme-btn {
+  margin: 0;
+}
+
+.renvia-project_one {
+  padding-bottom: clamp(165px, 11vw, 210px) !important;
+}
+
+@media (max-width: 991.98px) {
+  .renvia-project_one {
+    padding-bottom: 210px !important;
+  }
+}
+
+/* Propriétés & Projets: the intro text block is centred on itself */
+.renvia-project_one .renvia-content-box {
+  text-align: center;
+}
+
+.renvia-project_one .renvia-content-box .section-title,
+.renvia-project_one .renvia-content-box .sub-title,
+.renvia-project_one .renvia-content-box h2,
+.renvia-project_one .renvia-content-box p {
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   Footer: a clear band at the foot so the sticky buttons never sit on top
+   of the bottom bar (all sizes).
+   -------------------------------------------------------------------------- */
+footer.main-footer.footer-minimalist {
+  padding-bottom: 128px !important;
+}
+
+@media (max-width: 991.98px) {
+  footer.main-footer .footer-top-row {
+    padding-top: 62px !important;
+  }
+
+  .footer-minimalist .footer-widget,
+  .footer-minimalist .widget-title,
+  .footer-minimalist .footer-links,
+  .footer-minimalist .footer-contact-list {
+    text-align: center !important;
+  }
+
+  .footer-minimalist .widget-title::after {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .footer-minimalist .footer-links li,
+  .footer-minimalist .footer-links li a {
+    text-align: center !important;
+  }
+
+  .footer-minimalist .footer-contact-list li {
+    justify-content: center !important;
+    text-align: center !important;
+  }
+
+  .footer-minimalist .footer-social-pills {
+    justify-content: center !important;
   }
 }

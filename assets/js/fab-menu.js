@@ -36,7 +36,9 @@
   btn.setAttribute("aria-expanded", "false");
   btn.setAttribute("aria-controls", "mbFabPanel");
   btn.setAttribute("aria-label", "Ouvrir le menu");
-  btn.innerHTML = '<span class="mb-fab__bars"><i></i><i></i><i></i></span>';
+  btn.innerHTML =
+    '<img class="mb-fab__mark" src="assets/images/home-one/logo/monogram-b-white.svg" alt="" aria-hidden="true">' +
+    '<span class="mb-fab__close" aria-hidden="true"><i></i><i></i></span>';
 
   var panel = document.createElement("nav");
   panel.className = "mb-fab__panel";

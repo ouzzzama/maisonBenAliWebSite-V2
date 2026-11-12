@@ -73,31 +73,40 @@
   transform: translateX(-50%);
 }
 
-.mb-fab__bars {
-  position: relative;
+/* the monogram replaces the hamburger; the X only appears while the panel is open */
+.mb-fab__mark {
   display: block;
-  width: 26px;
-  height: 18px;
+  width: 27px;
+  height: auto;
+  transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.mb-fab__bars i {
+.mb-fab__close {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 22px;
+  height: 22px;
+  opacity: 0;
+  transform: scale(0.65) rotate(-45deg);
+  transition: opacity 0.25s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.mb-fab__close i {
   position: absolute;
   left: 0;
+  top: 9.75px;
   width: 100%;
   height: 2.5px;
   border-radius: 2px;
   background: #ffffff;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    opacity 0.25s ease, top 0.4s ease;
 }
 
-.mb-fab__bars i:nth-child(1) { top: 0; }
-.mb-fab__bars i:nth-child(2) { top: 7.5px; }
-.mb-fab__bars i:nth-child(3) { top: 15px; }
+.mb-fab__close i:first-child { transform: rotate(45deg); }
+.mb-fab__close i:last-child { transform: rotate(-45deg); }
 
-.mb-fab.is-open .mb-fab__bars i:nth-child(1) { top: 7.5px; transform: rotate(45deg); }
-.mb-fab.is-open .mb-fab__bars i:nth-child(2) { opacity: 0; }
-.mb-fab.is-open .mb-fab__bars i:nth-child(3) { top: 7.5px; transform: rotate(-45deg); }
+.mb-fab.is-open .mb-fab__mark { opacity: 0; transform: scale(0.65); }
+.mb-fab.is-open .mb-fab__close { opacity: 1; transform: scale(1) rotate(0deg); }
 
 .mb-fab__panel {
   position: absolute;
@@ -336,7 +345,9 @@
 @media (prefers-reduced-motion: reduce) {
   .mb-fab__shape,
   .mb-fab__btn,
-  .mb-fab__bars i,
+  .mb-fab__mark,
+  .mb-fab__close,
+  .mb-fab__close i,
   .mb-fab__panel,
   .mb-fab__quick,
   .mb-fab__quick-btn,

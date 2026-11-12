@@ -354,3 +354,57 @@
     font-size: 9px;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Primary call to action in the map bar — booking, with Google Maps demoted
+   to a secondary outline so there is only one strong action.
+   -------------------------------------------------------------------------- */
+.mb-map-card__cta--book {
+  background: #ffffff;
+  border-color: #ffffff;
+  color: #d64a32 !important;
+  font-weight: 700;
+}
+
+.mb-map-card__cta--book svg {
+  width: 15px;
+  height: 15px;
+}
+
+.mb-map-card__cta--book:hover {
+  background: #fff4ef;
+}
+
+.mb-map-card__cta--ghost {
+  background: transparent;
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #ffffff !important;
+  box-shadow: none;
+}
+
+.mb-map-card__cta--ghost:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+/* phones: three pills in the bar need to stay on one line */
+@media (max-width: 768px) {
+  .mb-map-card {
+    padding: 16px 16px 17px;
+  }
+
+  .mb-map-card__actions {
+    gap: 6px;
+  }
+
+  .mb-map-card__cta,
+  .mb-map-card__fav {
+    padding: 8px 8px;
+    font-size: 10px;
+    gap: 5px;
+  }
+
+  .mb-map-card__cta--book svg {
+    width: 12px;
+    height: 12px;
+  }
+}

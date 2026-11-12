@@ -733,10 +733,9 @@
     max-width: none !important;
   }
 
-  /* bottom of the screen: two stacked fades crossfade instead of switching —
-     white over light content, graphite once the footer is in view */
-  .header-area::before,
-  .header-area::after {
+  /* bottom of the screen: pure blur, no colour wash — the layer is fully
+     transparent so it only ever blurs what is behind it */
+  .header-area::before {
     content: "";
     position: fixed;
     left: 0;
@@ -752,29 +751,7 @@
   }
 
   .header-area::before {
-    background: linear-gradient(
-      to top,
-      rgba(255, 255, 255, 0.94) 0%,
-      rgba(255, 255, 255, 0.82) 18%,
-      rgba(255, 255, 255, 0.56) 40%,
-      rgba(255, 255, 255, 0.28) 62%,
-      rgba(255, 255, 255, 0.08) 82%,
-      rgba(255, 255, 255, 0) 100%
-    );
-  }
-
-  .header-area::after {
-    background: linear-gradient(
-      to top,
-      rgba(12, 15, 19, 0.97) 0%,
-      rgba(12, 15, 19, 0.92) 18%,
-      rgba(12, 15, 19, 0.72) 40%,
-      rgba(12, 15, 19, 0.44) 62%,
-      rgba(12, 15, 19, 0.18) 82%,
-      rgba(12, 15, 19, 0) 100%
-    );
-    opacity: 0;
-    transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
   }
 
 
@@ -783,7 +760,26 @@
   }
 }
 
-/* over the dark footer the graphite layer fades in */
-.mb-footer-in-view header.header-area::after {
-  opacity: 1;
+/* No colour layer and no colour switch: the band is transparent, so it works
+   the same over cream sections, navy heroes and the graphite footer. */
+
+/* --------------------------------------------------------------------------
+   LOGO — more breathing room around the wordmark on every page.
+   The padding sits on the wrap, so the artwork keeps its size and the
+   horizontal values stay symmetrical (the logo stays optically centred).
+   -------------------------------------------------------------------------- */
+.header-area .brand-logo {
+  padding: 10px 22px !important;
+}
+
+@media (max-width: 1199.98px) {
+  .header-area .brand-logo {
+    padding: 8px 18px !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .header-area .brand-logo {
+    padding: 6px 14px !important;
+  }
 }

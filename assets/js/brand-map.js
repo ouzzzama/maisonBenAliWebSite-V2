@@ -29,6 +29,11 @@
     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<path d="M12 3.8l2.5 5.1 5.6.8-4 4 .9 5.6-5-2.7-5 2.7.9-5.6-4-4 5.6-.8z"/></svg>';
 
+  var ARROW_SVG =
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" ' +
+    'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -120,7 +125,9 @@
       '<h3 class="mb-map-card__title">' + esc(title) + "</h3>" +
       (address ? '<p class="mb-map-card__address">' + esc(address) + "</p>" : "") +
       '<div class="mb-map-card__actions">' +
-      '<a class="mb-map-card__cta" target="_blank" rel="noopener" ' +
+      '<a class="mb-map-card__cta mb-map-card__cta--book" href="/contact">Prendre rendez-vous' +
+      ARROW_SVG + '</a>' +
+      '<a class="mb-map-card__cta mb-map-card__cta--ghost" target="_blank" rel="noopener" ' +
       'href="https://www.google.com/maps/search/?api=1&query=' +
       lat + "," + lng + '">Google Maps' +
       MAP_SVG + '</a>' +

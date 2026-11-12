@@ -196,18 +196,9 @@
 
 
 /* -------------------------------------------------------------------------
-   Footer guard: drop the bottom screen blur once the footer is in view.
+   The bottom blur needs no guard: its layer is transparent, so it blurs
+   whatever section, hero or footer happens to be behind it.
    ------------------------------------------------------------------------- */
-(function () {
-  var footer = document.getElementById("mainFooter") || document.querySelector("footer");
-  if (!footer || !("IntersectionObserver" in window)) return;
-
-  var observer = new IntersectionObserver(function (entries) {
-    document.documentElement.classList.toggle("mb-footer-in-view", entries[0].isIntersecting);
-  }, { rootMargin: "0px 0px -45% 0px", threshold: 0 });
-
-  observer.observe(footer);
-})();
 
 
 /* -------------------------------------------------------------------------

@@ -182,10 +182,8 @@
   }
 
   function productInfoCard(ctx) {
-    var specs = ctx.specs.map(function (spec) {
-      return "<li>" + esc(spec) + "</li>";
-    }).join("");
-
+    /* the specs already have their own strip below, so the info card keeps only
+       the title, location, description and the CTA */
     var description = ctx.description ||
       "Une réalisation Maison Benali pensée pour allier élégance, confort et art de vivre à Agadir.";
 
@@ -197,8 +195,8 @@
           esc(ctx.location) + "</p>",
         '<p class="bp-info-text">' + esc(description) + "</p>",
         '<div class="bp-info-foot">',
-          '<ul class="bp-info-specs">' + specs + "</ul>",
-          '<p class="bp-info-price"><span>à partir de</span><strong>850 MAD</strong><span>/ nuit</span></p>',
+          '<button type="button" class="bp-btn bp-btn--coral bp-info-cta" data-bp-book="stay" data-bp-id="' +
+            esc(STAYS[0].id) + '">Consulter<i class="fas fa-arrow-right" aria-hidden="true"></i></button>',
         "</div>",
       "</article>"
     ].join("");
@@ -282,7 +280,8 @@
               "<small>Appartements à louer</small>",
               '<em class="bp-legend-proof"><i class="fas fa-check" aria-hidden="true"></i>Sans agence intermédiaire</em>',
             "</span>",
-            '<span class="bp-legend-dir"><i class="fas fa-arrow-left" aria-hidden="true"></i>Gauche</span>',
+            '<span class="bp-legend-dir bp-legend-dir--lr"><i class="fas fa-arrow-left" aria-hidden="true"></i>Gauche</span>',
+            '<span class="bp-legend-dir bp-legend-dir--tb"><i class="fas fa-arrow-up" aria-hidden="true"></i>Haut</span>',
           "</div>",
           '<div class="bp-legend-side">',
             '<span class="bp-legend-icon"><i class="fas fa-car" aria-hidden="true"></i></span>',
@@ -291,7 +290,8 @@
               "<small>Location de véhicules</small>",
               '<em class="bp-legend-proof"><i class="fas fa-check" aria-hidden="true"></i>Livrée à votre adresse</em>',
             "</span>",
-            '<span class="bp-legend-dir">Droite<i class="fas fa-arrow-right" aria-hidden="true"></i></span>',
+            '<span class="bp-legend-dir bp-legend-dir--lr">Droite<i class="fas fa-arrow-right" aria-hidden="true"></i></span>',
+            '<span class="bp-legend-dir bp-legend-dir--tb">Bas<i class="fas fa-arrow-down" aria-hidden="true"></i></span>',
           "</div>",
         "</div>",
         '<p class="bp-legend-note">Pas besoin de chercher un autre prestataire : un seul interlocuteur, un seul devis, du logement à la voiture.</p>',
@@ -338,13 +338,16 @@
   }
 
   function serviceTiles() {
-    var stats = [
+    /* each stat wears one of the brand colours, and the three share a row on
+       phones (the wrapper dissolves into the bento grid above that) */
+    var tones = ["bp-tile--coral", "bp-tile--ink", "bp-tile--green"];
+    var tiles = [
       ["24/7", "Assistance voyageurs", "far fa-clock"],
       ["15 min", "Confirmation concierge", "fas fa-bolt"],
       ["24", "Véhicules vérifiés", "fas fa-shield-alt"]
-    ].map(function (stat) {
+    ].map(function (stat, i) {
       return [
-        '<article class="bp-card bp-tile">',
+        '<article class="bp-card bp-tile ' + (tones[i] || tones[0]) + '">',
           '<span class="bp-tile-icon"><i class="' + stat[2] + '" aria-hidden="true"></i></span>',
           "<div>",
             '<strong class="bp-tile-value">' + esc(stat[0]) + "</strong>",
@@ -354,39 +357,39 @@
       ].join("");
     });
 
-    stats.push(
-      [
-        '<article class="bp-card bp-card--note">',
-          '<span class="bp-card__kicker">Le concierge</span>',
-          "<h2>Un concierge, pas un formulaire.</h2>",
-          "<p>Disponibilité, tarif longue durée, arrivée tardive : écrivez-nous, réponse sous 15 minutes.</p>",
-        "</article>"
-      ].join("")
-    );
+    var note = [
+      '<article class="bp-card bp-card--note">',
+        '<span class="bp-card__kicker">Le concierge</span>',
+        "<h2>Un concierge, pas un formulaire.</h2>",
+        "<p>Disponibilité, tarif longue durée, arrivée tardive : écrivez-nous, réponse sous 15 minutes.</p>",
+      "</article>"
+    ].join("");
 
-    return stats;
+    return ['<div class="bp-tile-row">' + tiles.join("") + "</div>", note];
   }
 
   function contactTiles() {
     var wa = "https://wa.me/" + WHATSAPP + "?text=" +
       encodeURIComponent("Bonjour Maison Ben Ali, je souhaite réserver un séjour avec une voiture.");
 
-    return [
-      [
-        '<a class="bp-card bp-contact bp-contact--wa" href="' + wa + '" target="_blank" rel="noopener">',
-          '<span class="bp-contact-icon"><i class="fab fa-whatsapp" aria-hidden="true"></i></span>',
-          '<span class="bp-contact-copy"><strong>WhatsApp</strong><small>Réponse sous 15 min</small></span>',
-          '<i class="fas fa-arrow-right bp-contact-go" aria-hidden="true"></i>',
-        "</a>"
-      ].join(""),
-      [
-        '<a class="bp-card bp-contact bp-contact--tel" href="' + PHONE_HREF + '">',
-          '<span class="bp-contact-icon"><i class="fas fa-phone-alt" aria-hidden="true"></i></span>',
-          '<span class="bp-contact-copy"><strong>Appeler</strong><small>' + esc(PHONE) + "</small></span>",
-          '<i class="fas fa-arrow-right bp-contact-go" aria-hidden="true"></i>',
-        "</a>"
-      ].join("")
-    ];
+    var waTile = [
+      '<a class="bp-card bp-contact bp-contact--wa" href="' + wa + '" target="_blank" rel="noopener">',
+        '<span class="bp-contact-icon"><i class="fab fa-whatsapp" aria-hidden="true"></i></span>',
+        '<span class="bp-contact-copy"><strong>WhatsApp</strong><small>Réponse sous 15 min</small></span>',
+        '<i class="fas fa-arrow-right bp-contact-go" aria-hidden="true"></i>',
+      "</a>"
+    ].join("");
+
+    var telTile = [
+      '<a class="bp-card bp-contact bp-contact--tel" href="' + PHONE_HREF + '">',
+        '<span class="bp-contact-icon"><i class="fas fa-phone-alt" aria-hidden="true"></i></span>',
+        '<span class="bp-contact-copy"><strong>Appeler</strong><small>' + esc(PHONE) + "</small></span>",
+        '<i class="fas fa-arrow-right bp-contact-go" aria-hidden="true"></i>',
+      "</a>"
+    ].join("");
+
+    /* the two shortcuts share a row on phones */
+    return ['<div class="bp-contact-row">' + waTile + telTile + "</div>"];
   }
 
   /* ---------------------------------------------------------- reservation UI */
