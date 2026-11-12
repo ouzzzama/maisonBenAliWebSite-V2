@@ -204,6 +204,8 @@
     ].join("");
   }
 
+  var LEAD_LABELS = ["Séjour", "Cuisine", "Chambre", "Salle de bain", "Terrasse", "Vue dégagée"];
+
   function leadCard(ctx) {
     var photos = ctx.gallery && ctx.gallery.length ? ctx.gallery : [ctx.hero];
     var total = photos.length;
@@ -223,13 +225,13 @@
       '<article class="bp-card bp-card--lead" id="bpLeadCard" tabindex="0" role="group"' +
         ' aria-roledescription="carrousel" aria-label="Galerie du bien">',
         '<div class="bp-lead-media">' + slides + "</div>",
-        '<div class="bp-lead-nav">',
-          '<button type="button" class="bp-lead-arrow" data-lead-prev aria-label="Photo précédente">' +
-            '<i class="fas fa-chevron-left" aria-hidden="true"></i></button>',
-          '<button type="button" class="bp-lead-arrow" data-lead-next aria-label="Photo suivante">' +
-            '<i class="fas fa-chevron-right" aria-hidden="true"></i></button>',
+        '<div class="bp-lead-bottom">',
+          '<p class="bp-lead-caption" aria-live="polite">' +
+            '<span class="bp-lead-caption__dot" aria-hidden="true"></span>' +
+            '<span data-lead-caption>' + esc(LEAD_LABELS[0]) + "</span>" +
+          "</p>",
+          '<div class="bp-lead-dots" role="group" aria-label="Galerie photos du bien">' + dots + "</div>",
         "</div>",
-        '<div class="bp-lead-dots" role="group" aria-label="Galerie photos du bien">' + dots + "</div>",
       "</article>"
     ].join("");
   }
@@ -277,20 +279,22 @@
             '<span class="bp-legend-icon"><i class="fas fa-home" aria-hidden="true"></i></span>',
             '<span class="bp-legend-copy">',
               "<strong>Séjours</strong>",
-              "<small>appartements à louer</small>",
+              "<small>Appartements à louer</small>",
+              '<em class="bp-legend-proof"><i class="fas fa-check" aria-hidden="true"></i>Sans agence intermédiaire</em>',
             "</span>",
-            '<span class="bp-legend-dir"><i class="fas fa-arrow-left" aria-hidden="true"></i>à gauche</span>',
+            '<span class="bp-legend-dir"><i class="fas fa-arrow-left" aria-hidden="true"></i>Gauche</span>',
           "</div>",
           '<div class="bp-legend-side">',
             '<span class="bp-legend-icon"><i class="fas fa-car" aria-hidden="true"></i></span>',
             '<span class="bp-legend-copy">',
               "<strong>Voitures</strong>",
-              "<small>location de véhicules</small>",
+              "<small>Location de véhicules</small>",
+              '<em class="bp-legend-proof"><i class="fas fa-check" aria-hidden="true"></i>Livrée à votre adresse</em>',
             "</span>",
-            '<span class="bp-legend-dir">à droite<i class="fas fa-arrow-right" aria-hidden="true"></i></span>',
+            '<span class="bp-legend-dir">Droite<i class="fas fa-arrow-right" aria-hidden="true"></i></span>',
           "</div>",
         "</div>",
-        '<p class="bp-legend-note">Un seul devis pour les deux : le concierge confirme la disponibilité en un message.</p>',
+        '<p class="bp-legend-note">Pas besoin de chercher un autre prestataire : un seul interlocuteur, un seul devis, du logement à la voiture.</p>',
       "</article>"
     ].join("");
   }
@@ -639,8 +643,7 @@
 
     var imgs = lead.querySelectorAll(".bp-lead-media img");
     var dots = lead.querySelectorAll(".bp-lead-dot");
-    var prev = lead.querySelector("[data-lead-prev]");
-    var next = lead.querySelector("[data-lead-next]");
+    var caption = lead.querySelector("[data-lead-caption]");
     var index = 0;
     var timer = null;
     var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -656,6 +659,7 @@
         dot.classList.toggle("is-active", i === index);
         dot.setAttribute("aria-current", String(i === index));
       });
+      if (caption) caption.textContent = LEAD_LABELS[index % LEAD_LABELS.length];
     }
 
     function stop() {
@@ -675,9 +679,6 @@
       stop();
       start();
     }
-
-    if (prev) prev.addEventListener("click", function () { step(-1); });
-    if (next) next.addEventListener("click", function () { step(1); });
 
     Array.prototype.forEach.call(dots, function (dot) {
       dot.addEventListener("click", function () {

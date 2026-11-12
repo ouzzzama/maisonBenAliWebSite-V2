@@ -152,3 +152,35 @@ section.contact-map-sec:has(+ footer),
   -webkit-clip-path: var(--mb-arch) !important;
   clip-path: var(--mb-arch) !important;
 }
+
+/* --------------------------------------------------------------------------
+   The roadmap cards carry big soft shadows and a tilt. Clipping the section
+   to the arch sheared those shadows, so the arch is painted on a background
+   layer instead and the content box is never clipped.
+   -------------------------------------------------------------------------- */
+section#ecosysteme-roadmap.curve-bottom,
+section#ecosysteme-roadmap.ecosystem-roadmap-section.curve-bottom {
+  -webkit-clip-path: none !important;
+  clip-path: none !important;
+  overflow: visible !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  border-radius: 0 !important;
+  margin-bottom: 0 !important;
+}
+
+section#ecosysteme-roadmap.curve-bottom::after {
+  content: "" !important;
+  position: absolute !important;
+  inset: 0 !important;
+  z-index: -1 !important;
+  background: #f8fafc !important;
+  -webkit-clip-path: var(--mb-arch) !important;
+  clip-path: var(--mb-arch) !important;
+  pointer-events: none !important;
+}
+
+/* the painted layer carries the seam overlap the section used to own */
+section#ecosysteme-roadmap.curve-bottom::after {
+  bottom: calc(-1 * var(--mb-curve)) !important;
+}

@@ -84,6 +84,37 @@
   shape.appendChild(btn);
   shape.appendChild(panel);
   fab.appendChild(shape);
+
+  /* four quick actions around the circle: two on the left, two on the right */
+  var QUICK = [
+    { label: "Séjours Airbnb", icon: "fab fa-airbnb", href: "proprietes-projets" },
+    { label: "Location de voiture", icon: "fas fa-car", href: "ecosysteme-360" },
+    { label: "Appeler l'agence", icon: "fas fa-phone", href: "tel:+212661191787" },
+    { label: "Écrire sur WhatsApp", icon: "fab fa-whatsapp", href: "https://wa.me/212661191787" }
+  ];
+
+  function quickLink(item) {
+    var a = document.createElement("a");
+    a.className = "mb-fab__quick-btn";
+    a.href = item.href;
+    a.setAttribute("aria-label", item.label);
+    a.setAttribute("title", item.label);
+    if (/^https?:/i.test(item.href)) {
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+    }
+    a.innerHTML = '<i class="' + item.icon + '" aria-hidden="true"></i>';
+    return a;
+  }
+
+  var quickLeft = document.createElement("div");
+  quickLeft.className = "mb-fab__quick mb-fab__quick--left";
+  var quickRight = document.createElement("div");
+  quickRight.className = "mb-fab__quick mb-fab__quick--right";
+  QUICK.slice(0, 2).forEach(function (item) { quickLeft.appendChild(quickLink(item)); });
+  QUICK.slice(2).forEach(function (item) { quickRight.appendChild(quickLink(item)); });
+  fab.appendChild(quickLeft);
+  fab.appendChild(quickRight);
   document.body.appendChild(fab);
   document.documentElement.classList.add("mb-has-fab");
 
@@ -92,9 +123,14 @@
     var width = Math.min(340, window.innerWidth - 28);
 
     shape.style.width = width + "px";
+    /* the panel keeps the same inset on every side as the stylesheet, so the
+       copy never touches the card edge; width must follow that inset */
+    var insetX = narrow ? 16 : 18;
+    panel.style.left = insetX + "px";
+    panel.style.right = insetX + "px";
     /* measure the list at its final width, otherwise it is still wrapped
        for the collapsed 66px circle and the panel opens far too tall */
-    panel.style.width = width - (narrow ? 24 : 28) + "px";
+    panel.style.width = width - insetX * 2 + "px";
 
     /* list on top, the circle keeps its place at the bottom centre */
     var pad = narrow ? 96 : 102;

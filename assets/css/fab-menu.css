@@ -101,9 +101,9 @@
 
 .mb-fab__panel {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  right: 14px;
+  top: 18px;
+  left: 18px;
+  right: 18px;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.26s ease, visibility 0.26s;
@@ -131,7 +131,7 @@
   grid-template-columns: 20px minmax(0, 1fr) auto;
   align-items: center;
   gap: 11px;
-  padding: 11px 2px;
+  padding: 11px 6px;
   color: #ffffff !important;
   font-family: inherit;
   line-height: 1.15;
@@ -239,9 +239,9 @@
   }
 
   .mb-fab__panel {
-    top: 12px;
-    left: 12px;
-    right: 12px;
+    top: 16px;
+    left: 16px;
+    right: 16px;
   }
 
   .mb-fab.is-open .mb-fab__btn {
@@ -249,11 +249,87 @@
   }
 
   .mb-fab__list a {
-    padding: 10px 2px;
+    padding: 10px 6px;
   }
 
   .mb-fab__text strong {
     font-size: 19px;
+  }
+}
+
+
+/* --- four quick actions flanking the circle (white pill buttons, orange glyph) --- */
+.mb-fab__quick {
+  position: absolute;
+  bottom: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  pointer-events: auto;
+  transition: opacity 0.28s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.28s;
+}
+
+.mb-fab__quick--left {
+  right: 44px;
+}
+
+.mb-fab__quick--right {
+  left: 44px;
+}
+
+.mb-fab__quick-btn {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  color: #e8432b;
+  font-size: 16px;
+  line-height: 1;
+  text-decoration: none !important;
+  box-shadow: 0 10px 22px rgba(12, 33, 54, 0.18);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, color 0.3s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mb-fab__quick-btn:hover,
+.mb-fab__quick-btn:focus-visible {
+  transform: translateY(-2px);
+  color: #f2632f;
+  box-shadow: 0 14px 26px rgba(232, 67, 43, 0.28);
+}
+
+.mb-fab__quick-btn:active {
+  transform: scale(0.94);
+}
+
+/* the panel needs the whole width, so the satellites step aside */
+.mb-fab.is-open .mb-fab__quick {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateY(6px) scale(0.9);
+}
+
+@media (max-width: 480px) {
+  .mb-fab__quick {
+    bottom: 10px;
+    gap: 7px;
+  }
+
+  .mb-fab__quick--left {
+    right: 40px;
+  }
+
+  .mb-fab__quick--right {
+    left: 40px;
+  }
+
+  .mb-fab__quick-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 15px;
   }
 }
 
@@ -262,6 +338,8 @@
   .mb-fab__btn,
   .mb-fab__bars i,
   .mb-fab__panel,
+  .mb-fab__quick,
+  .mb-fab__quick-btn,
   .mb-fab__list a {
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;

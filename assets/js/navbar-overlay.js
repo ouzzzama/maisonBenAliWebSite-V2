@@ -193,3 +193,87 @@
     });
   }
 })();
+
+
+/* -------------------------------------------------------------------------
+   Footer guard: drop the bottom screen blur once the footer is in view.
+   ------------------------------------------------------------------------- */
+(function () {
+  var footer = document.getElementById("mainFooter") || document.querySelector("footer");
+  if (!footer || !("IntersectionObserver" in window)) return;
+
+  var observer = new IntersectionObserver(function (entries) {
+    document.documentElement.classList.toggle("mb-footer-in-view", entries[0].isIntersecting);
+  }, { rootMargin: "0px 0px -45% 0px", threshold: 0 });
+
+  observer.observe(footer);
+})();
+
+
+/* -------------------------------------------------------------------------
+   Logo contrast guard — on small screens the header sits transparent over the
+   page, so the wordmark flips to its white artwork whenever the surface
+   behind it is dark (navy heroes, dark sections), and back on light pages.
+   ------------------------------------------------------------------------- */
+(function () {
+  var header = document.querySelector(".header-area");
+  if (!header) return;
+  var logo = header.querySelector(".brand-logo img");
+  if (!logo) return;
+
+  var LIGHT_SRC = logo.getAttribute("src");
+  var DARK_SRC = "assets/images/home-one/logo/maison-benali-logo-white.svg";
+  var isDark = null;
+
+  function parse(color) {
+    var m = String(color).match(/rgba?(([^)]+))/);
+    if (!m) return null;
+    var parts = m[1].split(",").map(function (v) { return parseFloat(v); });
+    if (parts.length < 3) return null;
+    return { r: parts[0], g: parts[1], b: parts[2], a: parts.length > 3 ? parts[3] : 1 };
+  }
+
+  /* The header is see-through on phones and only visible over the page top,
+     so the surface that matters is the page's first hero block. */
+  function surfaceIsDark() {
+    var nodes = document.querySelectorAll('[class*="hero"], main > section, body > section');
+    for (var i = 0; i < nodes.length; i++) {
+      var el = nodes[i];
+      if (header.contains(el) || !el.getClientRects().length) continue;
+      var c = parse(getComputedStyle(el).backgroundColor);
+      if (!c || c.a < 0.55) continue;
+      var lum = (0.2126 * c.r + 0.7152 * c.g + 0.0722 * c.b) / 255;
+      return lum < 0.45;
+    }
+    return null;
+  }
+
+  function set(dark) {
+    if (dark === isDark) return;
+    isDark = dark;
+    header.classList.toggle("is-on-dark", !!dark);
+    var next = dark ? DARK_SRC : LIGHT_SRC;
+    if (logo.getAttribute("src") !== next) logo.setAttribute("src", next);
+  }
+
+  function update() {
+    if (window.innerWidth > 1199.98) { set(false); return; }
+    var dark = surfaceIsDark();
+    if (dark !== null) set(dark);
+  }
+
+  var timer = null;
+  function schedule() {
+    if (timer) return;
+    /* plain timer: requestAnimationFrame is paused while the tab is hidden */
+    timer = setTimeout(function () { timer = null; update(); }, 80);
+  }
+
+  update();
+  window.addEventListener("scroll", schedule, { passive: true });
+  window.addEventListener("resize", schedule);
+  window.addEventListener("load", schedule);
+  [250, 800, 1600, 2600].forEach(function (delay) {
+    setTimeout(update, delay);
+  });
+})();
