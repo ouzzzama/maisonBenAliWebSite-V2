@@ -1,0 +1,346 @@
+================================================================================
+MAISON BEN ALI — TECHNICAL REPORT  /  RAPPORT TECHNIQUE
+Generated: 12 November 2026
+Project root: C:\Users\user\Desktop\maisonBenAliWebSite
+================================================================================
+
+A statically-served marketing site for an Agadir real-estate group, with one
+small Express backend for lead intake. It is NOT a SPA and NOT a framework app:
+every page is hand-written HTML with global CSS/JS, plus a Node server that
+serves the files, enforces clean URLs and exposes a single JSON API.
+
+
+--------------------------------------------------------------------------------
+1. STACK AT A GLANCE
+--------------------------------------------------------------------------------
+
+Server      Node.js >= 18 + Express 4.18 (server.js), plus sharp for image tools
+Pages       19 static .html files (theme-based, no templating engine)
+CSS Vendor  Bootstrap 5.3.3, Slick, Magnific Popup, AOS, Nice Select
+CSS Own     9 hand-written stylesheets
+JS Vendor   jQuery 3.7.1, Popper, Bootstrap, GSAP (core, SplitText,
+            ScrollSmoother, ScrollTrigger), Slick, Magnific Popup, Waypoints,
+            CounterUp, AOS, Leaflet
+JS Own      theme.js, main.js, navbar-overlay.js, fab-menu.js, minimal-icons.js,
+            brand-map.js, bento-product.js, project-bento.js,
+            product-reservation.js
+Type        Cal Sans (headings), Awaking (serif display), DM Sans / Syne /
+            Caveat (accents), Font Awesome 6 (solid, regular, light, brands)
+Media       JPG/PNG/SVG/WebP under assets/images, one MP4 in assets/videos
+            (~295 MB of assets total)
+Backend     POST /api/reservation -> append-only JSONL file; no database
+
+
+--------------------------------------------------------------------------------
+2. FRONTEND PAGES  (19 files, 11 345 lines of HTML)
+--------------------------------------------------------------------------------
+
+FILE                        TITLE                                   PAGE-SPECIFIC CSS
+index.html                  L'excellence Immobiliere (home)         style, curves, navbar, fab-menu, titles, spacings
+a-propos.html               A Propos & Notre Vision                 base set
+ecosysteme-360.html         Ecosysteme 360                          base set
+contact.html                Contact & Prise de Rendez-vous          + brand-map.css, contact.css
+proprietes-projets.html     Proprietes & Projets                    base set
+project-details.html        Villa Palmier Luxe Founty               + bento-product.css, brand-map.css
+project-details-3.html      Penthouse Premium Agadir Marina         + brand-map.css
+project-details-4.html      Complexe Commercial Sonaba              + brand-map.css
+project-details-5.html      Terrain Constructible Charaf            + brand-map.css
+project-details-6.html      Riad Moderne Taghazout Bay              + brand-map.css
+reservation.html            Residence Agadir Bay — Reservation      + product.css, brand-map.css
+service-details.html        Promotion & Developpement               base set
+service-details-2.html      Gestion de Chantier & Construction      base set
+service-details-3.html      Architecture & Design d'Interieur       base set
+service-details-4.html      Conciergerie Airbnb & Gestion Locative  base set
+service-details-5.html      Benali Cars & Mobilite Luxe             base set
+service-details-6.html      Packs Experience Immobiliere            base set
+crop_tool.html              internal scratch tool, no title           -
+test_founder.html           Founder Pop-out Test                     -
+
+("base set" = spacings.css, style.css, curves.css, titles.css, navbar.css,
+fab-menu.css)
+
+index.html section order:
+  modern-hero-section
+  editorial-about-section (renvia-about_one) pt-100 pb-110
+  featured-projects-section pt-110 pb-100
+  renvia-service_one gray-bg pt-115 pb-80 curve-bottom
+  renvia-project_one dark-bg pt-120 curve-bottom
+  renvia-intro_one bg_cover dark-bg
+  renvia-feature_one pt-120 pb-120 curve-bottom
+  benali-cars-banner-sec curve-bottom
+  benali-gallery-sec pt-110 pb-100
+  renvia-blog-sec gray-bg pt-115 pb-80 curve-bottom
+  footer
+
+Every page carries the same chrome: the white header pill / transparent mobile
+header, the desktop overlay menu, the mobile floating action button menu, the
+soft-arch dividers, and the footer with the graphite bottom fade.
+
+
+--------------------------------------------------------------------------------
+3. STYLESHEETS — assets/css/
+--------------------------------------------------------------------------------
+
+3.1 Own, hand-written (loaded last so they win)
+
+style.css (310 KB)      Main compiled theme sheet — hero variants, about,
+                        projects, services, blog, testimonials, footer, plus
+                        every project-specific override appended at the end
+titles.css              Reduced heading scale (~15-18% smaller) with matching
+                        breakpoints
+curves.css              Single source of truth for section seams — the
+                        "Soft Arch" (sine-squared arc, --mb-curve: 72px
+                        desktop / 46px mobile) via the --mb-arch polygon and
+                        overflow:hidden, plus the painted ::after arch
+                        exception for #ecosysteme-roadmap so card shadows are
+                        not clipped
+navbar.css              Header pill, centred oversized logo, mobile burger,
+                        the desktop overlay menu, and the two-layer bottom fade
+                        (white ::before + graphite ::after crossfading on
+                        .mb-footer-in-view)
+titles.css              Title scale
+spacings.css            .mt-* / .pt-* spacing utilities mirroring Bootstrap
+fab-menu.css            Floating coral circle -> menu rectangle, four white
+                        satellite quick actions (Airbnb, Cars, Phone, WhatsApp)
+bento-product.css       Project-details bento mosaic: lead stay gallery with
+                        caption pill, specs strip, bundle, stats, drawers
+product.css             Reservation page editorial layout (navy curved hero,
+                        cream sections, coral accents, dark band)
+contact.css             Agency storefront photo card
+brand-map.css           Grey cartography: OSM tiles desaturated and multiplied
+                        over a grey gradient
+
+3.2 Vendor
+  assets/css/plugins/bootstrap.min.css
+  assets/css/plugins/slick.css
+  assets/css/plugins/magnific-popup.css
+  assets/css/plugins/aos.css
+  assets/css/plugins/nice-select.css
+
+3.3 SCSS sources (assets/scss/, not compiled at runtime)
+  assets/scss/style.scss
+  assets/scss/abstract/_colors.scss
+  assets/scss/abstract/_index.scss
+  assets/scss/abstract/_mixins.scss
+  assets/scss/abstract/_variables.scss
+  assets/scss/components/_animations.scss
+  assets/scss/components/_base.scss
+  assets/scss/components/_buttons.scss
+  assets/scss/components/_common.scss
+  assets/scss/components/_offcanvas.scss
+  assets/scss/components/_preloader.scss
+  assets/scss/sections/_about.scss
+  assets/scss/sections/_blog.scss
+  assets/scss/sections/_company.scss
+  assets/scss/sections/_contact.scss
+  assets/scss/sections/_counter.scss
+  assets/scss/sections/_cta.scss
+  assets/scss/sections/_error.scss
+  assets/scss/sections/_faq.scss
+  assets/scss/sections/_features.scss
+  assets/scss/sections/_footer.scss
+  assets/scss/sections/_header.scss
+  assets/scss/sections/_hero.scss
+  assets/scss/sections/_pricing.scss
+  assets/scss/sections/_project.scss
+  assets/scss/sections/_service.scss
+  assets/scss/sections/_team.scss
+  assets/scss/sections/_testimonial.scss
+
+
+--------------------------------------------------------------------------------
+4. SCRIPTS — assets/js/
+--------------------------------------------------------------------------------
+
+theme.js (58 KB, vendor)  Theme bootstrap: Slick init, AOS, CounterUp,
+                          Magnific, sticky header, ScrollSmoother setup
+main.js                   Theme extras
+bento-product.js          Bento builder/controller for the product (project
+                          details) page
+project-bento.js          Bento reference rebuild for the other project pages
+navbar-overlay.js         Desktop hamburger overlay with hover-driven media
+                          panel, footer IntersectionObserver that drives the
+                          bottom fade, and the mobile logo-contrast guard
+fab-menu.js               Builds the floating menu from the nav, keeps panel
+                          insets in sync
+minimal-icons.js          Swaps heavy PNG badges for single-weight 24px line
+                          glyphs (navy #122b43)
+brand-map.js              Leaflet map with grey styling, no vendor UI
+product-reservation.js    Validates and fetch("/api/reservation") from
+                          [data-reserve-form]
+
+Vendor plugins (assets/js/plugins/)
+  jquery-3.7.1.min.js
+  popper.min.js
+  bootstrap.min.js
+  slick.min.js
+  jquery.magnific-popup.min.js
+  jquery.waypoints.js
+  jquery.counterup.min.js
+  aos.js
+  jquery.nice-select.min.js
+  gsap/gsap.min.js
+  gsap/SplitText.min.js
+  gsap/ScrollSmoother.min.js
+  gsap/ScrollTrigger.min.js
+  leaflet/
+
+
+--------------------------------------------------------------------------------
+5. DESIGN SYSTEM ACTUALLY IN USE
+--------------------------------------------------------------------------------
+
+Colour
+  Ink / navy ........ #122b43   (29 uses)
+  Deep hero navy .... #0c2136   (52 uses)
+  Coral ............. #ef453b   (19)
+  Footer graphite ... #0c0f13
+  Cream ............. #f7f5ef
+  Muted ............. #6b7c8c
+  Legend green ...... #1c5847 -> #123d2f
+
+Typography
+  'Cal Sans', sans-serif      headings / UI   (88 declarations)
+  'Awaking', serif            display         (22 declarations)
+  DM Sans / Syne / Caveat     accents
+
+Shape and depth
+  22-24px card radius, soft shadows, coral glow on the legend tile
+
+Seam language
+  One shallow sine-squared arch reused on every section transition; no hard
+  edges. Depth 72px desktop / 46px mobile.
+
+Motion
+  GSAP ScrollSmoother for the page, ScrollTrigger entrances on bento cards,
+  AOS fades, 0.55s opacity crossfade on the bottom blur.
+
+Fonts (assets/fonts/)
+  calsans/CalSans-SemiBold.ttf
+  awaking/awaking-light.ttf
+  awaking/awaking-bold.ttf
+  fontawesome/css/all.min.css
+  fontawesome/webfonts/fa-brands-400.woff2
+  fontawesome/webfonts/fa-light-300.woff2
+  fontawesome/webfonts/fa-regular-400.woff2
+  fontawesome/webfonts/fa-solid-900.woff2
+
+Media (assets/images/)
+  about/              9 files
+  featured-projects/ 11 files
+  gallery/            4 files
+  home-one/           logos, hero, about, bg, blog, cars (+ logo variants:
+                      maison-benali-logo.svg, maison-benali-logo-white.svg,
+                      maison-benali-logo-stacked.svg,
+                      maison-benali-logo-stacked-white.svg,
+                      logo-icon.png, logo-main.png, logo-white.png)
+  icons/              3 files
+  custom-icons/       6 files
+  founder/            2 files
+  innerpage/          1 file
+  stock/              7 files
+  root of images/     5 files
+  working folders:    bento-candidates/ (15), services-src/ (10)
+
+Video
+  assets/videos/architecture-project-pixabay.mp4
+
+
+--------------------------------------------------------------------------------
+6. BACKEND — server.js
+--------------------------------------------------------------------------------
+
+Port
+  process.env.PORT || 3001; started via npm start / npm run dev
+  (both run: node server.js)
+
+Clean URLs
+  Any /x.html -> 301 to /x ; /index.html -> 301 to /
+  Static serving: express.static(__dirname, { extensions: ["html"],
+  dotfiles: "ignore" }) — so /a-propos resolves a-propos.html
+
+Hardening
+  BLOCKED_PATH regex 404s dotfiles (.env), server.js, package*.json and
+  node_modules/* before static serving.
+  Static assets are otherwise public.
+
+POST /api/reservation  (lead intake: property visits + Benali Cars rentals)
+  - JSON body limit 32 KB
+  - every field passed through clean(): control characters stripped,
+    whitespace trimmed, per-field max length
+  - rejects phone numbers with fewer than 6 digits -> 400
+  - stored record fields: id (base-36 timestamp), receivedAt, type, property,
+    name, phone, email, date, car, from, to, message, page
+  - appends one JSON line to data/reservations.jsonl (folder created on demand)
+  - responds 201 {ok:true,id} or 500 {ok:false,error}
+  - no database, no authentication, no rate limiting — append-only file storage
+
+Catch-all
+  app.get("*") returns index.html, so unknown paths land on the home page.
+
+Deployment / hosting
+  HOSTINGER_GIT_SETUP.md  GitHub -> Hostinger webhook auto-deploy
+                          (repo ouzzzama/maisonBenAliWebSite)
+  .htaccess               forces HTTPS, redirects the old
+                          /maisonBenAliWebSite/... subfolder to the domain root,
+                          adds extensionless rewrites for Apache
+  robots.txt              allow all + sitemap https://maisonbenali.com/sitemap.xml
+  sitemap.xml             17 URLs (NOTE: one <url> entry is missing its <loc> —
+                          a real defect in that file)
+  launcher/ServerLauncher.cs + Lancer-MaisonBenAli.exe
+                          Windows convenience launcher for the local server
+  package.json.backup     stale copy
+
+
+--------------------------------------------------------------------------------
+7. TOOLING AND NON-PRODUCTION FOLDERS
+--------------------------------------------------------------------------------
+
+package.json        start/dev run server.js; build is a no-op echo;
+                    deps express + sharp; node_modules present (34 MB)
+components/ui/demo.tsx, components/ui/motion-footer.tsx
+                    leftover React/motion experiments, referenced by no page
+tools/              empty
+bento-landing/, scratch/, screenshots/, crop_tool.html, test_founder.html
+                    working artifacts, deliberately untracked
+.env, server.log    local runtime files; dotfiles are blocked by the server
+
+
+--------------------------------------------------------------------------------
+8. CURRENT REPOSITORY STATE
+--------------------------------------------------------------------------------
+
+Branch main sits at fab52d3 ("rework product page bento, mobile header and
+hero layout"). Since that commit a large body of work is UNCOMMITTED:
+CSS/JS/HTML edits for the footer spacing, the crossfading bottom fade, the
+soft-arch roadmap fix, the floating menu, the bento page, plus the staged
+deletion of project-details-2.html.
+
+Unified asset cache versions (site-wide):
+  style.css?v=60
+  navbar.css?v=30
+  curves.css?v=5
+  fab-menu.css?v=4
+  titles.css?v=1
+  navbar-overlay.js?v=16
+  fab-menu.js?v=6
+  bento-product.css?v=45
+  bento-product.js?v=24
+  theme.js?v=7.2
+
+Unfinished item:
+  The mobile logo-contrast guard in navbar-overlay.js (swapping the wordmark to
+  maison-benali-logo-white.svg on dark heroes) is in place but was still
+  returning the coloured logo on ecosysteme-360.html at the last check. That
+  behaviour was not confirmed working.
+
+
+--------------------------------------------------------------------------------
+9. VERIFICATION NOTE
+--------------------------------------------------------------------------------
+
+No build or test commands were run — there is no test suite and no build step.
+Every statement above comes from reading the project files and inspecting the
+live DOM of the running server on port 3001.
+================================================================================
+END OF REPORT
