@@ -30,6 +30,43 @@ app.use(express.json({ limit: "32kb" }));
 const DATA_DIR = path.join(__dirname, "data");
 const RESERVATION_FILE = path.join(DATA_DIR, "reservations.jsonl");
 
+// Every website request is mirrored into the CRM (crm/), which turns it into a
+// lead plus a visit/rental record. Synchronisation is best-effort: a CRM outage
+// never blocks the visitor.
+const CRM_URL = (process.env.CRM_URL || "http://localhost:3002").replace(/\/$/, "");
+
+function syncToCrm(record) {
+  const payload = {
+    type: record.type,
+    name: record.name,
+    phone: record.phone,
+    email: record.email,
+    date: record.date,
+    car: record.car,
+    from: record.from,
+    to: record.to,
+    message: record.message,
+    property: record.property,
+    page: record.page
+  };
+
+  const headers = { "Content-Type": "application/json" };
+  if (process.env.WEBSITE_INTAKE_KEY) headers["X-Intake-Key"] = process.env.WEBSITE_INTAKE_KEY;
+
+  fetch(`${CRM_URL}/api/public/intake`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(payload)
+  })
+    .then((response) =>
+      response.json().then((body) => {
+        if (!response.ok || !body.ok) throw new Error(body.error || `HTTP ${response.status}`);
+        console.log("crm sync:", record.id, "→ lead", body.id, body.bookingId || body.rentalId || "");
+      })
+    )
+    .catch((error) => console.warn("crm sync failed:", record.id, error.message));
+}
+
 function clean(value, max) {
   return typeof value === "string" ? value.replace(/[\u0000-\u001f]/g, " ").trim().slice(0, max) : "";
 }
@@ -66,6 +103,7 @@ app.post("/api/reservation", (req, res) => {
   }
 
   console.log("reservation saved:", record.id, record.type, record.phone);
+  syncToCrm(record);
   res.status(201).json({ ok: true, id: record.id });
 });
 

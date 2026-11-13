@@ -1,0 +1,89 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: #122b43;
+  --color-ink-deep: #0c2136;
+  --color-graphite: #0c0f13;
+  --color-coral: #ef453b;
+  --color-coral-deep: #d63a31;
+  --color-cream: #f7f5ef;
+  --color-muted: #6b7c8c;
+  --font-sans: var(--font-cal-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+  --font-script: var(--font-awaking), Georgia, serif;
+}
+
+:root {
+  --background: #f7f5ef;
+  --foreground: #122b43;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #f7f5ef;
+    --foreground: #122b43;
+  }
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+.font-heading {
+  font-family: var(--font-sans);
+  letter-spacing: -0.02em;
+}
+
+.font-script {
+  font-family: var(--font-script);
+  font-weight: 400;
+  letter-spacing: 0;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(18, 43, 67, 0.25) transparent;
+}
+
+*::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: rgba(18, 43, 67, 0.22);
+  border-radius: 999px;
+}
+
+@keyframes crm-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-in {
+  animation: crm-fade-up 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* thin focus ring shared by every interactive element */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  box-shadow: 0 0 0 3px rgba(239, 69, 59, 0.22);
+}

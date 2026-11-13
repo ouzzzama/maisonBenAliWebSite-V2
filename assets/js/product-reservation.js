@@ -1,8 +1,50 @@
-/* Réservation forms — product page */
+/* Réservation forms — product page
+ *
+ * The visitor's request is stored twice when possible: by the site's own
+ * Express endpoint (/api/reservation, used locally and on a VPS) and, if that
+ * endpoint is unavailable — Hostinger shared hosting serves the site as static
+ * files, so the route answers 404 — directly by the CRM public intake.
+ */
 (function () {
   "use strict";
 
   var forms = document.querySelectorAll("[data-reserve-form]");
+
+  function crmBase() {
+    return String(
+      window.MB_CRM_URL ||
+        document.documentElement.getAttribute("data-crm-url") ||
+        ""
+    ).replace(/\/$/, "");
+  }
+
+  function readJson(response) {
+    return response.json().then(function (body) {
+      return { ok: response.ok, body: body };
+    });
+  }
+
+  function postToSite(data) {
+    return fetch("/api/reservation", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(function (response) {
+      return response.json().then(function (body) {
+        return { ok: response.ok, body: body };
+      });
+    });
+  }
+
+  function postToCrm(data) {
+    var base = crmBase();
+    if (!base) return Promise.reject(new Error("CRM non configuré"));
+    return fetch(base + "/api/public/intake", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    }).then(readJson);
+  }
 
   forms.forEach(function (form) {
     var status = form.querySelector("[data-form-status]");
@@ -38,15 +80,11 @@
       }
       setStatus("Envoi de votre demande…", "pending");
 
-      fetch("/api/reservation", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data)
-      })
-        .then(function (response) {
-          return response.json().then(function (body) {
-            return { ok: response.ok, body: body };
-          });
+      postToSite(data)
+        .catch(function () {
+          /* Static hosting: /api/reservation does not exist, so the CRM
+           * public intake records the request instead. */
+          return postToCrm(data);
         })
         .then(function (result) {
           if (!result.ok || !result.body.ok) {
