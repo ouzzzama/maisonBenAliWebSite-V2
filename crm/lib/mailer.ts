@@ -49,7 +49,7 @@ export async function sendOtpCode(params: { to: string; code: string; name: stri
     process.env.MAIL_FROM ||
     (process.env.SMTP_USER
       ? `Maison Ben Ali <${process.env.SMTP_USER}>`
-      : "Maison Ben Ali <contact@maisonbenali.com>");
+      : "Maison Ben Ali <direction@maisonbenali.com>");
 
   await transport.sendMail({
     from,
