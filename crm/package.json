@@ -11,7 +11,8 @@
     "db:push": "prisma db push",
     "db:generate": "prisma generate",
     "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "mail:test": "node scripts/test-smtp.mjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^7.0.6",
