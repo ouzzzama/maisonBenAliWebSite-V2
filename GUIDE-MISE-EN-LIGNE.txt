@@ -90,9 +90,9 @@ Neon est gratuit et prend 2 minutes.
    NEXT_PUBLIC_SITE_URL  = https://maisonbenali.com
    SMTP_HOST             = smtp.hostinger.com
    SMTP_PORT             = 465
-   SMTP_USER             = contact@maisonbenali.com
+   SMTP_USER             = direction@maisonbenali.com
    SMTP_PASSWORD         = mot de passe de la boite mail (1.4)
-   MAIL_FROM             = Maison Ben Ali <contact@maisonbenali.com>
+   MAIL_FROM             = Maison Ben Ali <direction@maisonbenali.com>
 
 6. Clique "Deploy" (ou "Creer").
 7. Attends : installation + build. Puis ouvre l'adresse
@@ -127,7 +127,7 @@ A SAVOIR (limites du Node.js mutualise Hostinger) :
 ========================================================
 
 But : envoyer le code de connexion depuis
-      contact@maisonbenali.com
+      direction@maisonbenali.com
 
 1. hPanel -> "E-mails" -> "Creer une adresse e-mail".
        Nom : contact
@@ -138,7 +138,7 @@ But : envoyer le code de connexion depuis
 4. Les valeurs sont toujours les memes chez Hostinger :
        Serveur : smtp.hostinger.com
        Port    : 465 (SSL)
-       Utilisateur : contact@maisonbenali.com
+       Utilisateur : direction@maisonbenali.com
        Mot de passe : celui de l'etape 1
 5. Mets ces valeurs dans les variables du CRM (1.2, etape 5).
 6. Redemarre l'application dans hPanel.
@@ -187,7 +187,7 @@ voit "Maison Ben Ali" au lieu d'une adresse @gmail.com.
 [ ] App Node.js creee depuis GitHub, dossier racine "crm"
 [ ] Build OK, page de connexion visible
 [ ] crm.maisonbenali.com pointe sur l'app, HTTPS OK
-[ ] Boite contact@maisonbenali.com active
+[ ] Boite direction@maisonbenali.com active
 [ ] Variables SMTP ajoutees + application redemarree
 [ ] Connexion testee : mot de passe + code recu par mail
 [ ] Formulaire du site -> demande visible dans le CRM
