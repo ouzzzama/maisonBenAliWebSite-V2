@@ -2,7 +2,7 @@
  * Run with: npx prisma db push && npm run db:seed
  */
 import { PrismaClient } from "@prisma/client";
-import { demoClients, demoLeads } from "../lib/demo-data";
+import { demoClients, demoLeads, demoProducts } from "../lib/demo-data";
 
 const prisma = new PrismaClient();
 
@@ -14,6 +14,7 @@ async function main() {
   await prisma.mediaAsset.deleteMany();
   await prisma.booking.deleteMany();
   await prisma.carRental.deleteMany();
+  await prisma.product.deleteMany();
   await prisma.project.deleteMany();
   await prisma.client.deleteMany();
   await prisma.lead.deleteMany();
@@ -23,7 +24,7 @@ async function main() {
   await prisma.user.create({
     data: {
       name: "Fouad Benali",
-      email: "direction@maisonbenali.com",
+      email: process.env.ADMIN_EMAIL || "ouzzzama10@gmail.com",
       // Remplacez ce hash par un vrai mot de passe avant toute mise en ligne.
       passwordHash: "$2b$10$demo.hash.replace.me",
       role: "OWNER",
@@ -183,6 +184,31 @@ async function main() {
         threadKey: email.threadKey,
         isOutbound: email.isOutbound,
         receivedAt: new Date(email.receivedAt),
+      },
+    });
+  }
+
+  console.log("→ Catalogue des biens…");
+  for (const product of demoProducts) {
+    await prisma.product.create({
+      data: {
+        id: product.id,
+        title: product.title,
+        slug: product.slug,
+        category: product.category,
+        location: product.location,
+        address: product.address,
+        price: product.price,
+        surface: product.surface,
+        rooms: product.rooms,
+        baths: product.baths,
+        description: product.description,
+        coverUrl: product.coverUrl,
+        gallery: product.gallery,
+        badge: product.badge,
+        published: product.published,
+        sortOrder: product.sortOrder,
+        createdAt: new Date(product.createdAt),
       },
     });
   }

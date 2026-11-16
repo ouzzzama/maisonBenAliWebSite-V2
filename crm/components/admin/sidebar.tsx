@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
   BarChart3,
+  Building2,
   CalendarDays,
   Car,
   ExternalLink,
@@ -30,6 +31,7 @@ const NAV = [
   { href: "/admin/bookings", label: "Réservations", icon: CalendarDays },
   { href: "/admin/cars", label: "Benali Cars", icon: Car },
   { href: "/admin/projects", label: "Projets", icon: FolderKanban },
+  { href: "/admin/products", label: "Biens & produits", icon: Building2 },
   { href: "/admin/media", label: "Médias & CMS", icon: Images },
   { href: "/admin/finance", label: "Finances", icon: BarChart3 },
 ];

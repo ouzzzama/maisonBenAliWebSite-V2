@@ -82,6 +82,7 @@ function store(): Record<CollectionName, Row[]> {
       bookings: [...demoData.bookings] as unknown as Row[],
       rentals: [...demoData.rentals] as unknown as Row[],
       projects: [...demoData.projects] as unknown as Row[],
+      products: [...demoData.products] as unknown as Row[],
       transactions: [...demoData.transactions] as unknown as Row[],
       media: [...demoData.media] as unknown as Row[],
       emails: [...demoData.emails] as unknown as Row[],

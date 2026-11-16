@@ -100,7 +100,7 @@ export function LoginForm({ next }: { next: string }) {
                   required
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
-                  placeholder="contact@maisonbenali.com"
+                  placeholder="ouzzzama10@gmail.com"
                   className={`${inputClass} pl-10`}
                 />
               </span>
@@ -171,7 +171,7 @@ export function LoginForm({ next }: { next: string }) {
           {devCode ? (
             <div className="mt-4 rounded-xl border border-ink/12 bg-cream px-3.5 py-3">
               <p className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-ink/45">
-                Mode développement · SMTP non configuré
+Mode développement · e-mail non envoyé
               </p>
               <p className="mt-1 text-[12px] text-ink/60">
                 Code :{" "}
@@ -180,7 +180,7 @@ export function LoginForm({ next }: { next: string }) {
                 </span>
               </p>
               <p className="mt-1 text-[10.5px] leading-relaxed text-ink/35">
-                Renseignez SMTP_HOST / SMTP_USER / SMTP_PASSWORD pour recevoir le code par e-mail.
+Renseignez un mot de passe d&apos;application SMTP valide dans SMTP_PASSWORD pour recevoir le code par e-mail.
               </p>
             </div>
           ) : null}

@@ -16,6 +16,7 @@ const PREFIX: Record<CollectionName, string> = {
   bookings: "bk",
   rentals: "cr",
   projects: "pr",
+  products: "pd",
   transactions: "tx",
   media: "md",
   emails: "em",
@@ -24,18 +25,24 @@ const PREFIX: Record<CollectionName, string> = {
 const now = () => new Date().toISOString();
 
 /** Adds the ids / references a new row needs when the form omits them. */
-function withDefaults(collection: CollectionName, body: Row): Row {
+export function withDefaults(collection: CollectionName, body: Row): Row {
   const row: Row = { ...body, id: body.id ?? newId(PREFIX[collection]) };
   if (collection === "bookings") row.reference ??= `BK-${Math.floor(2400 + Math.random() * 500)}`;
   if (collection === "rentals") row.reference ??= `CR-${Math.floor(1180 + Math.random() * 300)}`;
   if (collection === "transactions") row.reference ??= `TX-${Math.floor(9850 + Math.random() * 400)}`;
-  if (collection === "projects" && !row.slug) {
+  if ((collection === "projects" || collection === "products") && !row.slug) {
     row.slug = String(row.title ?? "projet")
       .toLowerCase()
       .normalize("NFD")
       .replace(/[\\u0300-\\u036f]/g, "")
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/(^-|-$)/g, "");
+  }
+  if (collection === "products") {
+    row.published ??= false;
+    row.sortOrder ??= 10;
+    row.gallery ??= [];
+    row.badge ??= null;
   }
   if (collection === "media") {
     row.pageSlot ??= "OTHER";

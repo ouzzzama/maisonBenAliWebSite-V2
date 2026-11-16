@@ -995,10 +995,98 @@ type PrismaModelName =
   | "project"
   | "transaction"
   | "mediaAsset"
-  | "emailMessage";
+  | "emailMessage"
+  | "product";
+
+export type ProductCategory = "villas" | "appartements" | "vefa" | "commercial";
+
+export type Product = {
+  id: string;
+  title: string;
+  slug: string;
+  category: ProductCategory;
+  location: string;
+  address: string | null;
+  price: number | null;
+  surface: number | null;
+  rooms: number | null;
+  baths: number | null;
+  description: string | null;
+  coverUrl: string | null;
+  gallery: string[];
+  badge: string | null;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+};
+
+/** Biens affichés sur `proprietes-projets` et `project-details`. */
+export const demoProducts: Product[] = [
+  {
+    id: "pd_villa_founty",
+    title: "Villa Founty Beach",
+    slug: "villa-founty-beach",
+    category: "villas",
+    location: "founty",
+    address: "Founty Beach, Agadir",
+    price: 4200000,
+    surface: 350,
+    rooms: 4,
+    baths: 3,
+    description:
+      "Villa contemporaine à 300 m de la plage de Founty : séjour traversant, cuisine équipée, quatre suites, piscine et jardin arboré. Livrée avec finitions haut de gamme.",
+    coverUrl: "assets/images/innerpage/project/project-img1.jpg",
+    gallery: ["assets/images/innerpage/project/project-img1.jpg", "assets/images/innerpage/project/p1-hero.jpg"],
+    badge: "Prime Pick",
+    published: true,
+    sortOrder: 1,
+    createdAt: "2026-01-12T09:00:00.000Z",
+  },
+  {
+    id: "pd_marina_penthouse",
+    title: "Penthouse Marina Panorama",
+    slug: "penthouse-marina-panorama",
+    category: "appartements",
+    location: "marina",
+    address: "Marina d'Agadir, Agadir",
+    price: 2650000,
+    surface: 168,
+    rooms: 3,
+    baths: 2,
+    description:
+      "Dernier penthouse de la Marina avec terrasse de 60 m² plein sud sur le port. Trois chambres, deux salles de bain, parking en sous-sol et accès piscine.",
+    coverUrl: "assets/images/featured-projects/agadir-night-plaza.jpg",
+    gallery: ["assets/images/featured-projects/agadir-night-plaza.jpg"],
+    badge: "Exclusive",
+    published: true,
+    sortOrder: 2,
+    createdAt: "2026-01-18T09:00:00.000Z",
+  },
+  {
+    id: "pd_vefa_taghazout",
+    title: "Résidence Taghazout Bay — VEFA",
+    slug: "residence-taghazout-bay",
+    category: "vefa",
+    location: "taghazout",
+    address: "Taghazout Bay, Agadir",
+    price: 1480000,
+    surface: 96,
+    rooms: 2,
+    baths: 2,
+    description:
+      "Programme neuf en VEFA à 8 minutes de la plage : appartements de 2 et 3 pièces, livraison 2027, paiement échelonné et frais de notaire offerts.",
+    coverUrl: "assets/images/innerpage/project/p1-hero.jpg",
+    gallery: ["assets/images/innerpage/project/p1-hero.jpg"],
+    badge: "Nouveau",
+    published: true,
+    sortOrder: 3,
+    createdAt: "2026-02-02T09:00:00.000Z",
+  },
+];
 
 export const demoData = {
   leads: demoLeads,
+  products: demoProducts,
   clients: demoClients,
   bookings: demoBookings,
   rentals: demoRentals,
@@ -1015,6 +1103,7 @@ export const demoData = {
     transactions: "transaction",
     media: "mediaAsset",
     emails: "emailMessage",
+    products: "product",
   } as Record<string, PrismaModelName>,
 };
 

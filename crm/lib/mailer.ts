@@ -12,10 +12,15 @@ export type OtpDelivery = { delivered: boolean; devCode?: string };
  * login screen so the app stays usable in local development. Set
  * AUTH_SHOW_DEV_OTP=false to suppress that in the UI.
  */
+/** Real delivery needs both a relay and its credential. */
+export function isMailConfigured(): boolean {
+  return Boolean(process.env.SMTP_HOST && process.env.SMTP_PASSWORD);
+}
+
 export async function sendOtpCode(params: { to: string; code: string; name: string }): Promise<OtpDelivery> {
   const host = process.env.SMTP_HOST;
 
-  if (!host) {
+  if (!isMailConfigured() || !host) {
     await recordLocalCode(params);
     const devCode = process.env.AUTH_SHOW_DEV_OTP === "false" ? undefined : params.code;
     return { delivered: false, devCode };
@@ -31,9 +36,20 @@ export async function sendOtpCode(params: { to: string; code: string; name: stri
       process.env.SMTP_USER && process.env.SMTP_PASSWORD
         ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD }
         : undefined,
+    // A wrong host or port must fail the sign-in quickly instead of leaving the
+    // visitor waiting on a two-minute socket timeout.
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
   });
 
-  const from = process.env.MAIL_FROM || "Maison Ben Ali <contact@maisonbenali.com>";
+  // Gmail (and most hosted relays) reject a sender that is not the authenticated
+  // mailbox, so fall back to SMTP_USER rather than to a fixed address.
+  const from =
+    process.env.MAIL_FROM ||
+    (process.env.SMTP_USER
+      ? `Maison Ben Ali <${process.env.SMTP_USER}>`
+      : "Maison Ben Ali <contact@maisonbenali.com>");
 
   await transport.sendMail({
     from,

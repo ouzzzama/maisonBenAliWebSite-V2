@@ -134,16 +134,16 @@
             <div id="smooth-content">
                 <main>
                     <!--======  Start Page Hero Section  ======-->
-                    <section class="page-hero bg_cover p-r z-1 curve-bottom" data-src="assets/images/innerpage/project/p1-hero.jpg">
+                    <section class="page-hero bg_cover p-r z-1 curve-bottom" data-src="assets/images/innerpage/project/p1-hero.jpg" data-crm="hero">
                         <div class="container">
                             <div class="row justify-content-center">
                                 <div class="col-lg-8">
                                     <!--=== Page Content ===-->
                                     <div class="page-content text-center">
-                                        <h1>Project Details</h1>
+                                        <h1 data-crm="title">Project Details</h1>
                                         <ul>
                                             <li><a href="/">Accueil</a></li>
-                                            <li>Project Details</li>
+                                            <li data-crm="crumb">Project Details</li>
                                         </ul>
                                     </div>
                                 </div>
@@ -154,17 +154,17 @@
                     <section class="renvia-project-details-sec pt-120 curve-bottom">
                         <div class="container">
                             <!-- Project Details Wrapper -->
-                            <div class="project-details-wrapper">
+                            <div class="project-details-wrapper" data-crm-product>
                                 <div class="row">
                                     <div class="col-lg-12">
                                         <div class="project-main">
                                             <div class="row project-hero-row align-items-center mb-40">
                                                 <div class="col-lg-10">
                                                     <div class="project-thumbnail" data-aos="fade-up" data-aos-duration="1000">
-                                                        <img src="assets/images/innerpage/project/p1-hero.jpg" alt="project single">
+                                                        <img src="assets/images/innerpage/project/p1-hero.jpg" alt="project single" data-crm="cover">
                                                         <div class="project-booking-btns">
-                                                            <a href="contact" class="theme-btn style-one">Réserver<i class="far fa-calendar-check"></i></a>
-                                                            <a href="https://wa.me/" class="theme-btn project-btn-whatsapp" target="_blank" rel="noopener">Whatsapp<i class="fab fa-whatsapp"></i></a>
+                                                            <a href="contact" class="theme-btn style-one" data-crm="reserve">Réserver<i class="far fa-calendar-check"></i></a>
+                                                            <a href="https://wa.me/" class="theme-btn project-btn-whatsapp" target="_blank" rel="noopener" data-crm="whatsapp">Whatsapp<i class="fab fa-whatsapp"></i></a>
                                                             <a href="#airbnbCarsModal" class="theme-btn project-btn-airbnb" data-bs-toggle="modal" data-bs-target="#airbnbCarsModal">Airbnb<i class="fab fa-airbnb"></i></a>
                                                         </div>
                                                     </div>
@@ -177,7 +177,7 @@
                                                         </div>
                                                         <div class="info">
                                                             <span>Statut</span>
-                                                            <h6>Livré / Achevé</h6>
+                                                            <h6 data-crm="status">Livré / Achevé</h6>
                                                         </div>
                                                     </div>
                                                     <div class="renvia-info-item style-three mb-30">
@@ -186,7 +186,7 @@
                                                         </div>
                                                         <div class="info">
                                                             <span>Type de Projet</span>
-                                                            <h6>Commercial</h6>
+                                                            <h6 data-crm="type">Commercial</h6>
                                                         </div>
                                                     </div>
                                                     <div class="renvia-info-item style-three mb-30">
@@ -195,7 +195,7 @@
                                                         </div>
                                                         <div class="info">
                                                             <span>Superficie Totale</span>
-                                                            <h6>200,000 sqft</h6>
+                                                            <h6 data-crm="surface">200,000 sqft</h6>
                                                         </div>
                                                     </div>
                                                     <div class="renvia-info-item style-three mb-30">
@@ -203,8 +203,8 @@
                                                             <img src="assets/images/custom-icons/real-estate/Black/4.png" alt="icon" loading="lazy">
                                                         </div>
                                                         <div class="info">
-                                                            <span>Superficie Logement</span>
-                                                            <h6>100 - 180 Sqft</h6>
+                                                            <span>Chambres &amp; salles de bain</span>
+                                                            <h6 data-crm="rooms">100 - 180 Sqft</h6>
                                                         </div>
                                                     </div>
                                                     <div class="renvia-info-item style-three mb-30">
@@ -213,22 +213,22 @@
                                                         </div>
                                                         <div class="info">
                                                             <span>Gamme de Prix</span>
-                                                            <h6>$28K - $98K</h6>
+                                                            <h6 data-crm="price">$28K - $98K</h6>
                                                         </div>
                                                     </div>
                                                     </div>
                                                 </div>
                                             </div>
                                             <div class="project-content" data-aos="fade-up" data-aos-duration="1200">
-                                                <div class="location"><i class="far fa-map-marker-alt"></i>Agadir, Morocco</div>
-                                                <h3 class="title">Résidence d'Appartements</h3>
-                                                <p>Maison Benali vous présente cette réalisation d'exception située à Agadir. Conçu avec des matériaux nobles et des finitions haut de gamme, ce projet offre un cadre de vie privilégié alliant élégance, sécurité et confort moderne.</p>
-                                                <p>Chaque résidence bénéficie d'une architecture soignée, d'espaces baignés de lumière et d'une proximité directe avec toutes les commodités essentielles.</p>
+                                                <div class="location"><i class="far fa-map-marker-alt"></i><span data-crm="address">Agadir, Morocco</span></div>
+                                                <h3 class="title" data-crm="title">Résidence d'Appartements</h3>
+                                                <p data-crm="description">Maison Benali vous présente cette réalisation d'exception située à Agadir. Conçu avec des matériaux nobles et des finitions haut de gamme, ce projet offre un cadre de vie privilégié alliant élégance, sécurité et confort moderne.</p>
+                                                <p data-crm="summary">Chaque résidence bénéficie d'une architecture soignée, d'espaces baignés de lumière et d'une proximité directe avec toutes les commodités essentielles.</p>
                                                 <div class="content-box">
                                                     <div class="row">
                                                         <div class="col-xl-8">
                                                             <h3>Description du Projet</h3>
-                                                            <p>Maison Benali vous présente cette réalisation d'exception située à Agadir. Conçu avec des matériaux nobles et des finitions haut de gamme, ce projet offre un cadre de vie privilégié alliant élégance, sécurité et confort moderne.</p>
+                                                            <p data-crm="description">Maison Benali vous présente cette réalisation d'exception située à Agadir. Conçu avec des matériaux nobles et des finitions haut de gamme, ce projet offre un cadre de vie privilégié alliant élégance, sécurité et confort moderne.</p>
                                                             <h3>Prestations & Équipements</h3>
                                                             <div class="features-amenities-list mb-5 mb-xl-0" data-aos="fade-up" data-aos-duration="1000">
                                                                 <div class="renvia-info-item style-four">
@@ -237,7 +237,7 @@
                                                                     </div>
                                                                     <div class="info">
                                                                         <h6>ID NO.</h6>
-                                                                        <p>#1253</p>
+                                                                        <p data-crm="ref">#1253</p>
                                                                     </div>
                                                                 </div>
                                                                 <div class="renvia-info-item style-four">
@@ -399,7 +399,7 @@
                                                         </div>    
                                                     </div>
                                                 </div>
-                                                <p>Maison Benali vous présente cette réalisation d'exception située à Agadir. Conçu avec des matériaux nobles et des finitions haut de gamme, ce projet offre un cadre de vie privilégié alliant élégance, sécurité et confort moderne.</p>
+                                                <p data-crm="description">Maison Benali vous présente cette réalisation d'exception située à Agadir. Conçu avec des matériaux nobles et des finitions haut de gamme, ce projet offre un cadre de vie privilégié alliant élégance, sécurité et confort moderne.</p>
                                             </div>
                                         </div>
                                     </div>
@@ -668,7 +668,9 @@
         <script src="assets/js/brand-map.js?v=9"></script>
         <script src="assets/js/project-bento.js?v=14"></script>
         <script src="assets/js/bento-product.js?v=29"></script>
-    </body>
+    <script src="assets/js/crm-config.js?v=1"></script>
+<script src="assets/js/crm-products.js?v=1"></script>
+</body>
 </html>
 
 

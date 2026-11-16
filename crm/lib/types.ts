@@ -6,6 +6,7 @@ export type CollectionName =
   | "bookings"
   | "rentals"
   | "projects"
+  | "products"
   | "transactions"
   | "media"
   | "emails";

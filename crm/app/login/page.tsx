@@ -74,10 +74,15 @@ export default async function LoginPage({
 
       <section className="flex items-center justify-center bg-cream px-4 py-12 sm:px-8">
         <div className="w-full max-w-[420px]">
-          <div className="mb-8 flex items-center gap-3 lg:hidden">
+          <div className="mb-8 flex justify-center lg:hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/monogram-b.svg" alt="Maison Ben Ali" width={26} height={28} className="h-7 w-auto" />
-            <span className="font-script text-[14px] leading-none text-ink/55">Espace CRM</span>
+            <img
+              src="/brand/maison-benali-logo.svg"
+              alt="Maison Ben Ali"
+              width={220}
+              height={53}
+              className="h-auto w-[210px]"
+            />
           </div>
           <LoginForm next={target} />
         </div>

@@ -101,6 +101,24 @@ export const projectSchema = z.object({
 
 export type ProjectInput = z.infer<typeof projectSchema>;
 
+export const productSchema = z.object({
+  title: z.string().trim().min(3, "Titre requis"),
+  category: z.enum(["villas", "appartements", "vefa", "commercial"]),
+  location: z.string().trim().min(2, "Quartier requis"),
+  address: z.string().trim().optional().or(z.literal("")),
+  price: z.coerce.number().nonnegative("Prix invalide").optional(),
+  surface: z.coerce.number().int().nonnegative().optional(),
+  rooms: z.coerce.number().int().nonnegative().optional(),
+  baths: z.coerce.number().int().nonnegative().optional(),
+  description: z.string().trim().optional().or(z.literal("")),
+  coverUrl: z.string().trim().optional().or(z.literal("")),
+  gallery: z.string().optional(),
+  badge: z.string().trim().optional().or(z.literal("")),
+  published: z.boolean().optional(),
+});
+
+export type ProductInput = z.infer<typeof productSchema>;
+
 export const transactionSchema = z.object({
   label: z.string().trim().min(3, "Libellé requis"),
   amount: z.coerce.number().positive("Montant requis"),

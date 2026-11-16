@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { adminUser, checkPassword, isAdminEmail } from "@/lib/credentials";
 import { startChallenge } from "@/lib/otp";
-import { sendOtpCode } from "@/lib/mailer";
+import { isMailConfigured, sendOtpCode } from "@/lib/mailer";
 import { createOtpToken, OTP_COOKIE, OTP_TTL_MS, sessionCookieOptions } from "@/lib/session";
 
 export const runtime = "nodejs";
@@ -68,23 +68,31 @@ export async function POST(request: NextRequest) {
 
   let delivered = false;
   let devCode: string | undefined;
+  let smtpFailed = false;
   try {
     const result = await sendOtpCode({ to: email, code, name: admin.name });
     delivered = result.delivered;
     devCode = result.devCode;
   } catch (error) {
     console.error("OTP delivery failed:", error);
-    return NextResponse.json(
-      { ok: false, error: "Impossible d'envoyer l'e-mail de vérification." },
-      { status: 502 }
-    );
+    smtpFailed = true;
+    // Once AUTH_SHOW_DEV_OTP=false (production) a broken relay must fail the
+    // sign-in instead of exposing the code. While it is still true, fall back
+    // to the on-screen code so a bad SMTP password cannot lock the admin out.
+    if (process.env.AUTH_SHOW_DEV_OTP === "false") {
+      return NextResponse.json(
+        { ok: false, error: "Impossible d'envoyer l'e-mail de vérification." },
+        { status: 502 }
+      );
+    }
+    devCode = code;
   }
 
   const response = NextResponse.json({
     ok: true,
     email,
     delivered,
-    devMode: !process.env.SMTP_HOST,
+    devMode: !isMailConfigured() || smtpFailed,
     devCode,
     expiresInSeconds: Math.round(OTP_TTL_MS / 1000),
   });

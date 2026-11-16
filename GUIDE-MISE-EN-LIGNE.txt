@@ -1,0 +1,384 @@
+========================================================
+ MAISON BEN ALI — GUIDE COMPLET
+ PARTIE 1 : mettre en ligne (etapes)
+ PARTIE 2 : les prochaines ameliorations (classees par valeur)
+========================================================
+
+BONNE NOUVELLE
+Hostinger peut faire tourner le CRM. Ce n'est pas Vercel
+qui est obligatoire, c'est le fait d'avoir un plan avec
+"Node.js Web App" :
+   OK  -> Hostinger Business Web Hosting
+   OK  -> Hostinger Cloud Startup / Professional / Enterprise
+   NON -> Premium / Single (les plans d'entree) : le bouton
+          "Node.js web app" n'apparait pas dans hPanel.
+
+CE QUI VIT OU
+   Le site (HTML)      -> Hostinger, comme aujourd'hui
+   Le CRM (Next.js)    -> Hostinger, en "Node.js Web App"
+   La base de donnees  -> Neon (gratuit) : Hostinger ne donne
+                          que MySQL, et le CRM est fait pour
+                          PostgreSQL. 2 minutes a creer.
+   Le mail (code OTP)  -> Hostinger Mail (SMTP)
+
+
+########################################################
+#                                                      #
+#   PARTIE 1 — METTRE EN LIGNE (a faire maintenant)     #
+#                                                      #
+########################################################
+
+--------------------------------------------------------
+ ETAPE 0 — LE TEST DE 10 SECONDES
+--------------------------------------------------------
+1. Ouvre hPanel -> "Sites web" (Websites) -> "Ajouter un site".
+2. Regarde la liste des types de site.
+3. Tu vois "Node.js web app" / "Application Node.js" ?
+   -> SUPER : suis le guide tel quel.
+4. Tu ne le vois pas ?
+   -> Il faut passer au plan Business (ou Cloud), sinon le
+      CRM ne peut pas demarrer ici. Dis-le moi, on choisit.
+
+
+========================================================
+ PARTIE 1.1 — LA BASE DE DONNEES (Neon, gratuit)
+========================================================
+
+Pourquoi pas chez Hostinger ? Le CRM parle "PostgreSQL".
+L'hebergement mutualise Hostinger ne fournit que MySQL.
+Changer maintenant = modifier le schema + tout retester.
+Neon est gratuit et prend 2 minutes.
+
+1. Va sur https://neon.com -> "Sign up" (avec Google).
+2. "New Project" -> nom : maisonbenali
+3. Region : "Europe (Frankfurt)" ou "Europe (Paris)".
+4. "Create project".
+5. Cherche "Connection string" -> choisis "Pooled connection".
+6. Clique "copier". Tu obtiens :
+   postgresql://user:pass@ep-xxx-pooler.eu-central-1.aws.neon.tech/neondb?sslmode=require
+7. Copie aussi la version SANS "-pooler".
+8. Envoie-moi les deux. Je cree les tables et les donnees.
+   (Ou colle-les dans les variables du CRM, voir 1.2.)
+
+
+========================================================
+ PARTIE 1.2 — LE CRM EN LIGNE (Hostinger Node.js Web App)
+========================================================
+
+1. hPanel -> "Sites web" -> "Ajouter un site".
+2. Choisis "Node.js web app" (ou "Deploy Web App").
+3. "Connect with GitHub" -> autorise -> choisis le depot :
+       ouzzzama/maisonBenAliWebSite-V2
+   Branche : main
+4. Reglages du projet :
+       Framework            : Next.js (detecte tout seul)
+       Version de Node      : 20 ou 22 (LTS)
+       Dossier racine       : crm
+       Commande de build    : npx prisma generate && npm run build
+       Commande de demarrage: npm run start
+5. Ouvre "Variables d'environnement" et ajoute (une par une) :
+
+   DATABASE_URL          = chaine Neon "pooled"
+   DIRECT_URL            = chaine Neon sans "pooler"
+   AUTH_SECRET           = 40 caracteres au hasard
+   ADMIN_EMAIL           = ouzzzama10@gmail.com
+   ADMIN_NAME            = Fouad Benali
+   ADMIN_PASSWORD        = ton mot de passe admin (fort)
+   AUTH_COOKIE_SECURE    = true
+   AUTH_SHOW_DEV_OTP     = false
+   WEBSITE_ORIGIN        = https://maisonbenali.com
+   NEXT_PUBLIC_SITE_URL  = https://maisonbenali.com
+   SMTP_HOST             = smtp.hostinger.com
+   SMTP_PORT             = 465
+   SMTP_USER             = contact@maisonbenali.com
+   SMTP_PASSWORD         = mot de passe de la boite mail (1.4)
+   MAIL_FROM             = Maison Ben Ali <contact@maisonbenali.com>
+
+6. Clique "Deploy" (ou "Creer").
+7. Attends : installation + build. Puis ouvre l'adresse
+   proposee -> la page de connexion du CRM doit s'afficher.
+8. Quand tu changes une variable plus tard :
+   clique "Redemarrer" / "Redeploy". Sans ca, rien ne change.
+
+A SAVOIR (limites du Node.js mutualise Hostinger) :
+   - Pas de WebSocket entrant : le CRM n'en a pas besoin.
+   - Une requete coupee apres 120 secondes : OK pour un CRM.
+   - Un seul processus par application : OK pour 1 a 5 personnes.
+
+
+========================================================
+ PARTIE 1.3 — LE NOM DU CRM (crm.maisonbenali.com)
+========================================================
+
+1. Pendant la creation (ou apres, dans le site cree) :
+   clique "Domaines" -> "Connecter un domaine".
+2. Choisis un sous-domaine : crm
+   Domaine : maisonbenali.com
+3. Hostinger cree tout seul le bon enregistrement DNS.
+4. Attends 10 a 60 minutes. Le HTTPS s'active seul.
+5. Si le domaine est deja pris par un autre site :
+   hPanel -> Domaines -> DNS -> ajouter
+       Type : CNAME | Nom : crm | Valeur : l'adresse
+       du site Node.js donnee par Hostinger.
+
+
+========================================================
+ PARTIE 1.4 — LA BOITE MAIL + SMTP (Hostinger Mail)
+========================================================
+
+But : envoyer le code de connexion depuis
+      contact@maisonbenali.com
+
+1. hPanel -> "E-mails" -> "Creer une adresse e-mail".
+       Nom : contact
+       Domaine : maisonbenali.com
+       Mot de passe : fort, NOTE-LE
+2. "Creer" puis attends que le statut soit "Actif" (2 min).
+3. Clique la boite -> onglet "Configuration" -> section SMTP.
+4. Les valeurs sont toujours les memes chez Hostinger :
+       Serveur : smtp.hostinger.com
+       Port    : 465 (SSL)
+       Utilisateur : contact@maisonbenali.com
+       Mot de passe : celui de l'etape 1
+5. Mets ces valeurs dans les variables du CRM (1.2, etape 5).
+6. Redemarre l'application dans hPanel.
+7. Test : crm.maisonbenali.com/login -> e-mail + mot de passe
+   -> "Recevoir le code" -> le code arrive dans la boite.
+   S'il tombe dans les SPAM : ouvre-le, "Non spam", c'est fini.
+
+POURQUOI PAS GMAIL ?
+Gmail refuse le mot de passe normal pour l'envoi automatique
+(erreur 534 "Application-specific password required").
+La boite Hostinger, elle, marche directement, et le client
+voit "Maison Ben Ali" au lieu d'une adresse @gmail.com.
+
+
+========================================================
+ PARTIE 1.5 — RELIER LE SITE AU CRM
+========================================================
+
+1. Ouvre  assets/js/crm-config.js  du site.
+2. Verifie la ligne :  "https://crm.maisonbenali.com";
+   (c'est le seul endroit ou l'adresse du CRM est ecrite)
+3. Re-upload le fichier chez Hostinger si tu changes l'adresse.
+4. Test : formulaire du site -> la demande apparait dans le
+   CRM, pages "Leads" et "Reservations".
+
+
+========================================================
+ PARTIE 1.6 — SECURITE (le meme jour)
+========================================================
+
+1. ADMIN_PASSWORD : un vrai mot de passe, pas "Benali2026!".
+2. AUTH_SECRET : 40 caracteres au hasard, jamais partage.
+3. AUTH_SHOW_DEV_OTP = false (plus de code affiche a l'ecran).
+4. AUTH_COOKIE_SECURE  = true.
+5. Ne mets JAMAIS .env.local sur GitHub.
+6. Neon : verifie que l'historique (restore) est actif.
+
+
+========================================================
+ PARTIE 1.7 — CHECKLIST FINALE DE LA MISE EN LIGNE
+========================================================
+
+[ ] Plan Hostinger avec "Node.js Web App" (Business ou Cloud)
+[ ] Projet Neon cree, 2 adresses copiees
+[ ] Tables + donnees de depart creees (je le fais)
+[ ] App Node.js creee depuis GitHub, dossier racine "crm"
+[ ] Build OK, page de connexion visible
+[ ] crm.maisonbenali.com pointe sur l'app, HTTPS OK
+[ ] Boite contact@maisonbenali.com active
+[ ] Variables SMTP ajoutees + application redemarree
+[ ] Connexion testee : mot de passe + code recu par mail
+[ ] Formulaire du site -> demande visible dans le CRM
+[ ] Mot de passe admin change, AUTH_SHOW_DEV_OTP=false
+
+
+========================================================
+ SI "NODE.JS WEB APP" N'EXISTE PAS DANS TON PLAN
+========================================================
+
+Deux choix, tous les deux corrects :
+
+A) Passer au plan Business (ou Cloud Startup).
+   -> tout reste chez Hostinger, un seul tableau de bord,
+      un seul abonnement. C'est le plus simple a gerer.
+
+B) Garder le plan actuel et mettre seulement le CRM
+   sur Vercel (gratuit), avec le domaine crm.maisonbenali.com.
+   -> le site et les mails restent chez Hostinger,
+      le CRM juste ailleurs. Rien d'autre ne change.
+
+Dans les deux cas : base sur Neon, mails via Hostinger Mail.
+
+
+
+########################################################
+#                                                      #
+#   PARTIE 2 — LES PROCHAINES AMELIORATIONS            #
+#   (classees par valeur : 1 = a faire en premier)     #
+#                                                      #
+########################################################
+
+Comment lire cette liste ?
+   Chaque ligne dit QUOI faire et POURQUOI ca compte.
+   Regle : on ne saute pas les numeros 1, 2 et 3.
+   Tout ce qui est ici est une proposition, rien n'est
+   encore code.
+
+
+========================================================
+ GROUPE A — LES FONDATIONS
+ (sans elles, tout le reste est fragile)
+========================================================
+
+1) RENDRE LA BASE VRAIMENT UTILE (tables + donnees)
+   Aujourd'hui : les donnees vivent en memoire et disparaissent
+   quand le serveur redemarre.
+   Pourquoi : sans base, il n'y a pas de CRM, juste une demo.
+   C'est aussi ce qui empeche la mise en ligne (Prisma).
+
+2) ETRE SUR DE RECEVOIR LE CODE PAR MAIL (+ code de secours)
+   Ajouter SPF / DKIM / DMARC dans le DNS Hostinger, une 2e
+   adresse admin, et des codes de secours imprimes.
+   Pourquoi : le mail est la SEULE porte d'entree. Si le code
+   tombe dans les SPAM, tu es enferme dehors.
+   Personne n'a encore parle de ce cas.
+
+
+========================================================
+ GROUPE B — L'ARGENT QUI S'ECHAPPE DU SITE
+ (a faire des que la mise en ligne est faite)
+========================================================
+
+3) REPARER LES FORMULAIRES MORTS DES PAGES SERVICES
+   Verifie dans le code : service-details.html ligne 230 a un
+   <form> sans action et sans script, et contact.html n'a
+   AUCUN formulaire (seulement telephone / WhatsApp).
+   Pourquoi : chaque visiteur qui "remplit le formulaire" sur
+   une page service est perdu en silence. C'est le plus gros
+   trou actuel, et le moins cher a boucher.
+
+4) FAIRE EN SORTE QUE LA BOITE MAIL ENVOIE VRAIMENT
+   Verifie dans le code : le bouton de reponse de la page
+   "Boite de reception" n'appelle aucune adresse /api/emails/send.
+   Pourquoi : le module a l'air de marcher et n'envoie rien.
+   Soit on ajoute l'envoi + la synchro IMAP, soit on l'affiche
+   clairement comme "lecture seule".
+
+5) ARRETER LES DOUBLONS DE CLIENTS
+   Verifie dans le code : /api/public/intake cree toujours un
+   nouveau lead.
+   Pourquoi : la meme personne (site, puis WhatsApp, puis
+   telephone) = 3 fiches, 3 relances, des chiffres faux.
+   On reconnait le client par son telephone / e-mail normalise.
+
+6) REPONDRE DANS LES 5 MINUTES (automatique)
+   Nouveau lead -> accuse de reception au visiteur (WhatsApp
+   ou mail), alerte a l'admin, relance programmee a J+1 et J+3.
+   Pourquoi : en immobilier, celui qui repond le premier gagne.
+
+7) SAVOIR D'OU VIENT CHAQUE LEAD
+   Enregistrer la page, la source, les parametres UTM et les
+   clics sur le bouton WhatsApp.
+   Pourquoi : sans ca, impossible de savoir quelles pages
+   amenent des clients. Presque gratuit une fois le point 3 fait.
+
+
+========================================================
+ GROUPE C — LE CRM QUI FAIT TOURNER L'AGENCE
+========================================================
+
+8) DES TACHES ET "PROCHAINE ACTION" PAR LEAD
+   Une petite liste "Aujourd'hui" sur le tableau de bord.
+   Pourquoi : un pipeline meurt quand personne ne rappelle.
+   C'est LA fonction qui decide si l'equipe ouvre le CRM.
+   (Cette table n'existe pas encore.)
+
+9) CONTRATS ET FACTURES EN PDF
+   Contrat de location rempli tout seul depuis une reservation
+   (les champs "caution" et "contrat signe" existent deja mais
+   ne servent pas), plus devis / factures numerotes avec TVA 20%.
+   Pourquoi : fini Word et le papier, moins de risque juridique,
+   et l'argent rentre plus vite.
+   Personne n'a encore propose ca.
+
+10) DISPONIBILITE DES VOITURES + PRIX PAR SAISON + PHOTOS
+    Empecher deux reservations sur les memes dates, tarifs
+    selon la saison, photos du carburant et des degats au
+    depart et au retour.
+    Pourquoi : le double booking arrive forcement un jour, et
+    une photo regle un litige en 5 secondes.
+
+11) LE SITE ALIMENTE PAR LE CRM (pas seulement 3 images)
+    Aujourd'hui seules 3 images viennent du CRM ; tous les
+    textes, prix et annonces sont ecrits a la main dans le HTML.
+    Pourquoi : une annonce saisie une fois = une vraie page
+    (meilleur referencement, plus de double saisie, site
+    toujours a jour).
+
+
+========================================================
+ GROUPE D — FIABILITE, CONFIANCE, GRANDIR
+========================================================
+
+12) DES IMAGES PROPREMENT STOCKEES
+    Aujourd'hui l'upload transforme l'image en texte dans la
+    base (lourd et lent). Passer a un stockage de fichiers
+    (R2/S3) + redimensionnement + cache.
+    Pourquoi : pages plus rapides sur telephone, base legere.
+
+13) UNE PAGE "SANTE" DU SYSTEME
+    /api/health (base, mail, stockage), remontee des erreurs,
+    surveillance de disponibilite, export CSV des clients et
+    sauvegarde verifiee chez Neon.
+    Pourquoi : aujourd'hui une panne de mail se voit seulement
+    par "impossible d'envoyer".
+
+14) PLUSIEURS UTILISATEURS + JOURNAL DES ACTIONS
+    Roles (admin / agent), un code par personne, historique
+    des connexions et des modifications.
+    Pourquoi : savoir qui a change un prix ou supprime un lead,
+    et pouvoir travailler a deux sans partager un mot de passe.
+
+15) RESPECTER LA LOI 09-08 (CNDP) ET LE CONSENTEMENT
+    Declaration CNDP, case de consentement sur les formulaires,
+    duree de conservation des donnees.
+    Pourquoi : c'est la loi marocaine sur les donnees clients.
+    Personne ne l'a encore evoque, et ca devient genant quand
+    l'agence grandit.
+
+16) OUTILS DE TERRAIN (application telephone legere)
+    Pendant une visite : photos, notes, position -> un compte
+    rendu de visite au nom de l'agence envoye au client.
+    Pourquoi : ca remplace les photos WhatsApp en desordre et
+    ca fait tres professionnel. Aucun concurrent local ne le fait.
+
+17) L'INTELLIGENCE ARTIFICIELLE (en dernier)
+    Qualifier le formulaire (budget, delai), resumer les longs
+    e-mails, proposer une reponse.
+    Pourquoi : utile, mais seulement quand les donnees sont
+    propres. Sinon on automatise le desordre.
+
+
+========================================================
+ PAR OU COMMENCER (l'ordre conseille)
+========================================================
+
+   1 -> 2 -> 3 -> 5      une base fiable et plus de leads perdus
+   4 -> 6 -> 7           rien de silencieux, reponse rapide
+   8 -> 9 -> 10          le CRM devient utile tous les jours
+   11 -> 12 -> 13 -> 14 -> 15
+   16 et 17 : seulement quand tout le reste est stable
+
+
+========================================================
+ LES 2 URGENCES, MEME SI TOUT LE RESTE ATTEND
+========================================================
+
+  * Point 3 : des formulaires qui avalent des clients, aujourd'hui.
+  * Point 2 : un code qu'on ne peut pas recevoir = plus de CRM.
+
+========================================================
+ FIN DU GUIDE
+========================================================
