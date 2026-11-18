@@ -206,3 +206,12 @@ section#ecosysteme-roadmap.curve-bottom::after {
     margin-bottom: calc(-1 * var(--mb-curve)) !important;
   }
 }
+
+/* --------------------------------------------------------------------------
+   Video section: the soft arch must paint over the white block that follows
+   it, otherwise that block's straight top edge covers the curve (both used to
+   sit at z-index 10).
+   -------------------------------------------------------------------------- */
+.renvia-intro_one.curve-bottom {
+  z-index: 13 !important;
+}
