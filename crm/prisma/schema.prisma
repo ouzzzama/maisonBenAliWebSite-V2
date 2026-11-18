@@ -365,3 +365,22 @@ model Product {
 
   @@index([published, sortOrder])
 }
+
+/// Articles du blog (page blog.html et fiche blog-details.html du site).
+model Post {
+  id          String   @id @default(cuid())
+  title       String
+  slug        String   @unique
+  category    String   @default("Conseils")
+  excerpt     String?  @db.Text
+  content     String?  @db.Text
+  coverUrl    String?
+  readMinutes Int      @default(5)
+  year        Int      @default(2026)
+  published   Boolean  @default(false)
+  sortOrder   Int      @default(10)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([published, sortOrder])
+}

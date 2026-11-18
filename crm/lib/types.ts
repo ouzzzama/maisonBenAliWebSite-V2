@@ -7,6 +7,7 @@ export type CollectionName =
   | "rentals"
   | "projects"
   | "products"
+  | "posts"
   | "transactions"
   | "media"
   | "emails";

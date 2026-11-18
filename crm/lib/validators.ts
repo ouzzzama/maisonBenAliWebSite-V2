@@ -119,6 +119,19 @@ export const productSchema = z.object({
 
 export type ProductInput = z.infer<typeof productSchema>;
 
+export const postSchema = z.object({
+  title: z.string().trim().min(6, "Titre requis"),
+  category: z.string().trim().min(2, "Catégorie requise"),
+  excerpt: z.string().trim().min(10, "Résumé trop court"),
+  content: z.string().trim().min(20, "Contenu trop court"),
+  coverUrl: z.string().trim().min(3, "Image requise"),
+  readMinutes: z.coerce.number().int().positive("Durée invalide"),
+  year: z.coerce.number().int().min(2020, "Année invalide"),
+  published: z.boolean().optional(),
+});
+
+export type PostInput = z.infer<typeof postSchema>;
+
 export const transactionSchema = z.object({
   label: z.string().trim().min(3, "Libellé requis"),
   amount: z.coerce.number().positive("Montant requis"),

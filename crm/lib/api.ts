@@ -17,6 +17,7 @@ const PREFIX: Record<CollectionName, string> = {
   rentals: "cr",
   projects: "pr",
   products: "pd",
+  posts: "bl",
   transactions: "tx",
   media: "md",
   emails: "em",
@@ -30,7 +31,7 @@ export function withDefaults(collection: CollectionName, body: Row): Row {
   if (collection === "bookings") row.reference ??= `BK-${Math.floor(2400 + Math.random() * 500)}`;
   if (collection === "rentals") row.reference ??= `CR-${Math.floor(1180 + Math.random() * 300)}`;
   if (collection === "transactions") row.reference ??= `TX-${Math.floor(9850 + Math.random() * 400)}`;
-  if ((collection === "projects" || collection === "products") && !row.slug) {
+  if ((collection === "projects" || collection === "products" || collection === "posts") && !row.slug) {
     row.slug = String(row.title ?? "projet")
       .toLowerCase()
       .normalize("NFD")
@@ -43,6 +44,14 @@ export function withDefaults(collection: CollectionName, body: Row): Row {
     row.sortOrder ??= 10;
     row.gallery ??= [];
     row.badge ??= null;
+  }
+  if (collection === "posts") {
+    row.published ??= false;
+    row.sortOrder ??= 10;
+    row.readMinutes ??= 5;
+    row.year ??= new Date().getFullYear();
+    row.excerpt ??= "";
+    row.content ??= "";
   }
   if (collection === "media") {
     row.pageSlot ??= "OTHER";

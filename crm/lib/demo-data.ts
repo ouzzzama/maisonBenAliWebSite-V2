@@ -996,7 +996,8 @@ type PrismaModelName =
   | "transaction"
   | "mediaAsset"
   | "emailMessage"
-  | "product";
+  | "product"
+  | "post";
 
 export type ProductCategory = "villas" | "appartements" | "vefa" | "commercial";
 
@@ -1019,6 +1020,74 @@ export type Product = {
   sortOrder: number;
   createdAt: string;
 };
+
+/** Article du blog (page blog.html et fiche blog-details.html). */
+export type Post = {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  excerpt: string | null;
+  content: string | null;
+  coverUrl: string | null;
+  readMinutes: number;
+  year: number;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+};
+
+/** Articles affichés sur `blog.html` — un paragraphe par ligne vide. */
+export const demoPosts: Post[] = [
+  {
+    id: "bl_guide_mre",
+    title: "Comment réussir son investissement immobilier à Agadir depuis l'étranger ?",
+    slug: "investissement-immobilier-agadir-depuis-etranger",
+    category: "Guide MRE & Diaspora",
+    excerpt:
+      "Démarches notariées, rapatriement des devises et sélection des quartiers à fort potentiel locatif pour la diaspora marocaine.",
+    content:
+      "Investir depuis l'étranger demande trois sécurités : juridique, bancaire et locative.\n\nLa procuration notariée reste la clé de tout achat à distance : elle désigne un mandataire de confiance et fixe précisément les pouvoirs (compromis, acte, paiement).\n\nCôté devises, le rapatriement doit passer par un compte convertible et être déclaré : c'est ce document qui garantira, plus tard, la transférabilité des revenus locatifs.\n\nEnfin, le quartier fait le rendement : Founty et la Marina pour la location courte durée, Sonaba et Baie des Palmiers pour la résidence familiale.",
+    coverUrl: "assets/images/stock/blog-guide-mre.jpg",
+    readMinutes: 5,
+    year: 2026,
+    published: true,
+    sortOrder: 10,
+    createdAt: "2026-01-12T09:00:00.000Z",
+  },
+  {
+    id: "bl_vefa",
+    title: "Acheter en VEFA à Agadir : les étapes juridiques pour sécuriser votre bien",
+    slug: "acheter-en-vefa-agadir-etapes-juridiques",
+    category: "Programmes Neufs (VEFA)",
+    excerpt:
+      "Garanties d'achèvement, échelonnement des appels de fonds et contrôle des clauses notariales : notre checklist exclusive d'experts.",
+    content:
+      "Le neuf sécurisé repose sur quatre documents : le contrat de vente en l'état futur d'achèvement, la garantie financière d'achèvement, l'échéancier des appels de fonds et le règlement de copropriété.\n\nL'échéancier doit rester adossé à l'avancement réel du chantier : 20 à 30 % à la réservation, puis des tranches liées aux étapes techniques.\n\nExigez la garantie d'achèvement avant tout versement, et faites vérifier les pénalités de retard : elles protègent votre calendrier de livraison.",
+    coverUrl: "assets/images/stock/blog-vefa-chantier.jpg",
+    readMinutes: 4,
+    year: 2026,
+    published: true,
+    sortOrder: 20,
+    createdAt: "2026-02-03T09:00:00.000Z",
+  },
+  {
+    id: "bl_conciergerie",
+    title: "Optimisation locative à Agadir Marina & Founty : maximiser vos revenus",
+    slug: "optimisation-locative-agadir-marina-founty",
+    category: "Conciergerie Airbnb 360°",
+    excerpt:
+      "Tarification dynamique, accueil VIP et standards hôteliers haut de gamme générant jusqu'à +30 % de rentabilité locative nette.",
+    content:
+      "Un appartement bien situé ne suffit plus : la performance vient de l'exploitation. Tarification dynamique, photos professionnelles et accueil soigné font l'essentiel de l'écart.\n\nSur la Marina et Founty, la saisonnalité est marquée : la gestion des prix semaine par semaine permet de capter les pics sans brader le reste de l'année.\n\nLe standard hôtelier (linge, ménage entre deux séjours, réponse en moins d'une heure) reste le premier critère des avis, et donc du classement dans les plateformes.",
+    coverUrl: "assets/images/stock/blog-conciergerie-interieur.jpg",
+    readMinutes: 6,
+    year: 2026,
+    published: true,
+    sortOrder: 30,
+    createdAt: "2026-03-08T09:00:00.000Z",
+  },
+];
 
 /** Biens affichés sur `proprietes-projets` et `project-details`. */
 export const demoProducts: Product[] = [
@@ -1087,6 +1156,7 @@ export const demoProducts: Product[] = [
 export const demoData = {
   leads: demoLeads,
   products: demoProducts,
+  posts: demoPosts,
   clients: demoClients,
   bookings: demoBookings,
   rentals: demoRentals,
@@ -1104,6 +1174,7 @@ export const demoData = {
     media: "mediaAsset",
     emails: "emailMessage",
     products: "product",
+    posts: "post",
   } as Record<string, PrismaModelName>,
 };
 
