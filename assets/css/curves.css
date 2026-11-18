@@ -48,7 +48,10 @@ section.curve-bottom {
   overflow: hidden !important;
   position: relative !important;
   z-index: 10 !important;
-  margin-bottom: -7.5vw !important;
+  /* pull the next section up by the arch depth (+2px so the seam never shows
+     a hairline): deeper than this and the next section covers the content
+     above it, shallower and the arch floats over the page background */
+  margin-bottom: calc(-1 * var(--mb-curve) - 2px) !important;
   -webkit-clip-path: var(--mb-arch) !important;
   clip-path: var(--mb-arch) !important;
 }
@@ -213,5 +216,28 @@ section#ecosysteme-roadmap.curve-bottom::after {
    sit at z-index 10).
    -------------------------------------------------------------------------- */
 .renvia-intro_one.curve-bottom {
-  z-index: 13 !important;
+  /* above the white feature block (10), below the project section (12) whose
+     arch must paint over this video's straight top edge */
+  z-index: 11 !important;
+}
+
+/* --------------------------------------------------------------------------
+   One pull depth for every arch
+   style.css gives several sections their own `margin-bottom: -7.5vw`
+   (120px at 1600px wide) whatever the arch depth is. That deeper pull made
+   the following section ride up over the arch — hiding the curve and cropping
+   whatever sits near the bottom edge (the « Voir toutes nos propriétés »
+   button in the project section). Keep every seam at the shared depth.
+   -------------------------------------------------------------------------- */
+.curve-bottom.curve-bottom:not(#ecosysteme-roadmap) {
+  margin-bottom: calc(-1 * var(--mb-curve) - 2px) !important;
+}
+
+/* The video section sits at z-index 11; the project section above it must stay
+   in front, otherwise the video's straight top edge paints over the arch and
+   the seam reads as a flat cut (it also clipped the CTA button). */
+.renvia-project_one.curve-bottom {
+  /* services (13) > project (12) > video (11) > feature (10): each arch paints
+     over the straight top edge of the section below it */
+  z-index: 12 !important;
 }

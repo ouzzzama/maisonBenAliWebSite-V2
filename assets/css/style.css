@@ -6066,8 +6066,9 @@ footer.main-footer.footer-minimalist {
 main > section.benali-cars-banner-sec,
 section.benali-cars-banner-sec,
 .benali-cars-banner-sec {
-  margin-top: -6vw !important;
-  margin-bottom: -7.5vw !important;
+  /* rise into the arch above by its depth only, never over its content */
+  margin-top: calc(-1 * var(--mb-curve) - 2px) !important;
+  margin-bottom: calc(-1 * var(--mb-curve) - 2px) !important;
   padding-top: clamp(80px, 8vw, 130px) !important;
   padding-bottom: clamp(160px, 12vw, 230px) !important;
   position: relative !important;
@@ -12135,13 +12136,14 @@ img.mb-mini-icon {
 }
 
 .renvia-project_one {
-  /* just enough to clear the soft-arch cut (72px desktop / 46px phone) */
-  padding-bottom: clamp(96px, 6.5vw, 118px) !important;
+  /* arch depth + breathing space, so the « Voir toutes nos propriétés »
+     button always sits above the cut whatever the viewport width */
+  padding-bottom: calc(var(--mb-curve) + 46px) !important;
 }
 
 @media (max-width: 991.98px) {
   .renvia-project_one {
-    padding-bottom: 210px !important;
+    padding-bottom: calc(var(--mb-curve) + 46px) !important;
   }
 }
 
