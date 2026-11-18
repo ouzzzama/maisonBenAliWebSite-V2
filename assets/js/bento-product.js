@@ -246,6 +246,16 @@
         '<p class="bp-info-loc"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>' +
           esc(ctx.location) + "</p>",
         '<p class="bp-info-text">' + esc(description) + "</p>",
+        '<div class="bp-info-actions" role="group" aria-label="Airbnb, voiture, téléphone et partage">',
+          '<a class="bp-quick" href="https://www.airbnb.com/s/Agadir--Maroc/homes" target="_blank" rel="noopener"' +
+            ' aria-label="Voir les séjours Airbnb à Agadir"><i class="fab fa-airbnb" aria-hidden="true"></i>Airbnb</a>',
+          '<a class="bp-quick" href="ecosysteme-360" aria-label="Louer une voiture avec Benali Cars"' +
+            '><i class="fas fa-car" aria-hidden="true"></i>Cars rental</a>',
+          '<a class="bp-quick" href="tel:+212661191787" aria-label="Appeler Maison Benali">' +
+            '<i class="fas fa-phone-alt" aria-hidden="true"></i>Appeler</a>',
+          '<button type="button" class="bp-quick" data-bp-share aria-label="Partager ce bien">' +
+            '<i class="fas fa-share-alt" aria-hidden="true"></i><span data-bp-share-label>Partager</span></button>',
+        "</div>",
         '<div class="bp-info-foot">',
           '<button type="button" class="bp-btn bp-btn--coral bp-info-cta" data-bp-book="stay" data-bp-id="' +
             esc(STAYS[0].id) + '">Consulter<i class="fas fa-arrow-right" aria-hidden="true"></i></button>',
@@ -814,6 +824,13 @@
     drawer.dataset.projectImage = ctx.hero;
 
     section.addEventListener("click", function (event) {
+      var shareBtn = event.target.closest ? event.target.closest("[data-bp-share]") : null;
+      if (shareBtn) {
+        event.preventDefault();
+        shareProperty(shareBtn, ctx.title);
+        return;
+      }
+
       var trigger = event.target.closest ? event.target.closest("[data-bp-book]") : null;
       if (!trigger) return;
       event.preventDefault();
@@ -823,6 +840,37 @@
     if (window.ScrollTrigger && window.ScrollTrigger.refresh) {
       window.ScrollTrigger.refresh();
     }
+  }
+
+  /* Partage du bien : feuille de partage native (WhatsApp, e-mail, réseaux
+     sociaux) quand elle existe, sinon copie du lien. */
+  function shareProperty(button, title) {
+    var url = window.location.href;
+    var shareTitle = title ? title + " — Maison Benali" : document.title;
+    var text = "Découvrez « " + (title || shareTitle) + " » à Agadir — Maison Benali";
+
+    if (navigator.share) {
+      navigator.share({ title: shareTitle, text: text, url: url }).catch(function () {});
+      return;
+    }
+
+    var label = button.querySelector("[data-bp-share-label]") || button;
+    var previous = label.textContent;
+    var confirmCopy = function () {
+      label.textContent = "Lien copié";
+      setTimeout(function () {
+        label.textContent = previous;
+      }, 2200);
+    };
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(confirmCopy, function () {
+        window.prompt("Copiez le lien du bien :", url);
+      });
+      return;
+    }
+
+    window.prompt("Copiez le lien du bien :", url);
   }
 
   function boot() {
