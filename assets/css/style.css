@@ -6510,28 +6510,28 @@ section.benali-cars-banner-sec,
 
 .step-card-01 .flip-card-front {
   background: linear-gradient(180deg, rgba(12, 33, 54, 0.30) 0%, rgba(12, 33, 54, 0.70) 45%, rgba(12, 33, 54, 0.94) 100%), 
-              url('../images/home-one/services/service-img1.jpg') center/contain no-repeat #0c2136 !important;
+              url('../images/home-one/services/service-img1.jpg') center/cover no-repeat #0c2136 !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(12, 33, 54, 0.18) !important;
 }
 
 .step-card-02 .flip-card-front {
   background: linear-gradient(180deg, rgba(175, 25, 18, 0.28) 0%, rgba(175, 25, 18, 0.68) 45%, rgba(135, 15, 10, 0.94) 100%), 
-              url('../images/home-one/services/service-img2.jpg') center/contain no-repeat #5d100c !important;
+              url('../images/home-one/services/service-img2.jpg') center/cover no-repeat #5d100c !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(175, 25, 18, 0.18) !important;
 }
 
 .step-card-03 .flip-card-front {
   background: linear-gradient(180deg, rgba(21, 72, 61, 0.26) 0%, rgba(21, 72, 61, 0.66) 45%, rgba(14, 48, 40, 0.94) 100%), 
-              url('../images/home-one/services/service-img3.jpg') center/contain no-repeat #0e3028 !important;
+              url('../images/home-one/services/service-img3.jpg') center/cover no-repeat #0e3028 !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(21, 72, 61, 0.18) !important;
 }
 
 .step-card-04 .flip-card-front {
   background: linear-gradient(180deg, rgba(165, 120, 35, 0.28) 0%, rgba(165, 120, 35, 0.68) 45%, rgba(110, 80, 20, 0.94) 100%), 
-              url('../images/home-one/services/service-img4.jpg') center/contain no-repeat #4d3812 !important;
+              url('../images/home-one/services/service-img4.jpg') center/cover no-repeat #4d3812 !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
   box-shadow: 0 16px 36px rgba(165, 120, 35, 0.18) !important;
 }
@@ -12109,7 +12109,7 @@ img.mb-mini-icon {
 
 /* the whole photo, untouched, plus the tint that keeps the type readable */
 .flip-card-front::after {
-  background: var(--mb-front-tint, none), var(--mb-front-img, none) center/contain no-repeat;
+  background: var(--mb-front-tint, none), var(--mb-front-img, none) center/cover no-repeat;
   z-index: 1;
 }
 
