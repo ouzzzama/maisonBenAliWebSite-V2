@@ -23,9 +23,13 @@ const awaking = localFont({
 export const metadata: Metadata = {
   title: "Maison Ben Ali — CRM",
   description: "CRM interne : leads, clients, réservations, Benali Cars, projets et finances.",
+  /* Same favicon as maisonbenali.com (assets/images/favicon.png). */
   icons: {
-    icon: [{ url: "/brand/logo-icon.png", type: "image/png" }],
-    apple: [{ url: "/brand/logo-icon.png" }],
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/brand/favicon.png", type: "image/png", sizes: "256x256" },
+    ],
+    apple: [{ url: "/brand/favicon.png", sizes: "180x180" }],
   },
 };
 
