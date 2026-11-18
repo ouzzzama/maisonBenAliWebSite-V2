@@ -50,7 +50,7 @@
         <!--====== Default css ======-->
         <link rel="stylesheet" href="assets/css/spacings.css">
         <!--====== Default css ======-->
-        <link rel="stylesheet" href="assets/css/style.css?v=71">
+        <link rel="stylesheet" href="assets/css/style.css?v=72">
         <link rel="stylesheet" href="assets/css/curves.css?v=5">
         <!--====== Google Material Design 3 (M3) System ======-->
         <link rel="stylesheet" href="assets/css/m3-theme.css?v=3.1">
@@ -357,6 +357,13 @@
                                 <button class="prop-filter-btn" data-filter="commercial"><i class="fas fa-briefcase"></i> Commercial &amp; Foncier</button>
                             </div>
 
+                            <!-- Sélecteur de vue (mobile uniquement) : 1 ou 2 colonnes -->
+                            <div class="prop-view-switch" id="propViewSwitch" role="group" aria-label="Nombre de colonnes">
+                                <span class="prop-view-label">Vue</span>
+                                <button type="button" class="prop-view-btn is-active" data-prop-view="1" aria-pressed="true"><i class="fas fa-square"></i> 1 colonne</button>
+                                <button type="button" class="prop-view-btn" data-prop-view="2" aria-pressed="false"><i class="fas fa-columns"></i> 2 colonnes</button>
+                            </div>
+
                             <!-- Empty State when 0 results match -->
                             <div class="properties-empty-state" id="propertiesEmptyState">
                                 <div class="empty-state-icon"><i class="far fa-search-minus"></i></div>
@@ -366,7 +373,7 @@
                             </div>
 
                             <!-- 12 Luxury Product Cards in 3-Column Staggered Parallax Cascade -->
-                            <div class="row g-4 justify-content-center properties-parallax-grid" id="propertiesListingGrid">
+                            <div class="row g-4 justify-content-center properties-parallax-grid" id="propertiesListingGrid" data-prop-view="1">
                                 
                                 <!-- LEFT COLUMN TRACK (4 Cards) -->
                                 <div class="col-lg-4 col-md-6 prop-col-track prop-col-left">
@@ -1143,6 +1150,36 @@
             <script src="assets/js/navbar-overlay.js?v=21"></script>
 <script src="assets/js/fab-menu.js?v=7"></script>
 <script src="assets/js/crm-config.js?v=1"></script>
-<script src="assets/js/crm-products.js?v=1"></script>
+<script>
+    /* Vue mobile 1 / 2 colonnes (mémorisée dans le navigateur) */
+    (function () {
+        var grid = document.getElementById('propertiesListingGrid');
+        var wrap = document.getElementById('propViewSwitch');
+        if (!grid || !wrap) return;
+        var buttons = wrap.querySelectorAll('[data-prop-view]');
+
+        function apply(view) {
+            var safe = view === '2' ? '2' : '1';
+            grid.setAttribute('data-prop-view', safe);
+            Array.prototype.forEach.call(buttons, function (btn) {
+                var active = btn.getAttribute('data-prop-view') === safe;
+                btn.classList.toggle('is-active', active);
+                btn.setAttribute('aria-pressed', active ? 'true' : 'false');
+            });
+            try { localStorage.setItem('mbPropView', safe); } catch (error) {}
+        }
+
+        var saved = null;
+        try { saved = localStorage.getItem('mbPropView'); } catch (error) {}
+        apply(saved || grid.getAttribute('data-prop-view') || '1');
+
+        Array.prototype.forEach.call(buttons, function (btn) {
+            btn.addEventListener('click', function () {
+                apply(btn.getAttribute('data-prop-view'));
+            });
+        });
+    })();
+</script>
+<script src="assets/js/crm-products.js?v=2"></script>
     </body>
 </html>

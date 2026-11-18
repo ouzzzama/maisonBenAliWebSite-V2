@@ -119,7 +119,11 @@
     column.className = "col-lg-4 col-md-6 prop-col-track prop-col-right";
     column.setAttribute("data-crm-column", "true");
     column.innerHTML = products.map(cardMarkup).join("");
-    container.appendChild(column);
+
+    // La grille des biens de la page liste accueille aussi les biens du CRM, pour
+    // qu'ils se rangent dans les mêmes colonnes au lieu d'une rangée à part.
+    var grid = document.getElementById("propertiesListingGrid") || container;
+    grid.appendChild(column);
 
     var cards = Array.prototype.slice.call(column.querySelectorAll("[data-crm-product-card]"));
 
