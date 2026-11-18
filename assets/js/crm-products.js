@@ -258,9 +258,17 @@
   if (detailRoot) {
     var params = new URLSearchParams(window.location.search);
     var slug = params.get("bien") || params.get("slug");
-    fetchProducts(slug).then(function (data) {
+
+    // bento-product.js attend cette promesse avant de dessiner la fiche, et lit
+    // window.MB_CRM_PRODUCT : la page affiche donc le bien du CRM, pas le gabarit.
+    var request = fetchProducts(slug).then(function (data) {
       var product = Array.isArray(data) ? data[0] : data;
-      if (product) fillDetail(product);
+      if (product) {
+        window.MB_CRM_PRODUCT = product;
+        fillDetail(product);
+      }
+      return product;
     });
+    window.MB_CRM_READY = request;
   }
 })();

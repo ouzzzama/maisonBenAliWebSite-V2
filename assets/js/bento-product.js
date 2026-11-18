@@ -151,7 +151,23 @@
   }
 
   /* ------------------------------------------------------------------ cards */
+  function specItem(value, label, icon) {
+    return "<li>" +
+      '<span class="bp-spec-badge"><i class="' + icon + '" aria-hidden="true"></i></span>' +
+      '<span class="bp-spec-copy"><strong>' + esc(value || "—") + "</strong><small>" + esc(label) + "</small></span>" +
+      "</li>";
+  }
+
   function metrics(ctx) {
+    /* a bien published from the CRM brings its own four values */
+    if (ctx.metrics && ctx.metrics.length === 4) {
+      var icons = ["fas fa-building", "fas fa-ruler-combined", "fas fa-bed", "fas fa-bath"];
+      var labels = ["Type de bien", "Surface habitable", "Chambres", "Salles de bain"];
+      return ctx.metrics.map(function (value, i) {
+        return specItem(value, labels[i], icons[i]);
+      }).join("");
+    }
+
     var flat = ctx.specs.join(" ");
     var sqft = flat.match(/([\d\s.,]+)\s*sqft/i);
     var surface = sqft ? Math.round(parseFloat(sqft[1].replace(/[^\d.]/g, "")) * 0.092903) : 0;
@@ -166,11 +182,47 @@
       [rooms ? rooms[1] : "—", "Chambres", "fas fa-bed"],
       [baths ? baths[1] : "—", "Salles de bain", "fas fa-bath"]
     ].map(function (item) {
-      return "<li>" +
-        '<span class="bp-spec-badge"><i class="' + item[2] + '" aria-hidden="true"></i></span>' +
-        '<span class="bp-spec-copy"><strong>' + esc(item[0]) + "</strong><small>" + esc(item[1]) + "</small></span>" +
-        "</li>";
+      return specItem(item[0], item[1], item[2]);
     }).join("");
+  }
+
+  var CRM_TYPE_LABEL = {
+    villas: "Villa",
+    appartements: "Appartement",
+    vefa: "VEFA",
+    commercial: "Commercial"
+  };
+
+  /* A bien opened with ?bien=<slug> comes from the CRM: the page reads it in
+     crm-products.js, which leaves it on window.MB_CRM_PRODUCT. Everything the
+     bento displays (title, adress, texte, photos, specs) then comes from that
+     record instead of the static template. */
+  function withCrmProduct(base) {
+    var product = window.MB_CRM_PRODUCT;
+    if (!product) return base;
+
+    var gallery = [];
+    function push(src) {
+      if (src && gallery.indexOf(src) === -1) gallery.push(src);
+    }
+    push(product.coverUrl);
+    (product.gallery || []).forEach(push);
+    if (!gallery.length) (base.gallery || []).forEach(push);
+
+    return {
+      title: product.title || base.title,
+      location: product.address || base.location,
+      description: product.description || base.description,
+      hero: product.coverUrl || gallery[0] || base.hero,
+      gallery: gallery.slice(0, 6),
+      specs: base.specs,
+      metrics: [
+        CRM_TYPE_LABEL[product.category] || "Résidence",
+        product.surface ? product.surface + " m²" : "—",
+        product.rooms ? String(product.rooms) : "—",
+        product.baths ? String(product.baths) : "—"
+      ]
+    };
   }
 
   function specsBar(ctx) {
@@ -726,6 +778,7 @@
 
     var legacy = document.querySelector(".renvia-project-details-sec");
     var ctx = legacy ? legacyContext(legacy) : { title: "Résidence d'appartements", location: "Agadir, Maroc", hero: "assets/images/innerpage/project/p1-hero.jpg", specs: [] };
+    ctx = withCrmProduct(ctx);
 
     if (!ctx.hero) ctx.hero = "assets/images/innerpage/project/p1-hero.jpg";
 
@@ -773,24 +826,43 @@
   }
 
   function boot() {
-    var page = document.querySelector(".bp-page");
-    if (page) {
-      build(page);
+    function start() {
+      var page = document.querySelector(".bp-page");
+      if (page) {
+        build(page);
+        return;
+      }
+      /* project-bento.js builds .bp-page on DOMContentLoaded; if it runs later
+         than us, wait for it rather than silently doing nothing. */
+      var tries = 0;
+      var timer = setInterval(function () {
+        tries += 1;
+        var built = document.querySelector(".bp-page");
+        if (built) {
+          clearInterval(timer);
+          build(built);
+        } else if (tries > 40) {
+          clearInterval(timer);
+        }
+      }, 50);
+    }
+
+    /* Wait (briefly) for the CRM record so the bento never flashes the static
+       template first. crm-products.js exposes its request on MB_CRM_READY. */
+    var ready = window.MB_CRM_READY;
+    if (ready && typeof ready.then === "function") {
+      var done = false;
+      var run = function () {
+        if (done) return;
+        done = true;
+        start();
+      };
+      ready.then(run, run);
+      setTimeout(run, 2500);
       return;
     }
-    /* project-bento.js builds .bp-page on DOMContentLoaded; if it runs later
-       than us, wait for it rather than silently doing nothing. */
-    var tries = 0;
-    var timer = setInterval(function () {
-      tries += 1;
-      var built = document.querySelector(".bp-page");
-      if (built) {
-        clearInterval(timer);
-        build(built);
-      } else if (tries > 40) {
-        clearInterval(timer);
-      }
-    }, 50);
+
+    start();
   }
 
   if (document.readyState === "loading") {
