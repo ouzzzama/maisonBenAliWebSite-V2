@@ -1533,3 +1533,20 @@
     display: none;
   }
 }
+
+/* --------------------------------------------------------------------------
+   The bento block lines up with the navbar capsule.
+   The capsule sits inside .container-fluid (30px padding) and adds 32px of its
+   own padding, so its edges are 62px from each viewport edge; the bento
+   container is widened to that same measure instead of the 1314px grid.
+   -------------------------------------------------------------------------- */
+@media (min-width: 1200px) {
+  .bp-bento-sec > .container {
+    max-width: none !important;
+    width: calc(100% - 124px) !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+}
