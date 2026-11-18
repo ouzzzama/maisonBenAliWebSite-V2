@@ -184,3 +184,25 @@ section#ecosysteme-roadmap.curve-bottom::after {
 section#ecosysteme-roadmap.curve-bottom::after {
   bottom: calc(-1 * var(--mb-curve)) !important;
 }
+
+/* --------------------------------------------------------------------------
+   Ecosystem 360 hero: use the shared « Arche douce » seam, not the old dome.
+   style.css clipped this banner with ellipse(160% 100% at 50% 0%), which left a
+   flat bottom edge; this rule (higher specificity) hands the seam back to the
+   same --mb-arch polygon every other section uses.
+   -------------------------------------------------------------------------- */
+.ecosystem-page-wrapper .ecosystem-hero.curve-bottom,
+.ecosystem-page-wrapper .curve-bottom.ecosystem-hero {
+  -webkit-clip-path: var(--mb-arch) !important;
+  clip-path: var(--mb-arch) !important;
+  border-radius: 0 !important;
+  margin-bottom: -7.5vw !important;
+  z-index: 30 !important;
+}
+
+@media (max-width: 768px) {
+  .ecosystem-page-wrapper .ecosystem-hero.curve-bottom,
+  .ecosystem-page-wrapper .curve-bottom.ecosystem-hero {
+    margin-bottom: calc(-1 * var(--mb-curve)) !important;
+  }
+}
