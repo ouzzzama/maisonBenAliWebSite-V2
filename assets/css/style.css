@@ -12200,22 +12200,16 @@ footer.main-footer.footer-minimalist {
 }
 
 /* ==========================================================================
-   BIENS — GRILLE 5 COLONNES (grand écran) + VUE MOBILE 1 / 2 COLONNES
-   Les trois « pistes » d'origine (prop-col-left/center/right) sont aplaties
-   avec display:contents : leurs cartes deviennent les cellules de la grille,
-   donc l'ordre et le filtre restent inchangés.
+   BIENS — CASCADE 3 COLONNES D'ORIGINE + VUE MOBILE 1 / 2 COLONNES
+   Les trois « pistes » (prop-col-left/center/right) restent de vraies colonnes
+   flex : c'est ce qui donne aux cartes leur taille pleine (3 par rangée, donc
+   5 rangées pour 15 biens) et ce que la parallaxe au scroll de theme.js fait
+   glisser à des vitesses différentes. Elles ne sont aplaties en grille que
+   sous 768 px, où le sélecteur 1 / 2 colonnes prend le relais.
    ========================================================================== */
 #propertiesListingGrid.properties-parallax-grid {
-  display: grid !important;
-  grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-  gap: 26px !important;
   margin: 0 !important;
   padding: 0 !important;
-  align-items: start !important;
-}
-
-#propertiesListingGrid .prop-col-track {
-  display: contents !important;
 }
 
 #propertiesListingGrid .prop-card-item,
@@ -12227,81 +12221,25 @@ footer.main-footer.footer-minimalist {
   float: none !important;
 }
 
-#propertiesListingGrid .prop-col-center {
-  margin-top: 0 !important;
-}
-
-@media (max-width: 1399.98px) {
-  #propertiesListingGrid.properties-parallax-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  }
-}
-
-@media (max-width: 1199.98px) {
-  #propertiesListingGrid.properties-parallax-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    gap: 22px !important;
-  }
-}
-
-@media (max-width: 991.98px) {
-  #propertiesListingGrid.properties-parallax-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    gap: 18px !important;
-  }
-}
-
 @media (max-width: 767.98px) {
   #propertiesListingGrid.properties-parallax-grid {
+    display: grid !important;
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 20px !important;
+    align-items: start !important;
+  }
+
+  #propertiesListingGrid .prop-col-track {
+    display: contents !important;
+  }
+
+  #propertiesListingGrid .prop-col-center {
+    margin-top: 0 !important;
   }
 
   #propertiesListingGrid[data-prop-view="2"].properties-parallax-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
     gap: 12px !important;
-  }
-}
-
-/* Cinq cartes par rangée : on resserre la typographie et la hauteur pour que
-   le titre, les specs et les deux boutons tiennent dans ~210 px de large. */
-@media (min-width: 1400px) {
-  #propertiesListingGrid .luxury-product-card {
-    height: 380px !important;
-  }
-
-  #propertiesListingGrid .luxury-card-overlay {
-    padding: 24px 16px 16px !important;
-  }
-
-  #propertiesListingGrid .luxury-card-title {
-    font-size: 17px !important;
-  }
-
-  #propertiesListingGrid .luxury-card-address {
-    font-size: 11.5px !important;
-  }
-
-  #propertiesListingGrid .luxury-card-specs-bar {
-    font-size: 11px !important;
-    gap: 4px !important;
-    padding-top: 10px !important;
-  }
-
-  #propertiesListingGrid .luxury-card-actions {
-    gap: 6px !important;
-    margin-top: 12px !important;
-  }
-
-  #propertiesListingGrid .luxury-book-btn,
-  #propertiesListingGrid .luxury-reserve-btn {
-    font-size: 10.5px !important;
-    padding: 9px 8px !important;
-    gap: 4px !important;
-  }
-
-  #propertiesListingGrid .luxury-book-btn i {
-    display: none !important;
   }
 }
 

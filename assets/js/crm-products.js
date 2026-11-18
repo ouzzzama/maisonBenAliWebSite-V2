@@ -115,17 +115,24 @@
   function renderList(container, products) {
     if (!products.length) return;
 
-    var column = document.createElement("div");
-    column.className = "col-lg-4 col-md-6 prop-col-track prop-col-right";
-    column.setAttribute("data-crm-column", "true");
-    column.innerHTML = products.map(cardMarkup).join("");
+    var holder = document.createElement("div");
+    holder.innerHTML = products.map(cardMarkup).join("");
+    var cards = Array.prototype.slice.call(holder.children);
 
-    // La grille des biens de la page liste accueille aussi les biens du CRM, pour
-    // qu'ils se rangent dans les mêmes colonnes au lieu d'une rangée à part.
+    // Les biens du CRM rejoignent les trois colonnes déjà en place (3 cartes par
+    // rangée, 5 rangées pour 15 biens) : une quatrième colonne casserait la
+    // cascade et la parallaxe des colonnes.
     var grid = document.getElementById("propertiesListingGrid") || container;
-    grid.appendChild(column);
-
-    var cards = Array.prototype.slice.call(column.querySelectorAll("[data-crm-product-card]"));
+    var tracks = Array.prototype.slice.call(grid.querySelectorAll(".prop-col-track"));
+    if (!tracks.length) {
+      tracks = [document.createElement("div")];
+      tracks[0].className = "col-lg-4 col-md-6 prop-col-track prop-col-right";
+      tracks[0].setAttribute("data-crm-column", "true");
+      grid.appendChild(tracks[0]);
+    }
+    cards.forEach(function (card, index) {
+      tracks[index % tracks.length].appendChild(card);
+    });
 
     var keyword = document.getElementById("propSearchKeyword");
     var type = document.getElementById("propFilterType");
@@ -165,6 +172,7 @@
     if (reset) reset.addEventListener("click", function () { setTimeout(applyFilters, 0); });
 
     if (typeof AOS !== "undefined" && AOS.refresh) AOS.refresh();
+    if (typeof ScrollTrigger !== "undefined" && ScrollTrigger.refresh) ScrollTrigger.refresh();
   }
 
   /* ---------------------------------------------------------------- fiche */
