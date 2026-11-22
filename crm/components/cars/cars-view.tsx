@@ -45,7 +45,14 @@ const emptyRental: RentalInput = {
   notes: "",
 };
 
-export function CarsView({ initial }: { initial: CarRental[] }) {
+export function CarsView({
+  initial,
+  embedded = false,
+}: {
+  initial: CarRental[];
+  /** Intégré dans « Gestion de stock » : le titre de page est porté par l'onglet. */
+  embedded?: boolean;
+}) {
   const rentals = useCollection<CarRental>("/api/rentals", initial);
   const [query, setQuery] = React.useState("");
   const [filters, setFilters] = React.useState({ status: "" });
@@ -256,16 +263,24 @@ export function CarsView({ initial }: { initial: CarRental[] }) {
 
   return (
     <div className="animate-in">
-      <PageHeader
-        eyebrow="Benali Cars"
-        title="Locations de véhicules"
-        description="Flotte, périodes, cautions et contrats de location."
-        actions={
+      {embedded ? (
+        <div className="mb-3 flex flex-wrap items-center justify-end gap-2">
           <Button variant="coral" onClick={openCreate}>
             <Plus className="size-4" /> Nouvelle location
           </Button>
-        }
-      />
+        </div>
+      ) : (
+        <PageHeader
+          eyebrow="Benali Cars"
+          title="Locations de véhicules"
+          description="Flotte, périodes, cautions et contrats de location."
+          actions={
+            <Button variant="coral" onClick={openCreate}>
+              <Plus className="size-4" /> Nouvelle location
+            </Button>
+          }
+        />
+      )}
 
       <div className="mb-4 grid gap-3 sm:grid-cols-3">
         {[

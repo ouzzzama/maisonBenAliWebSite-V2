@@ -1,4 +1,4 @@
-/* Maison Ben Ali — CRM endpoint
+/* Maison Benali — CRM endpoint
  *
  * One place to tell the static website where the CRM lives. Loaded before
  * crm-media.js (CMS images) and product-reservation.js (form forwarding).

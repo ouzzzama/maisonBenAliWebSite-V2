@@ -18,6 +18,7 @@ const PREFIX: Record<CollectionName, string> = {
   projects: "pr",
   products: "pd",
   shop: "sh",
+  marketplaces: "mp",
   posts: "bl",
   transactions: "tx",
   media: "md",
@@ -52,6 +53,15 @@ export function withDefaults(collection: CollectionName, body: Row): Row {
     row.mode ??= "vente";
     row.stock ??= 0;
     row.unit ??= null;
+  }
+  if (collection === "marketplaces") {
+    row.platform ??= "airbnb";
+    row.status ??= "draft";
+    row.views ??= 0;
+    row.contacts ??= 0;
+    row.externalUrl ??= null;
+    row.productId ??= null;
+    row.notes ??= null;
   }
   if (collection === "posts") {
     row.published ??= false;

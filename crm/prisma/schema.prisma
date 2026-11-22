@@ -1,4 +1,4 @@
-// Maison Ben Ali — CRM & business management schema.
+// Maison Benali — CRM & business management schema.
 //
 // Default provider is PostgreSQL. For MySQL: switch `provider` to "mysql",
 // drop the @db.* attributes and replace every `String[]` field with `Json`
@@ -385,6 +385,26 @@ model ShopItem {
   updatedAt   DateTime @updatedAt
 
   @@index([mode, published, sortOrder])
+}
+
+/// Annonce diffusée sur un portail externe : Airbnb, Mubawab, Avito,
+/// Hespress Immobilier. On garde le lien, le statut et les contacts reçus.
+model MarketplaceListing {
+  id          String    @id @default(cuid())
+  platform    String    @default("airbnb") // airbnb | mubawab | avito | hespress
+  title       String
+  productId   String?
+  externalUrl String?
+  status      String    @default("draft") // draft | published | paused | expired
+  price       Decimal?  @db.Decimal(12, 2)
+  views       Int       @default(0)
+  contacts    Int       @default(0)
+  notes       String?   @db.Text
+  publishedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([platform, status])
 }
 
 /// Articles du blog (page blog.html et fiche blog-details.html du site).

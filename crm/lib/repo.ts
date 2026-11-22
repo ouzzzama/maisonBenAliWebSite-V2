@@ -6,7 +6,7 @@ import { demoData } from "./demo-data";
  *
  * When `DATABASE_URL` is set the rows are read from / written to the Prisma
  * schema (see `prisma/schema.prisma`). Without a database the module keeps the
- * seeded Maison Ben Ali dataset in memory so the whole admin stays functional.
+ * seeded Maison Benali dataset in memory so the whole admin stays functional.
  */
 
 type PrismaModel = {
@@ -56,7 +56,7 @@ function serialize(row: PrismaRow): Row {
   return out as Row;
 }
 
-const DATE_FIELDS = ["createdAt", "updatedAt", "receivedAt", "startsAt", "endsAt", "pickupAt", "dropoffAt", "occurredAt"];
+const DATE_FIELDS = ["createdAt", "updatedAt", "receivedAt", "startsAt", "endsAt", "pickupAt", "dropoffAt", "occurredAt", "publishedAt"];
 const DECIMAL_FIELDS = ["budget", "price", "dailyRate", "totalPrice", "deposit", "amount"];
 
 function prepare(data: RowInput): PrismaRow {
@@ -84,6 +84,7 @@ function store(): Record<CollectionName, Row[]> {
       projects: [...demoData.projects] as unknown as Row[],
       products: [...demoData.products] as unknown as Row[],
       shop: [...demoData.shop] as unknown as Row[],
+      marketplaces: [...demoData.marketplaces] as unknown as Row[],
       posts: [...demoData.posts] as unknown as Row[],
       transactions: [...demoData.transactions] as unknown as Row[],
       media: [...demoData.media] as unknown as Row[],

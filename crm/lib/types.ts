@@ -8,6 +8,7 @@ export type CollectionName =
   | "projects"
   | "products"
   | "shop"
+  | "marketplaces"
   | "posts"
   | "transactions"
   | "media"

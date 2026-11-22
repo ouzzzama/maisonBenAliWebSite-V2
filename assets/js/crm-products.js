@@ -1,4 +1,4 @@
-/* Maison Ben Ali — CRM → site bridge pour les biens
+/* Maison Benali — CRM → site bridge pour les biens
  *
  * PAGE LISTE (proprietes-projets.html)
  *   <div data-crm-products></div> reçoit une carte par bien publié dans le CRM.
@@ -62,7 +62,11 @@
       return "Prix sur demande";
     }
     try {
-      return new Intl.NumberFormat("fr-FR").format(Number(value)) + " MAD";
+      /* 810.210,00 MAD : milliers avec un point, centimes avec une virgule */
+      return new Intl.NumberFormat("de-DE", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+      }).format(Number(value)) + " MAD";
     } catch (error) {
       return Number(value) + " MAD";
     }
@@ -263,7 +267,7 @@
       link.setAttribute(
         "href",
         "https://wa.me/212661191787?text=" +
-          encodeURIComponent("Bonjour Maison Ben Ali, je souhaite des informations sur « " + product.title + " ».")
+          encodeURIComponent("Bonjour Maison Benali, je souhaite des informations sur « " + product.title + " ».")
       );
     });
 
@@ -299,14 +303,18 @@
 
     // bento-product.js attend cette promesse avant de dessiner la fiche, et lit
     // window.MB_CRM_PRODUCT : la page affiche donc le bien du CRM, pas le gabarit.
-    var request = fetchProducts(slug).then(function (data) {
-      var product = Array.isArray(data) ? data[0] : data;
-      if (product) {
-        window.MB_CRM_PRODUCT = product;
-        fillDetail(product);
-      }
-      return product;
-    });
+    /* sans ?bien : la fiche n'a plus de gabarit statique, elle affiche l'état
+       vide qui renvoie vers la liste des biens */
+    var request = slug
+      ? fetchProducts(slug).then(function (data) {
+          var product = Array.isArray(data) ? data[0] : data;
+          if (product) {
+            window.MB_CRM_PRODUCT = product;
+            fillDetail(product);
+          }
+          return product;
+        })
+      : Promise.resolve(null);
     window.MB_CRM_READY = request;
   }
 })();

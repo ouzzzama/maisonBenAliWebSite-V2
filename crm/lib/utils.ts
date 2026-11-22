@@ -5,10 +5,11 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-const currency = new Intl.NumberFormat("fr-MA", {
-  style: "currency",
-  currency: "MAD",
-  maximumFractionDigits: 0,
+/* Montants au format 810.210,00 MAD : point pour les milliers, virgule pour
+   les centimes, deux décimales systématiques. */
+const currency = new Intl.NumberFormat("de-DE", {
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2,
 });
 
 export const formatMAD = (value: number | null | undefined) =>

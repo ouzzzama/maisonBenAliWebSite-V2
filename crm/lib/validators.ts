@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { PRODUCT_CATEGORY_SLUGS } from "@/lib/categories";
+import { MARKETPLACE_PLATFORM_VALUES } from "@/lib/marketplaces";
 
 export const leadStatusEnum = z.enum(["NEW", "CONTACTED", "QUALIFIED", "WON", "LOST"]);
 export const interestEnum = z.enum([
@@ -147,6 +148,20 @@ export const postSchema = z.object({
 });
 
 export type PostInput = z.infer<typeof postSchema>;
+
+export const marketplaceSchema = z.object({
+  platform: z.enum(MARKETPLACE_PLATFORM_VALUES),
+  title: z.string().trim().min(3, "Titre requis"),
+  productId: z.string().trim().optional().or(z.literal("")),
+  externalUrl: z.string().trim().url("Lien invalide").optional().or(z.literal("")),
+  status: z.enum(["draft", "published", "paused", "expired"]),
+  price: z.coerce.number().nonnegative("Prix invalide").optional(),
+  views: z.coerce.number().int().nonnegative("Vues invalides").optional(),
+  contacts: z.coerce.number().int().nonnegative("Contacts invalides").optional(),
+  notes: z.string().trim().optional().or(z.literal("")),
+});
+
+export type MarketplaceInput = z.infer<typeof marketplaceSchema>;
 
 export const transactionSchema = z.object({
   label: z.string().trim().min(3, "Libellé requis"),

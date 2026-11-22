@@ -6,12 +6,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   BarChart3,
   CalendarDays,
-  Car,
   ExternalLink,
   FolderKanban,
-  Home,
+  Globe,
   Inbox,
-  KeyRound,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -36,26 +34,20 @@ type NavGroup = { label?: string; items: NavItem[] };
 const NAV_GROUPS: NavGroup[] = [
   { items: [{ href: "/admin", label: "Tableau de bord", icon: LayoutDashboard }] },
   {
-    label: "Vente immobilière",
-    items: [
-      { href: "/admin/products?deal=vente", label: "Biens à vendre", icon: Home },
-      { href: "/admin/projects", label: "Projets VEFA", icon: FolderKanban },
-    ],
+    /* vente, location, boutique et Benali Cars sont réunis sur une seule page
+       avec leurs boutons de bascule */
+    items: [{ href: "/admin/stock", label: "Gestion de stock", icon: Package }],
   },
   {
-    label: "Location immobilière",
+    label: "Suivi immobilier",
     items: [
-      { href: "/admin/products?deal=location", label: "Biens à louer", icon: KeyRound },
+      { href: "/admin/projects", label: "Projets VEFA", icon: FolderKanban },
       { href: "/admin/bookings", label: "Réservations & conciergerie", icon: CalendarDays },
     ],
   },
   {
-    label: "Boutique",
-    items: [{ href: "/admin/boutique", label: "Produits à vendre / louer", icon: Package }],
-  },
-  {
-    label: "Benali Cars",
-    items: [{ href: "/admin/cars", label: "Location de voitures", icon: Car }],
+    label: "Marketplaces",
+    items: [{ href: "/admin/marketplaces", label: "Annonces & portails", icon: Globe }],
   },
   {
     label: "Finances",
@@ -155,7 +147,7 @@ function Brand() {
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src="/brand/monogram-b-white.svg"
-        alt="Maison Ben Ali"
+        alt="Maison Benali"
         width={28}
         height={30}
         className="h-[30px] w-auto transition group-hover:opacity-90"
@@ -224,7 +216,7 @@ export function Sidebar({ user }: { user: { email: string; name: string } }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/brand/monogram-b.svg"
-            alt="Maison Ben Ali"
+            alt="Maison Benali"
             width={24}
             height={26}
             className="h-6 w-auto"

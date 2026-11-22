@@ -48,13 +48,13 @@ export async function sendOtpCode(params: { to: string; code: string; name: stri
   const from =
     process.env.MAIL_FROM ||
     (process.env.SMTP_USER
-      ? `Maison Ben Ali <${process.env.SMTP_USER}>`
-      : "Maison Ben Ali <direction@maisonbenali.com>");
+      ? `Maison Benali <${process.env.SMTP_USER}>`
+      : "Maison Benali <direction@maisonbenali.com>");
 
   await transport.sendMail({
     from,
     to: params.to,
-    subject: `${params.code} — votre code de connexion Maison Ben Ali`,
+    subject: `${params.code} — votre code de connexion Maison Benali`,
     text: [
       `Bonjour ${params.name},`,
       "",
@@ -62,12 +62,12 @@ export async function sendOtpCode(params: { to: string; code: string; name: stri
       "",
       "Ce code expire dans 10 minutes. Si vous n'êtes pas à l'origine de cette connexion, ignorez cet e-mail.",
       "",
-      "Maison Ben Ali — Espace CRM",
+      "Maison Benali — Espace CRM",
     ].join("\n"),
     html: `
       <div style="background:${BRAND_CREAM};padding:32px 16px;font-family:'Cal Sans',Helvetica,Arial,sans-serif;color:${BRAND_INK}">
         <div style="max-width:520px;margin:0 auto;background:#ffffff;border-radius:18px;padding:32px">
-          <p style="margin:0 0 6px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:${BRAND_CORAL}">Maison Ben Ali</p>
+          <p style="margin:0 0 6px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:${BRAND_CORAL}">Maison Benali</p>
           <h1 style="margin:0 0 18px;font-size:22px">Votre code de connexion</h1>
           <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#42546a">
             Bonjour ${params.name}, voici le code à saisir pour accéder au CRM.

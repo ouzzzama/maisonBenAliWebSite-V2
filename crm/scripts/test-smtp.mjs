@@ -36,9 +36,9 @@ try {
   console.log(`Connexion SMTP OK → ${host}:${port} en tant que ${user}`);
 
   const info = await transport.sendMail({
-    from: process.env.MAIL_FROM || `Maison Ben Ali <${user}>`,
+    from: process.env.MAIL_FROM || `Maison Benali <${user}>`,
     to,
-    subject: "Test SMTP — CRM Maison Ben Ali",
+    subject: "Test SMTP — CRM Maison Benali",
     text: "Si vous lisez ce message, l'envoi des codes de connexion du CRM fonctionne.",
   });
 

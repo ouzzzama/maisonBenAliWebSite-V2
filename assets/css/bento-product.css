@@ -302,6 +302,46 @@
   outline-offset: 3px;
 }
 
+/* flèches de défilement du carrousel */
+.bp-lead-nav {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  pointer-events: auto;
+}
+
+.bp-lead-arrow {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  border-radius: 50%;
+  background: rgba(9, 22, 36, 0.42);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #ffffff;
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.bp-lead-arrow:hover,
+.bp-lead-arrow:focus-visible {
+  background: var(--bp-coral);
+  border-color: var(--bp-coral);
+  transform: translateY(-1px);
+}
+
+.bp-lead-arrow:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 2px;
+}
+
 .bp-price {
   display: flex;
   align-items: baseline;
@@ -761,6 +801,41 @@
   color: var(--bp-muted);
 }
 
+/* les trois tuiles de service portent chacune une couleur de la marque */
+.bp-tile--coral {
+  background: linear-gradient(135deg, #f2695c 0%, var(--bp-coral) 55%, #e73c32 100%);
+  border-color: transparent;
+}
+
+.bp-tile--ink {
+  background: linear-gradient(160deg, #17324c 0%, var(--bp-ink) 55%, var(--bp-ink-deep) 100%);
+  border-color: transparent;
+}
+
+.bp-tile--green {
+  background: linear-gradient(140deg, #1d6b54 0%, #15483d 60%, #0f3a31 100%);
+  border-color: transparent;
+}
+
+.bp-tile--coral .bp-tile-icon,
+.bp-tile--ink .bp-tile-icon,
+.bp-tile--green .bp-tile-icon {
+  background: rgba(255, 255, 255, 0.16);
+  color: #ffffff;
+}
+
+.bp-tile--coral .bp-tile-value,
+.bp-tile--ink .bp-tile-value,
+.bp-tile--green .bp-tile-value {
+  color: #ffffff;
+}
+
+.bp-tile--coral .bp-tile-label,
+.bp-tile--ink .bp-tile-label,
+.bp-tile--green .bp-tile-label {
+  color: rgba(255, 255, 255, 0.78);
+}
+
 .bp-card--note {
   padding: clamp(18px, 1.8vw, 22px);
   background: var(--bp-cream);
@@ -796,9 +871,9 @@
   overflow: hidden;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
-  text-align: center;
+  justify-content: flex-start;
+  gap: 16px;
+  text-align: left;
   padding: clamp(18px, 1.8vw, 22px);
   text-decoration: none;
   color: inherit;
@@ -859,7 +934,8 @@
 .bp-contact--tel:hover,
 .bp-contact--wa:focus-visible,
 .bp-contact--tel:focus-visible {
-  border-color: rgba(255, 255, 255, 0.22);
+  /* le contour prend la couleur du portail : vert WhatsApp, orange Appeler */
+  border-color: var(--bp-brand-b);
   color: #fff;
   transform: translateY(-2px);
   box-shadow: 0 24px 38px -28px var(--bp-brand-c);
@@ -907,7 +983,7 @@
 
 .bp-contact-copy strong {
   display: block;
-  font-size: 17px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.015em;
@@ -917,8 +993,8 @@
 
 .bp-contact-copy small {
   display: block;
-  margin-top: 3px;
-  font-size: 11px;
+  margin-top: 4px;
+  font-size: 12.5px;
   line-height: 1.35;
   color: var(--bp-muted);
   transition: color 0.35s ease;
@@ -1173,8 +1249,19 @@
 }
 
 @media (max-width: 575.98px) {
+  /* le carrousel remonte sous l'en-tête et prend beaucoup plus de place */
+  .bp-bento-sec {
+    padding-top: 96px;
+  }
+
   .bp-card--lead {
-    min-height: 420px;
+    min-height: 66vh;
+  }
+
+  .bp-lead-arrow {
+    width: 36px;
+    height: 36px;
+    font-size: 11px;
   }
 
   
@@ -1453,6 +1540,8 @@
     grid-column: 1 / -1;
   }
 
+  /* mêmes couleurs qu'en desktop : carte blanche, pastille crème, icône coral,
+     chiffre encre, libellé gris */
   .bp-tile-row .bp-tile {
     flex-direction: column;
     align-items: flex-start;
@@ -1460,32 +1549,23 @@
     gap: 10px;
     min-height: 104px;
     padding: 12px 11px 13px;
-    border: 0;
   }
 
-  .bp-tile-row .bp-tile--coral { background: #ef453b; }
-  .bp-tile-row .bp-tile--ink { background: #122b43; }
-  .bp-tile-row .bp-tile--green { background: #123d2f; }
-
   .bp-tile-row .bp-tile-icon {
-    width: 26px;
-    height: 26px;
-    font-size: 11px;
-    background: rgba(255, 255, 255, 0.18);
-    color: #ffffff;
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
   }
 
   .bp-tile-row .bp-tile-value {
-    font-size: 17px;
-    color: #ffffff;
+    font-size: 18px;
   }
 
   .bp-tile-row .bp-tile-label {
     margin-top: 3px;
-    font-size: 8px;
+    font-size: 8.5px;
     letter-spacing: 0.06em;
     line-height: 1.3;
-    color: rgba(255, 255, 255, 0.88);
   }
 }
 
@@ -1504,12 +1584,31 @@
     grid-column: 1 / -1;
   }
 
+  /* mobile : pas de survol, chaque tuile reste dans le dégradé de son portail */
   .bp-contact-row .bp-contact {
     align-items: center;
-    justify-content: center;
-    gap: 9px;
-    padding: 14px 10px;
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 14px 11px;
     min-height: 92px;
+    text-align: left;
+  }
+
+  .bp-contact-row .bp-contact--wa,
+  .bp-contact-row .bp-contact--tel {
+    border-color: var(--bp-brand-b);
+    color: #fff;
+  }
+
+  .bp-contact-row .bp-contact::before {
+    opacity: 1;
+    -webkit-mask-position: 0% 0;
+    mask-position: 0% 0;
+  }
+
+  .bp-contact-row .bp-contact:hover,
+  .bp-contact-row .bp-contact:active {
+    transform: none;
   }
 
   .bp-contact-row .bp-contact-icon {
@@ -1517,18 +1616,29 @@
     height: 28px;
     font-size: 12px;
     flex: 0 0 auto;
+    background: #fff;
+  }
+
+  .bp-contact-row .bp-contact--wa .bp-contact-icon {
+    color: #0f9d58;
+  }
+
+  .bp-contact-row .bp-contact--tel .bp-contact-icon {
+    color: #f07613;
   }
 
   .bp-contact-row .bp-contact-copy strong {
-    font-size: 13px;
+    font-size: 14.5px;
+    color: #fff;
   }
 
   .bp-contact-row .bp-contact-copy small {
-    margin-top: 2px;
-    font-size: 9px;
+    margin-top: 3px;
+    font-size: 10px;
     line-height: 1.35;
     white-space: normal;
     overflow-wrap: anywhere;
+    color: rgba(255, 255, 255, 0.85);
   }
 
   .bp-contact-row .bp-contact-go {
@@ -1557,16 +1667,12 @@
    Fiche du bien — fond bleu + actions rapides
    (Airbnb, location de voiture, téléphone, partage réseaux sociaux)
    -------------------------------------------------------------------------- */
-.bp-bento-sec {
-  --bp-blue: #15458f;
-  --bp-blue-deep: #0e2e60;
-}
-
 .bp-card--info {
   border-color: rgba(255, 255, 255, 0.14);
-  background: linear-gradient(158deg, #17499a 0%, var(--bp-blue) 48%, var(--bp-blue-deep) 100%);
+  /* bleu marine de la maison : #122b43 en haut, #0c2136 en bas */
+  background: linear-gradient(158deg, #17324c 0%, var(--bp-ink) 46%, var(--bp-ink-deep) 100%);
   color: #fff;
-  box-shadow: 0 22px 50px -32px rgba(14, 46, 96, 0.85);
+  box-shadow: 0 22px 50px -32px rgba(12, 33, 54, 0.6);
 }
 
 .bp-card--info .bp-card__kicker {

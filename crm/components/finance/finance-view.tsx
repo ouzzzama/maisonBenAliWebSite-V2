@@ -3,7 +3,19 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodForm } from "@/lib/form";
-import { ArrowDownRight, ArrowUpRight, Plus, Receipt } from "lucide-react";
+import {
+  ArrowDownRight,
+  ArrowUpRight,
+  Building2,
+  Car,
+  HardHat,
+  KeyRound,
+  Plus,
+  Receipt,
+  Shapes,
+  Store,
+  type LucideIcon,
+} from "lucide-react";
 import { PageHeader } from "@/components/admin/page-header";
 import { DataTable, type Column } from "@/components/admin/data-table";
 import { FilterBar } from "@/components/admin/filter-bar";
@@ -25,6 +37,16 @@ import {
 } from "@/lib/utils";
 
 const STATUS_OPTIONS = Object.entries(TX_STATUS_LABEL).map(([value, label]) => ({ value, label }));
+
+/* Une icône blanche par secteur, posée dans la couleur du métier. */
+const SECTOR_ICON: Record<string, LucideIcon> = {
+  sale: Building2,
+  project: HardHat,
+  booking: KeyRound,
+  rental: Car,
+  shop: Store,
+  other: Shapes,
+};
 
 const emptyTx: TransactionInput = {
   label: "",
@@ -245,37 +267,50 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
 
       {/* Revenus par secteur : chaque métier a son propre bloc. */}
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-        {sectorCards.map((sector) => (
-          <div
-            key={sector.key}
-            className="rounded-3xl border border-ink/8 bg-white p-4 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
-          >
-            <div className="flex items-center gap-2">
-              <span
-                className="size-2.5 shrink-0 rounded-full"
-                style={{ background: sector.color }}
+        {sectorCards.map((sector) => {
+          const Icon = SECTOR_ICON[sector.key] ?? Shapes;
+          const suffix = sector.count === 1 ? "" : "s";
+          return (
+            /* rien à gauche, la couleur du secteur arrive vers le bord droit */
+            <div
+              key={sector.key}
+              className="relative overflow-hidden rounded-3xl border border-ink/8 p-4 pr-14 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
+              style={{
+                background: `linear-gradient(90deg, #ffffff 0%, #ffffff 45%, ${sector.color}1a 65%, ${sector.color}b8 100%)`,
+              }}
+            >
+              {/* rognée de moitié par le bord droit */}
+              <Icon
+                aria-hidden="true"
+                strokeWidth={1.4}
+                className="pointer-events-none absolute -right-10 top-1/2 size-20 -translate-y-1/2 text-white opacity-50"
               />
-              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink/45">
-                {sector.label}
+              <div className="relative flex items-center gap-2">
+                <span
+                  className="size-2.5 shrink-0 rounded-full"
+                  style={{ background: sector.color }}
+                />
+                <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink/45">
+                  {sector.label}
+                </p>
+              </div>
+              <p className="relative mt-2 text-[22px] font-semibold leading-none text-ink">
+                {formatMAD(sector.total)}
+              </p>
+              <p className="relative mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-muted">
+                <span className="inline-flex items-center gap-1">
+                  <ArrowUpRight className="size-3 text-emerald-600" />
+                  {sector.count} écriture{suffix} encaissée{suffix}
+                </span>
+                {sector.waiting > 0 ? (
+                  <span className="inline-flex items-center gap-1 text-rose-500">
+                    · <ArrowDownRight className="size-3" /> {formatMAD(sector.waiting)} en attente
+                  </span>
+                ) : null}
               </p>
             </div>
-            <p className="mt-2 text-[22px] font-semibold leading-none text-ink">
-              {formatMAD(sector.total)}
-            </p>
-            <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-muted">
-              <span className="inline-flex items-center gap-1">
-                <ArrowUpRight className="size-3 text-emerald-600" />
-                {sector.count} écriture{sector.count > 1 ? "s" : ""} encaissée
-                {sector.count > 1 ? "s" : ""}
-              </span>
-              {sector.waiting > 0 ? (
-                <span className="inline-flex items-center gap-1 text-rose-500">
-                  · <ArrowDownRight className="size-3" /> {formatMAD(sector.waiting)} en attente
-                </span>
-              ) : null}
-            </p>
-          </div>
-        ))}
+          );
+        })}
       </div>
 
       {/* Totaux consolidés, tous secteurs confondus. */}
@@ -290,7 +325,9 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
             <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
               {item.label}
             </p>
-            <p className="mt-1 text-[15px] font-semibold text-ink">{item.value}</p>
+            <p className="mt-1.5 text-[26px] font-semibold leading-none tracking-[-0.02em] text-ink">
+              {item.value}
+            </p>
           </div>
         ))}
       </div>

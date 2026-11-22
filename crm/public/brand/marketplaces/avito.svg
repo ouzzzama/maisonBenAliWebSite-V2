@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" role="img" aria-label="Avito">
+  <rect width="48" height="48" fill="#FFFFFF" />
+  <path fill="#2EC966" d="M24 5.5 34.6 15 24 24.5 13.4 15z" />
+  <path fill="#FF4C59" d="M10.2 23.2 21.6 20.4V41l-9.4-3.3a3.4 3.4 0 0 1-2.2-3.2z" />
+  <path fill="#3AA4FF" d="M37.8 23.2 26.4 20.4V41l9.4-3.3a3.4 3.4 0 0 0 2.2-3.2z" />
+</svg>

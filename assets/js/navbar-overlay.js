@@ -20,13 +20,13 @@
       href: "/",
       title: "Accueil",
       sub: "L'excellence immobilière à Agadir",
-      img: "assets/images/gallery/agadir-bay-residence.jpg"
+      img: "assets/images/gallery/agadir-bay-residence.webp"
     },
     {
       href: "a-propos",
       title: "À propos",
       sub: "11 ans d'expertise, une éthique rigoureuse",
-      img: "assets/images/home-one/about/about-agadir-bay-pool.jpg"
+      img: "assets/images/home-one/about/about-agadir-bay-pool.webp"
     },
     {
       href: "ecosysteme-360",
@@ -41,10 +41,16 @@
       img: "assets/images/featured-projects/featured-1.jpg"
     },
     {
+      href: "blog",
+      title: "Blog",
+      sub: "Guides, conseils et actualités immobilières",
+      img: "assets/images/stock/blog-guide-mre.jpg"
+    },
+    {
       href: "contact",
       title: "Contact",
       sub: "Estimation gratuite, réponse sous 24 h",
-      img: "assets/images/innerpage/contact/agence-maison-benali.jpg"
+      img: "assets/images/innerpage/contact/agence-maison-benali.webp"
     }
   ];
 

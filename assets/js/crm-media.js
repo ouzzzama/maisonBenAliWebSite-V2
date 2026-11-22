@@ -1,4 +1,4 @@
-/* Maison Ben Ali — CMS bridge (CRM → website)
+/* Maison Benali — CMS bridge (CRM → website)
  *
  * Any <img> (or <source>) carrying data-cms-slot="HOME_HERO" is replaced by the
  * matching active asset from the CRM media library. The bundled image is kept

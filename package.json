@@ -1,7 +1,7 @@
 {
   "name": "maison-benali-web-app",
   "version": "1.0.0",
-  "description": "Maison Ben Ali - L'excellence Immobilière à Agadir",
+  "description": "Maison Benali - L'excellence Immobilière à Agadir",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -19,7 +19,7 @@
     "luxury-real-estate",
     "habitat-d-exception"
   ],
-  "author": "Maison Ben Ali",
+  "author": "Maison Benali",
   "license": "ISC",
   "dependencies": {
     "express": "^4.18.2",

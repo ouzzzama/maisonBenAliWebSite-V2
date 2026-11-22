@@ -929,7 +929,7 @@ export const demoEmails: EmailMessage[] = [
     subject: "Re: Rapport conciergerie — octobre",
     snippet: "Bonjour Karim, le rapport mensuel est prêt…",
     body:
-      "Bonjour Karim,\n\nLe rapport mensuel de la conciergerie est prêt : 92 % d'occupation, revenu net de 84 300 MAD sur les six unités.\n\nBien à vous,\nMaison Benali",
+      "Bonjour Karim,\n\nLe rapport mensuel de la conciergerie est prêt : 92 % d'occupation, revenu net de 84.300,00 MAD sur les six unités.\n\nBien à vous,\nMaison Benali",
     status: "READ",
     provider: "resend",
     threadKey: "thread-ko-1",
@@ -1002,6 +1002,7 @@ type PrismaModelName =
   | "emailMessage"
   | "product"
   | "shopItem"
+  | "marketplaceListing"
   | "post";
 
 export type Product = {
@@ -1231,10 +1232,32 @@ export const demoShopItems: ShopItem[] = [
   },
 ];
 
+/** Annonce publiée sur un portail externe (Airbnb, Mubawab, Avito, Hespress). */
+export type MarketplaceListing = {
+  id: string;
+  /** airbnb | mubawab | avito | hespress */
+  platform: string;
+  title: string;
+  productId: string | null;
+  externalUrl: string | null;
+  /** draft | published | paused | expired */
+  status: string;
+  price: number | null;
+  views: number;
+  contacts: number;
+  notes: string | null;
+  publishedAt: string | null;
+  createdAt: string;
+};
+
+/** Aucune annonce n'est pré-remplie : la page se remplit depuis le CRM. */
+export const demoMarketplaceListings: MarketplaceListing[] = [];
+
 export const demoData = {
   leads: demoLeads,
   products: demoProducts,
   shop: demoShopItems,
+  marketplaces: demoMarketplaceListings,
   posts: demoPosts,
   clients: demoClients,
   bookings: demoBookings,
@@ -1255,6 +1278,7 @@ export const demoData = {
     products: "product",
     shop: "shopItem",
     posts: "post",
+    marketplaces: "marketplaceListing",
   } as Record<string, PrismaModelName>,
 };
 

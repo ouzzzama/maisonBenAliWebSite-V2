@@ -4,3 +4,7 @@ data/
 *.log
 HOSTINGER-ENV.txt
 HOSTINGER-A-COPIER.txt
+.freebuff/
+.cloud-attachments/
+.agents/
+screenshots/

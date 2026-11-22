@@ -17,7 +17,7 @@
 .product-page .accent-coral { color: var(--p-coral) !important; }
 .product-page .font-awaking {
   font-family: 'Awaking', serif;
-  font-weight: 400;
+  font-weight: 700;
   font-size: 1.04em;
   letter-spacing: 0.2px;
 }
@@ -221,6 +221,7 @@
 .product-section-title {
   font-family: 'Awaking', serif;
   font-size: 28px;
+  font-weight: 700;
   line-height: 1.25;
   color: var(--p-navy);
   margin: 34px 0 16px;
@@ -260,6 +261,7 @@
 .product-spec-card h3 {
   font-family: 'Awaking', serif;
   font-size: 21px;
+  font-weight: 700;
   color: #ffffff;
   margin-bottom: 20px;
 }

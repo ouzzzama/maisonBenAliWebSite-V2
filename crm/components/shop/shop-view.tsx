@@ -32,7 +32,14 @@ const emptyItem: ShopItemInput = {
   published: true,
 };
 
-export function ShopView({ initial }: { initial: ShopItem[] }) {
+export function ShopView({
+  initial,
+  embedded = false,
+}: {
+  initial: ShopItem[];
+  /** Intégré dans « Gestion de stock » : le titre de page est porté par l'onglet. */
+  embedded?: boolean;
+}) {
   const items = useCollection<ShopItem>("/api/shop", initial);
   const [query, setQuery] = React.useState("");
   const [filters, setFilters] = React.useState({ mode: "" });
@@ -106,16 +113,24 @@ export function ShopView({ initial }: { initial: ShopItem[] }) {
 
   return (
     <div className="animate-in">
-      <PageHeader
-        eyebrow="Boutique"
-        title="Produits à vendre & à louer"
-        description="Matériel et équipements de la maison : chaque article est vendu ou loué, avec son stock et son prix."
-        actions={
+      {embedded ? (
+        <div className="mb-3 flex flex-wrap items-center justify-end gap-2">
           <Button variant="coral" onClick={openCreate}>
             <Plus className="size-4" /> Nouvel article
           </Button>
-        }
-      />
+        </div>
+      ) : (
+        <PageHeader
+          eyebrow="Boutique"
+          title="Produits à vendre & à louer"
+          description="Matériel et équipements de la maison : chaque article est vendu ou loué, avec son stock et son prix."
+          actions={
+            <Button variant="coral" onClick={openCreate}>
+              <Plus className="size-4" /> Nouvel article
+            </Button>
+          }
+        />
+      )}
 
       <div className="mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-ink/8 bg-white px-4 py-3 text-[12px] text-muted">
         <span className="font-semibold text-ink">{items.items.length}</span> article(s)

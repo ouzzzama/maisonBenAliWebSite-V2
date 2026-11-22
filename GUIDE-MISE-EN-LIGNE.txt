@@ -92,7 +92,7 @@ Neon est gratuit et prend 2 minutes.
    SMTP_PORT             = 465
    SMTP_USER             = direction@maisonbenali.com
    SMTP_PASSWORD         = mot de passe de la boite mail (1.4)
-   MAIL_FROM             = Maison Ben Ali <direction@maisonbenali.com>
+   MAIL_FROM             = Maison Benali <direction@maisonbenali.com>
 
 6. Clique "Deploy" (ou "Creer").
 7. Attends : installation + build. Puis ouvre l'adresse
@@ -150,7 +150,7 @@ POURQUOI PAS GMAIL ?
 Gmail refuse le mot de passe normal pour l'envoi automatique
 (erreur 534 "Application-specific password required").
 La boite Hostinger, elle, marche directement, et le client
-voit "Maison Ben Ali" au lieu d'une adresse @gmail.com.
+voit "Maison Benali" au lieu d'une adresse @gmail.com.
 
 
 ========================================================

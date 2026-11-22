@@ -21,7 +21,7 @@ const awaking = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "Maison Ben Ali — CRM",
+  title: "Maison Benali — CRM",
   description: "CRM interne : leads, clients, réservations, Benali Cars, projets et finances.",
   /* Same favicon as maisonbenali.com (assets/images/favicon.png). */
   icons: {

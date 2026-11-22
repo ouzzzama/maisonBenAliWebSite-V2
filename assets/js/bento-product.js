@@ -22,7 +22,7 @@
       tab: "SUV",
       name: "SUV Signature",
       price: 690,
-      image: "assets/images/innerpage/cars/car-suv.png",
+      image: "assets/images/innerpage/cars/car-suv.webp",
       badge: "Le plus réservé",
       tagline: "L'espace pour la famille, l'allure pour la route de Taghazout.",
       specs: [["Places", "5 adultes"], ["Boîte", "Automatique"], ["Énergie", "Diesel"]]
@@ -32,7 +32,7 @@
       tab: "Berline",
       name: "Berline Executive",
       price: 850,
-      image: "assets/images/innerpage/cars/car-sedan.png",
+      image: "assets/images/innerpage/cars/car-sedan.webp",
       badge: "Chauffeur en option",
       tagline: "Silence, cuir et climatisation pour vos rendez-vous d'affaires.",
       specs: [["Places", "4 adultes"], ["Boîte", "Automatique"], ["Énergie", "Essence"]]
@@ -42,7 +42,7 @@
       tab: "Citadine",
       name: "Citadine Essentielle",
       price: 320,
-      image: "assets/images/innerpage/cars/car-compact.png",
+      image: "assets/images/innerpage/cars/car-compact.webp",
       badge: "Idéale en ville",
       tagline: "Agadir en dix minutes, stationnement sans effort.",
       specs: [["Places", "5 adultes"], ["Boîte", "Manuelle"], ["Énergie", "Essence"]]
@@ -55,7 +55,7 @@
       name: "Villa Founty",
       location: "Founty · Agadir",
       price: 1250,
-      image: "assets/images/stock/villa-piscine-founty.jpg",
+      image: "assets/images/stock/villa-piscine-founty.webp",
       tag: "Jardin & piscine",
       meta: "3 chambres · 6 voyageurs"
     },
@@ -64,7 +64,7 @@
       name: "Suite Agadir Bay",
       location: "Marina · Agadir",
       price: 950,
-      image: "assets/images/gallery/agadir-bay-residence.jpg",
+      image: "assets/images/gallery/agadir-bay-residence.webp",
       tag: "Vue marina",
       meta: "2 chambres · 4 voyageurs"
     },
@@ -84,8 +84,12 @@
     });
   }
 
+  /* 810.210,00 MAD : milliers avec un point, centimes avec une virgule */
   function money(value) {
-    return Math.round(value).toLocaleString("fr-FR") + " MAD";
+    return new Intl.NumberFormat("de-DE", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(Number(value) || 0) + " MAD";
   }
 
   function dayLabel(iso) {
@@ -219,6 +223,7 @@
     if (!gallery.length) (base.gallery || []).forEach(push);
 
     return {
+      crm: true,
       title: product.title || base.title,
       location: product.address || base.location,
       description: product.description || base.description,
@@ -294,6 +299,14 @@
             '<span data-lead-caption>' + esc(LEAD_LABELS[0]) + "</span>" +
           "</p>",
           '<div class="bp-lead-dots" role="group" aria-label="Galerie photos du bien">' + dots + "</div>",
+          total > 1
+            ? '<div class="bp-lead-nav">' +
+                '<button type="button" class="bp-lead-arrow" data-lead-step="-1" aria-label="Photo précédente">' +
+                  '<i class="fas fa-chevron-left" aria-hidden="true"></i></button>' +
+                '<button type="button" class="bp-lead-arrow" data-lead-step="1" aria-label="Photo suivante">' +
+                  '<i class="fas fa-chevron-right" aria-hidden="true"></i></button>' +
+              "</div>"
+            : "",
         "</div>",
       "</article>"
     ].join("");
@@ -435,7 +448,7 @@
 
   function contactTiles() {
     var wa = "https://wa.me/" + WHATSAPP + "?text=" +
-      encodeURIComponent("Bonjour Maison Ben Ali, je souhaite réserver un séjour avec une voiture.");
+      encodeURIComponent("Bonjour Maison Benali, je souhaite réserver un séjour avec une voiture.");
 
     var waTile = [
       '<a class="bp-card bp-contact bp-contact--wa" href="' + wa + '" target="_blank" rel="noopener">',
@@ -553,7 +566,7 @@
     var nights = nightsBetween(arrival, departure);
     var modeLabel = state.mode === "bundle" ? "séjour + voiture" : state.mode === "car" ? "voiture" : "séjour";
 
-    var message = "Bonjour Maison Ben Ali, je souhaite réserver (" + modeLabel + ") : " +
+    var message = "Bonjour Maison Benali, je souhaite réserver (" + modeLabel + ") : " +
       state.title + ". " +
       "Du " + dayLabel(arrival) + " au " + dayLabel(departure) + " (" + nights + " nuit" + (nights > 1 ? "s" : "") + ")" +
       (state.mode === "car" ? "" : ", " + guests + " voyageur" + (parseInt(guests, 10) > 1 ? "s" : "")) + ". " +
@@ -579,7 +592,7 @@
         title: "Formule duo — séjour + voiture",
         rate: bundleStay,
         meta: "Villa + SUV · " + money(bundleStay + bundleCar * 0.9) + " / nuit tout compris",
-        image: "assets/images/innerpage/gallery/step3-conciergerie-cars.jpg"
+        image: "assets/images/innerpage/gallery/step3-conciergerie-cars.webp"
       };
     } else {
       if (id && id !== "project") {
@@ -592,8 +605,8 @@
           mode: "stay",
           title: drawer.dataset.projectTitle || "Résidence d'appartements",
           rate: 850,
-          meta: "Agadir · 850 MAD / nuit",
-          image: drawer.dataset.projectImage || "assets/images/innerpage/project/p1-hero.jpg"
+          meta: "Agadir · 850,00 MAD / nuit",
+          image: drawer.dataset.projectImage || "assets/images/innerpage/project/p1-hero.webp"
         };
       }
     }
@@ -711,6 +724,7 @@
 
     var imgs = lead.querySelectorAll(".bp-lead-media img");
     var dots = lead.querySelectorAll(".bp-lead-dot");
+    var arrows = lead.querySelectorAll("[data-lead-step]");
     var caption = lead.querySelector("[data-lead-caption]");
     var index = 0;
     var timer = null;
@@ -756,6 +770,13 @@
       });
     });
 
+    /* flèches précédent / suivant */
+    Array.prototype.forEach.call(arrows, function (arrow) {
+      arrow.addEventListener("click", function () {
+        step(parseInt(arrow.getAttribute("data-lead-step"), 10) || 1);
+      });
+    });
+
     lead.addEventListener("keydown", function (event) {
       if (event.key === "ArrowRight") {
         event.preventDefault();
@@ -786,14 +807,68 @@
   }
 
   /* ------------------------------------------------------------------ build */
+  /* Le gabarit statique de la fiche projet a été supprimé : la page n'est plus
+     qu'un conteneur vide que ce script remplit avec les données du CRM. */
+  function ensurePage() {
+    var page = document.querySelector(".bp-page");
+    if (page) return page;
+    var main = document.querySelector("main") || document.body;
+    page = document.createElement("div");
+    page.className = "bp-page";
+    main.insertBefore(page, main.firstChild);
+    return page;
+  }
+
+  function emptyState() {
+    return (
+      '<section class="bp-bento-sec">' +
+        '<div class="container">' +
+          '<div class="bp-card bp-card--lead" style="position:relative;display:flex;align-items:flex-end;padding:clamp(24px,3vw,44px)">' +
+            '<div style="position:relative;z-index:2;max-width:34ch">' +
+              '<p class="bp-eyebrow" style="color:rgba(255,255,255,.7);letter-spacing:.18em;text-transform:uppercase;font-size:11px;margin:0 0 10px">Maison Benali</p>' +
+              '<h1 style="color:#fff;font-size:clamp(26px,4vw,44px);line-height:1.1;margin:0 0 14px">Choisissez un bien à découvrir</h1>' +
+              '<p style="color:rgba(255,255,255,.78);margin:0 0 22px">Nos biens disponibles à la vente et à la location sont présentés sur la page Propriétés &amp; projets.</p>' +
+              '<a class="bp-btn" href="/proprietes-projets">Voir les biens <i class="fas fa-arrow-right" aria-hidden="true"></i></a>' +
+            "</div>" +
+          "</div>" +
+        "</div>" +
+      "</section>"
+    );
+
+  }
+
+  function buildMap(page, ctx) {
+    var mapSection = document.createElement("section");
+    mapSection.className = "contact-map-sec curve-bottom";
+    var mapBox = document.createElement("div");
+    mapBox.className = "map-box";
+    var canvas = document.createElement("div");
+    canvas.className = "mb-map";
+    canvas.setAttribute("data-brand-map", "");
+    canvas.setAttribute("data-lat", "30.4251");
+    canvas.setAttribute("data-lng", "-9.6171");
+    canvas.setAttribute("data-zoom", "16");
+    canvas.setAttribute("data-title", ctx.title || "Maison Benali");
+    canvas.setAttribute("data-address", ctx.location || "Marina d'Agadir, Agadir, Maroc");
+    mapBox.appendChild(canvas);
+    mapSection.appendChild(mapBox);
+    page.parentNode.insertBefore(mapSection, page.nextSibling);
+  }
+
   function build(page) {
     if (!page || page.querySelector(".bp-bento-sec")) return;
 
     var legacy = document.querySelector(".renvia-project-details-sec");
-    var ctx = legacy ? legacyContext(legacy) : { title: "Résidence d'appartements", location: "Agadir, Maroc", hero: "assets/images/innerpage/project/p1-hero.jpg", specs: [] };
+    var ctx = legacy ? legacyContext(legacy) : { title: "Maison Benali", location: "Agadir, Maroc", hero: "", specs: [] };
     ctx = withCrmProduct(ctx);
 
-    if (!ctx.hero) ctx.hero = "assets/images/innerpage/project/p1-hero.jpg";
+    if (!ctx.crm) {
+      page.innerHTML = emptyState();
+      document.documentElement.classList.remove("mb-detail-loading");
+      return;
+    }
+
+    if (!ctx.hero) ctx.hero = "assets/images/innerpage/project/p1-hero.webp";
 
     /* the bento replaces the old presentation blocks, nothing else */
     Array.prototype.forEach.call(
@@ -818,6 +893,7 @@
       "</div>";
 
     page.insertBefore(section, page.firstChild);
+    buildMap(page, ctx);
 
     /* le bien du CRM est dessiné : on retire l'écran de chargement qui masquait
        l'ancien gabarit statique */
@@ -882,24 +958,7 @@
 
   function boot() {
     function start() {
-      var page = document.querySelector(".bp-page");
-      if (page) {
-        build(page);
-        return;
-      }
-      /* project-bento.js builds .bp-page on DOMContentLoaded; if it runs later
-         than us, wait for it rather than silently doing nothing. */
-      var tries = 0;
-      var timer = setInterval(function () {
-        tries += 1;
-        var built = document.querySelector(".bp-page");
-        if (built) {
-          clearInterval(timer);
-          build(built);
-        } else if (tries > 40) {
-          clearInterval(timer);
-        }
-      }, 50);
+      build(ensurePage());
     }
 
     /* Wait (briefly) for the CRM record so the bento never flashes the static

@@ -1,4 +1,4 @@
-/* Maison Ben Ali — CRM → site, articles du blog
+/* Maison Benali — CRM → site, articles du blog
  *
  * PAGE LISTE (blog.html)
  *   <div data-crm-posts></div> reçoit une carte par article publié dans le CRM.

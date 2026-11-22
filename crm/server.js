@@ -18,7 +18,7 @@ app
   .prepare()
   .then(() => {
     createServer((req, res) => handle(req, res)).listen(port, hostname, () => {
-      console.log(`CRM Maison Ben Ali prêt sur http://${hostname}:${port}`);
+      console.log(`CRM Maison Benali prêt sur http://${hostname}:${port}`);
     });
   })
   .catch((error) => {

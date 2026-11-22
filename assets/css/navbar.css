@@ -55,7 +55,7 @@
   /* bigger logo */
   .header-area .site-branding .brand-logo img,
   .header-area .brand-logo img {
-    height: 54px !important;
+    height: 64px !important;
     width: auto !important;
   }
 
@@ -711,7 +711,7 @@
     margin: 0 !important;
     padding-left: 18px !important;
     padding-right: 18px !important;
-    min-height: 92px;
+    min-height: 86px;
   }
 
   header.header-area.is-scrolled .header-navigation {
@@ -727,10 +727,12 @@
     max-width: none !important;
   }
 
+  /* logo mobile : bien visible, mais toujours contenu dans l'écran */
   .header-area .header-navigation .primary-menu > .site-branding .brand-logo img {
-    height: 64px !important;
+    height: 58px !important;
     width: auto !important;
-    max-width: none !important;
+    max-width: min(76vw, 250px) !important;
+    object-fit: contain;
   }
 
   /* bottom of the screen: pure blur, no colour wash — the layer is fully
@@ -781,5 +783,13 @@
 @media (max-width: 767.98px) {
   .header-area .brand-logo {
     padding: 6px 14px !important;
+  }
+}
+
+@media (max-width: 479.98px) {
+  .header-area .header-navigation .primary-menu > .site-branding .brand-logo img,
+  .header-area .brand-logo img {
+    height: 50px !important;
+    max-width: min(74vw, 215px) !important;
   }
 }

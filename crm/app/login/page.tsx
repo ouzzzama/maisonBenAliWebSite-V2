@@ -34,13 +34,13 @@ export default async function LoginPage({
         />
         <div className="relative flex items-center gap-3">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/monogram-b-white.svg" alt="Maison Ben Ali" width={30} height={32} className="h-8 w-auto" />
+          <img src="/brand/monogram-b-white.svg" alt="Maison Benali" width={30} height={32} className="h-8 w-auto" />
           <span className="font-script text-[15px] leading-none text-white/55">Espace CRM</span>
         </div>
 
         <div className="relative max-w-md">
           <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-coral">
-            Maison Ben Ali
+            Maison Benali
           </p>
           <h1 className="text-[34px] leading-[1.1] tracking-[-0.02em]">
             Le pilotage de vos opérations, en accès restreint.
@@ -68,7 +68,7 @@ export default async function LoginPage({
         </div>
 
         <p className="relative text-[11px] text-white/30">
-          © {new Date().getFullYear()} Maison Ben Ali — accès réservé à l&apos;administration.
+          © {new Date().getFullYear()} Maison Benali — accès réservé à l&apos;administration.
         </p>
       </section>
 
@@ -78,7 +78,7 @@ export default async function LoginPage({
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/brand/maison-benali-logo.svg"
-              alt="Maison Ben Ali"
+              alt="Maison Benali"
               width={220}
               height={53}
               className="h-auto w-[210px]"

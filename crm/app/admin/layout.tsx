@@ -26,7 +26,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             className="h-4 w-auto opacity-45"
           />
           <span>
-            Maison Ben Ali — CRM interne · données de démonstration tant que
+            Maison Benali — CRM interne · données de démonstration tant que
             <code className="mx-1 rounded bg-ink/5 px-1 py-0.5">DATABASE_URL</code>
             n&apos;est pas branché.
           </span>

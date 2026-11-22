@@ -34,6 +34,10 @@
     'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<path d="M5 12h14M13 6l6 6-6 6"/></svg>';
 
+  /* fiche Google de l'agence : le bouton ouvre directement le dépôt d'avis */
+  var GOOGLE_REVIEWS =
+    "https://www.google.com/maps/place/Maison+benali/data=!4m2!3m1!1s0x0:0x7f599527bca2f3e9";
+
   function esc(value) {
     return String(value == null ? "" : value).replace(/[&<>"']/g, function (c) {
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
@@ -131,37 +135,14 @@
       'href="https://www.google.com/maps/search/?api=1&query=' +
       lat + "," + lng + '">Google Maps' +
       MAP_SVG + '</a>' +
-      '<button type="button" class="mb-map-card__fav" aria-pressed="false">' +
+      /* laisser un avis sur la fiche Google de l'agence */
+      '<a class="mb-map-card__fav" target="_blank" rel="noopener" ' +
+      'aria-label="Laisser un avis sur Google — Maison Benali" ' +
+      'href="' + GOOGLE_REVIEWS + '">' +
       STAR_SVG +
-      '<span class="mb-map-card__fav-label">Enregistrer</span></button>' +
+      '<span class="mb-map-card__fav-label">Laisser un avis</span></a>' +
       "</div>";
     host.appendChild(card);
-
-    /* save this location to the visitor's favourites (localStorage) */
-    var favBtn = card.querySelector(".mb-map-card__fav");
-    var favLabel = card.querySelector(".mb-map-card__fav-label");
-    var favKey = "mbMapFav:" + lat.toFixed(5) + "," + lng.toFixed(5);
-    var isSaved = false;
-    try { isSaved = localStorage.getItem(favKey) === "1"; } catch (e) {}
-
-    var paintFav = function () {
-      favBtn.setAttribute("aria-pressed", isSaved ? "true" : "false");
-      favBtn.setAttribute(
-        "aria-label",
-        (isSaved ? "Retirer " : "Enregistrer ") + title + (isSaved ? " des favoris" : " dans les favoris")
-      );
-      favLabel.textContent = isSaved ? "Enregistré" : "Enregistrer";
-    };
-    paintFav();
-
-    favBtn.addEventListener("click", function () {
-      isSaved = !isSaved;
-      try {
-        if (isSaved) localStorage.setItem(favKey, "1");
-        else localStorage.removeItem(favKey);
-      } catch (e) {}
-      paintFav();
-    });
 
     var credit = el(
       "p",

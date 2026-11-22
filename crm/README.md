@@ -1,4 +1,4 @@
-# Maison Ben Ali — CRM & back-office
+# Maison Benali — CRM & back-office
 
 Application Next.js (App Router, TypeScript) pour piloter leads, clients, réservations,
 flotte Benali Cars, projets, médias et trésorerie.

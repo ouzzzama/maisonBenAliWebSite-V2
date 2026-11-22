@@ -45,14 +45,20 @@ const emptyProduct: ProductInput = {
 export function ProductsView({
   initial,
   initialDeal = "",
+  initialCategory = "",
+  embedded = false,
 }: {
   initial: Product[];
   /** « vente » ou « location » : la section du CRM ouvre la liste déjà filtrée. */
   initialDeal?: string;
+  /** Catégorie de bien choisie dans « Gestion de stock ». */
+  initialCategory?: string;
+  /** Intégré dans « Gestion de stock » : le titre de page est porté par l'onglet. */
+  embedded?: boolean;
 }) {
   const products = useCollection<Product>("/api/products", initial);
   const [query, setQuery] = React.useState("");
-  const [filters, setFilters] = React.useState({ category: "", deal: initialDeal });
+  const [filters, setFilters] = React.useState({ category: initialCategory, deal: initialDeal });
   const [open, setOpen] = React.useState(false);
   const [editing, setEditing] = React.useState<Product | null>(null);
 
@@ -150,16 +156,24 @@ export function ProductsView({
 
   return (
     <div className="animate-in">
-      <PageHeader
-        eyebrow="Catalogue"
-        title="Biens & produits"
-        description="Créez un bien ici : publié, il apparaît sur « Propriétés & Projets » et sur sa fiche project-details."
-        actions={
+      {embedded ? (
+        <div className="mb-3 flex flex-wrap items-center justify-end gap-2">
           <Button variant="coral" onClick={openCreate}>
             <Plus className="size-4" /> Nouveau produit
           </Button>
-        }
-      />
+        </div>
+      ) : (
+        <PageHeader
+          eyebrow="Catalogue"
+          title="Biens & produits"
+          description="Créez un bien ici : publié, il apparaît sur « Propriétés & Projets » et sur sa fiche project-details."
+          actions={
+            <Button variant="coral" onClick={openCreate}>
+              <Plus className="size-4" /> Nouveau produit
+            </Button>
+          }
+        />
+      )}
 
       <div className="mb-4 flex flex-wrap items-center gap-2 rounded-2xl border border-ink/8 bg-white px-4 py-3 text-[12px] text-muted">
         <span className="font-semibold text-ink">{products.items.length}</span> bien(s) au catalogue
@@ -183,31 +197,37 @@ export function ProductsView({
         onFilterChange={(key, value) => setFilters((current) => ({ ...current, [key]: value }))}
         onReset={() => {
           setQuery("");
-          setFilters({ category: "", deal: "" });
+          /* intégré, le tri vente/location et la catégorie viennent de la page
+             « Gestion de stock » : on les conserve */
+          setFilters({ category: initialCategory, deal: embedded ? initialDeal : "" });
         }}
         extra={
           <span className="inline-flex h-10 items-center whitespace-nowrap rounded-xl bg-ink/4 px-3 text-[12px] font-medium text-ink/60">
             {filtered.length} sur {products.items.length} bien(s)
           </span>
         }
-        filters={[
-          {
-            key: "deal",
-            label: "Transaction",
-            options: [
-              { value: "vente", label: "Vente" },
-              { value: "location", label: "Location" },
-            ],
-          },
-          {
-            key: "category",
-            label: "Type",
-            options: PRODUCT_CATEGORIES.map((category) => ({
-              value: category.value,
-              label: category.label,
-            })),
-          },
-        ]}
+        filters={
+          embedded
+            ? []
+            : [
+                {
+                  key: "deal",
+                  label: "Transaction",
+                  options: [
+                    { value: "vente", label: "Vente" },
+                    { value: "location", label: "Location" },
+                  ],
+                },
+                {
+                  key: "category",
+                  label: "Type",
+                  options: PRODUCT_CATEGORIES.map((category) => ({
+                    value: category.value,
+                    label: category.label,
+                  })),
+                },
+              ]
+        }
       />
 
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">

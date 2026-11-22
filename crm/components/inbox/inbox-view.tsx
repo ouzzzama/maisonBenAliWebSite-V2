@@ -77,7 +77,7 @@ export function InboxView({ initial }: { initial: EmailMessage[] }) {
     if (!selected || !reply.trim()) return;
     setSending(true);
     const created = await emails.create({
-      fromName: "Maison Ben Ali",
+      fromName: "Maison Benali",
       fromEmail: "contact@maisonbenali.com",
       toEmail: selected.fromEmail,
       subject: selected.subject.startsWith("Re:")
@@ -276,7 +276,7 @@ export function InboxView({ initial }: { initial: EmailMessage[] }) {
                   >
                     <div className="mb-2 flex items-center gap-2 text-[11px] text-ink/45">
                       <span className="font-semibold text-ink/70">
-                        {message.isOutbound ? "Maison Ben Ali" : message.fromName ?? message.fromEmail}
+                        {message.isOutbound ? "Maison Benali" : message.fromName ?? message.fromEmail}
                       </span>
                       <span>·</span>
                       <span>{formatDateTime(message.receivedAt)}</span>
