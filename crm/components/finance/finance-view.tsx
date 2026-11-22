@@ -13,6 +13,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Select } from "@/components/ui/field";
 import { RevenueChart } from "@/components/charts/revenue-chart";
+import { STREAMS, STREAM_OPTIONS, normalizeStream, streamLabel } from "@/lib/streams";
 import { transactionSchema, type TransactionInput } from "@/lib/validators";
 import type { Transaction } from "@/lib/demo-data";
 import {
@@ -24,12 +25,6 @@ import {
 } from "@/lib/utils";
 
 const STATUS_OPTIONS = Object.entries(TX_STATUS_LABEL).map(([value, label]) => ({ value, label }));
-const STREAM_OPTIONS = [
-  { value: "booking", label: "Réservations" },
-  { value: "rental", label: "Benali Cars" },
-  { value: "project", label: "Projets" },
-  { value: "other", label: "Autres" },
-];
 
 const emptyTx: TransactionInput = {
   label: "",
@@ -37,7 +32,7 @@ const emptyTx: TransactionInput = {
   type: "PAYMENT",
   status: "PAID",
   method: "Virement",
-  stream: "booking",
+  stream: "sale",
   occurredAt: toInputDate(),
 };
 
@@ -71,6 +66,28 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
     });
   }, [transactions.items, query, filters]);
 
+  // Revenus par secteur d'activité : le bloc d'en-tête détaille chaque métier.
+  const sectorCards = React.useMemo(
+    () =>
+      STREAMS.map((sector) => {
+        const rows = transactions.items.filter(
+          (tx) => normalizeStream(tx.stream) === sector.key && tx.type !== "EXPENSE"
+        );
+        const collected = rows.filter((tx) => tx.status === "PAID");
+        return {
+          key: sector.key,
+          label: sector.label,
+          color: sector.color,
+          total: collected.reduce((sum, tx) => sum + Number(tx.amount), 0),
+          count: collected.length,
+          waiting: rows
+            .filter((tx) => tx.status !== "PAID")
+            .reduce((sum, tx) => sum + Number(tx.amount), 0),
+        };
+      }),
+    [transactions.items]
+  );
+
   const paidIn = transactions.items
     .filter((tx) => tx.status === "PAID" && tx.type !== "EXPENSE")
     .reduce((sum, tx) => sum + Number(tx.amount), 0);
@@ -85,18 +102,16 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
     .reduce((sum, tx) => sum + Number(tx.amount), 0);
 
   const monthly = React.useMemo(() => {
-    const months: { month: string; bookings: number; rentals: number; projects: number; total: number }[] =
-      [];
+    const months: Record<string, number | string>[] = [];
     const now = new Date();
     for (let offset = 5; offset >= 0; offset -= 1) {
       const date = new Date(now.getFullYear(), now.getMonth() - offset, 1);
-      months.push({
+      const row: Record<string, number | string> = {
         month: date.toLocaleDateString("fr-FR", { month: "short" }),
-        bookings: 0,
-        rentals: 0,
-        projects: 0,
         total: 0,
-      });
+      };
+      for (const sector of STREAMS) row[sector.key] = 0;
+      months.push(row);
     }
     for (const tx of transactions.items) {
       if (tx.status !== "PAID" || tx.type === "EXPENSE") continue;
@@ -106,10 +121,9 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
       if (diff < 0 || diff > 5) continue;
       const bucket = months[5 - diff];
       const amount = Number(tx.amount);
-      bucket.total += amount;
-      if (tx.stream === "booking") bucket.bookings += amount;
-      else if (tx.stream === "rental") bucket.rentals += amount;
-      else bucket.projects += amount;
+      const key = normalizeStream(tx.stream);
+      bucket[key] = Number(bucket[key]) + amount;
+      bucket.total = Number(bucket.total) + amount;
     }
     return months;
   }, [transactions.items]);
@@ -134,7 +148,7 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
         <div>
           <p className="text-[12.5px] font-medium text-ink">{tx.label}</p>
           <p className="text-[11px] text-muted">
-            {tx.method ?? "—"} · {tx.stream ?? "—"}
+            {tx.method ?? "—"} · {streamLabel(tx.stream)}
           </p>
         </div>
       ),
@@ -221,7 +235,7 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
       <PageHeader
         eyebrow="Finance"
         title="Trésorerie & revenus"
-        description="Encaissements consolidés des réservations, locations et projets."
+        description="Encaissements consolidés par secteur : vente, VEFA, location, cars et boutique."
         actions={
           <Button variant="coral" onClick={() => setOpen(true)}>
             <Plus className="size-4" /> Nouvelle transaction
@@ -229,39 +243,71 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
         }
       />
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {[
-          { label: "Encaissé", value: formatMAD(paidIn), hint: `${filtered.length} écritures`, positive: true },
-          { label: "En attente", value: formatMAD(pending), hint: "À relancer", positive: false },
-          { label: "En retard", value: formatMAD(overdue), hint: "Relance prioritaire", positive: false },
-          { label: "Dépenses", value: formatMAD(expenses), hint: "Charges d'exploitation", positive: false },
-        ].map((item) => (
+      {/* Revenus par secteur : chaque métier a son propre bloc. */}
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {sectorCards.map((sector) => (
           <div
-            key={item.label}
+            key={sector.key}
             className="rounded-3xl border border-ink/8 bg-white p-4 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
           >
-            <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink/45">
+            <div className="flex items-center gap-2">
+              <span
+                className="size-2.5 shrink-0 rounded-full"
+                style={{ background: sector.color }}
+              />
+              <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink/45">
+                {sector.label}
+              </p>
+            </div>
+            <p className="mt-2 text-[22px] font-semibold leading-none text-ink">
+              {formatMAD(sector.total)}
+            </p>
+            <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-muted">
+              <span className="inline-flex items-center gap-1">
+                <ArrowUpRight className="size-3 text-emerald-600" />
+                {sector.count} écriture{sector.count > 1 ? "s" : ""} encaissée
+                {sector.count > 1 ? "s" : ""}
+              </span>
+              {sector.waiting > 0 ? (
+                <span className="inline-flex items-center gap-1 text-rose-500">
+                  · <ArrowDownRight className="size-3" /> {formatMAD(sector.waiting)} en attente
+                </span>
+              ) : null}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      {/* Totaux consolidés, tous secteurs confondus. */}
+      <div className="mt-3 grid grid-cols-2 gap-px overflow-hidden rounded-3xl border border-ink/8 bg-ink/8 sm:grid-cols-4">
+        {[
+          { label: "Total encaissé", value: formatMAD(paidIn) },
+          { label: "En attente", value: formatMAD(pending) },
+          { label: "En retard", value: formatMAD(overdue) },
+          { label: "Dépenses", value: formatMAD(expenses) },
+        ].map((item) => (
+          <div key={item.label} className="bg-white px-4 py-3">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.1em] text-ink/40">
               {item.label}
             </p>
-            <p className="mt-2 text-[22px] font-semibold leading-none text-ink">{item.value}</p>
-            <p className="mt-2 inline-flex items-center gap-1 text-[11px] text-muted">
-              {item.positive ? (
-                <ArrowUpRight className="size-3 text-emerald-600" />
-              ) : (
-                <ArrowDownRight className="size-3 text-rose-500" />
-              )}
-              {item.hint}
-            </p>
+            <p className="mt-1 text-[15px] font-semibold text-ink">{item.value}</p>
           </div>
         ))}
       </div>
 
       <div className="mt-4 rounded-3xl border border-ink/8 bg-white p-4 shadow-[0_2px_10px_rgba(18,43,67,0.04)]">
         <div className="mb-2 flex items-center justify-between">
-          <h2 className="text-[14px] font-semibold text-ink">Encaissements mensuels</h2>
+          <h2 className="text-[14px] font-semibold text-ink">Encaissements mensuels par secteur</h2>
           <span className="text-[11px] text-muted">6 derniers mois</span>
         </div>
-        <RevenueChart data={monthly} />
+        <RevenueChart
+          data={monthly}
+          series={STREAMS.map((sector) => ({
+            key: sector.key,
+            name: sector.label,
+            color: sector.color,
+          }))}
+        />
       </div>
 
       <div className="mt-4">

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PRODUCT_CATEGORY_SLUGS } from "@/lib/categories";
 
 export const leadStatusEnum = z.enum(["NEW", "CONTACTED", "QUALIFIED", "WON", "LOST"]);
 export const interestEnum = z.enum([
@@ -103,7 +104,8 @@ export type ProjectInput = z.infer<typeof projectSchema>;
 
 export const productSchema = z.object({
   title: z.string().trim().min(3, "Titre requis"),
-  category: z.enum(["villas", "appartements", "vefa", "commercial"]),
+  category: z.enum(PRODUCT_CATEGORY_SLUGS),
+  deal: z.enum(["vente", "location"]),
   location: z.string().trim().min(2, "Quartier requis"),
   address: z.string().trim().optional().or(z.literal("")),
   price: z.coerce.number().nonnegative("Prix invalide").optional(),
@@ -118,6 +120,20 @@ export const productSchema = z.object({
 });
 
 export type ProductInput = z.infer<typeof productSchema>;
+
+export const shopItemSchema = z.object({
+  title: z.string().trim().min(3, "Titre requis"),
+  category: z.string().trim().min(2, "Catégorie requise"),
+  mode: z.enum(["vente", "location"]),
+  price: z.coerce.number().nonnegative("Prix invalide").optional(),
+  unit: z.string().trim().optional().or(z.literal("")),
+  stock: z.coerce.number().int().nonnegative("Stock invalide").optional(),
+  description: z.string().trim().optional().or(z.literal("")),
+  coverUrl: z.string().trim().optional().or(z.literal("")),
+  published: z.boolean().optional(),
+});
+
+export type ShopItemInput = z.infer<typeof shopItemSchema>;
 
 export const postSchema = z.object({
   title: z.string().trim().min(6, "Titre requis"),

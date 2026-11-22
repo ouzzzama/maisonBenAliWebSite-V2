@@ -49,7 +49,7 @@
 <!--====== Default css ======-->
 <link href="assets/css/spacings.css" rel="stylesheet"/>
 <!--====== Default css ======-->
-<link href="assets/css/style.css?v=77" rel="stylesheet"/>
+<link href="assets/css/style.css?v=84" rel="stylesheet"/>
         <link rel="stylesheet" href="assets/css/curves.css?v=10">
 
   
@@ -285,7 +285,10 @@
                         </div>
                     </div>
                     <div class="hero-banner-img-wrap">
-                        <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-1.png" alt="Habitat d'Exception à Agadir" data-cms-slot="HOME_HERO">
+                        <picture class="hero-banner-media">
+                            <source media="(max-width: 767px)" srcset="assets/images/home-one/hero/hero-building-1-mobile.webp" type="image/webp">
+                            <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-1.png" alt="Habitat d'Exception à Agadir" data-cms-slot="HOME_HERO">
+                        </picture>
                     </div>
                 </div>
             </div>
@@ -308,7 +311,10 @@
                         </div>
                     </div>
                     <div class="hero-banner-img-wrap">
-                        <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-2.png" alt="Villas Contemporaines à Agadir">
+                        <picture class="hero-banner-media">
+                            <source media="(max-width: 767px)" srcset="assets/images/home-one/hero/hero-building-2-mobile.webp" type="image/webp">
+                            <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-2.png" alt="Villas Contemporaines à Agadir">
+                        </picture>
                     </div>
                 </div>
             </div>
@@ -331,7 +337,10 @@
                         </div>
                     </div>
                     <div class="hero-banner-img-wrap">
-                        <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-3.png" alt="Projet Résidentiel Moyen Standing Agadir">
+                        <picture class="hero-banner-media">
+                            <source media="(max-width: 767px)" srcset="assets/images/home-one/hero/hero-building-3-mobile.webp" type="image/webp">
+                            <img class="hero-banner-building" src="assets/images/home-one/hero/hero-building-3.png" alt="Projet Résidentiel Moyen Standing Agadir">
+                        </picture>
                     </div>
                 </div>
             </div>
@@ -385,7 +394,7 @@
                 </div>
                 <!-- 11 Ans d'Expérience Spinning SVG Badge -->
                 <div class="editorial-spinning-seal">
-                    <img alt="11 ans d'expérience" class="rotating-circle-badge" src="assets/images/home-one/about/circle-img.svg?v=1.1"/>
+                    <img alt="11 ans d'expérience" class="rotating-circle-badge" src="assets/images/home-one/about/circle-img.svg?v=1.2"/>
                 </div>
             </div>
 
@@ -434,36 +443,6 @@
             </div>
         </div>
 
-        <!-- Signature Guarantees — editorial cards -->
-        <div class="editorial-trust" data-aos="fade-up" data-aos-duration="1200">
-            <div class="editorial-trust-grid">
-                <article class="editorial-trust-card">
-                    <div class="editorial-trust-head">
-                        <div class="editorial-trust-icon">
-                            <img alt="Transparence &amp; Prix Nets" src="assets/images/custom-icons/real-estate/Black/10.png"/ loading="lazy">
-                        </div>
-                        <span class="editorial-trust-num">01</span>
-                    </div>
-                    <h5>Transparence &amp; Prix Nets Vendeurs</h5>
-                    <p>Analyses Comparatives de Marché (ACM) pour éviter tout surpaiement.</p>
-                </article>
-                <article class="editorial-trust-card">
-                    <div class="editorial-trust-head">
-                        <div class="editorial-trust-icon">
-                            <img alt="Accompagnement Notarié" src="assets/images/custom-icons/inheritance/Black/14.png"/ loading="lazy">
-                        </div>
-                        <span class="editorial-trust-num">02</span>
-                    </div>
-                    <h5>Accompagnement Notarié MRE 360°</h5>
-                    <p>Gestion des formalités administratives et juridiques à 100% à distance.</p>
-                </article>
-            </div>
-            <div class="editorial-trust-note">
-                <span></span>
-                <p>Notre méthodologie éprouvée garantit la réussite financière et la sérénité totale de vos transactions.</p>
-                <span></span>
-            </div>
-        </div>
     </div>
 </section><!--======  End About Section  ======-->
 
@@ -706,34 +685,37 @@
             <div class="featured-triad-col">
                 <div class="triad-card">
                     <h4 class="triad-title">Emplacements d'Exception</h4>
-                    <p class="triad-desc">
+                    <div class="triad-desc">
                         Sélection rigoureuse sur les adresses les plus cotées d'Agadir : Founty, Taghazout Bay, Baie des Palmiers et Marina avec vue mer imprenable.
-                    </p>
+                    </div>
                 </div>
                 <div class="triad-aside">
                     <span class="triad-icon-wrap"><i class="far fa-compass"></i></span>
+                    <span class="triad-index" aria-hidden="true">01</span>
                 </div>
             </div>
             <div class="featured-triad-col">
                 <div class="triad-card">
                     <h4 class="triad-title">Architecture &amp; Finitions d'Élite</h4>
-                    <p class="triad-desc">
+                    <div class="triad-desc">
                         Conception contemporaine bioclimatique, domotique de pointe, matériaux nobles et piscines à débordement aux normes parasismiques certifiées.
-                    </p>
+                    </div>
                 </div>
                 <div class="triad-aside">
                     <span class="triad-icon-wrap"><i class="far fa-layer-group"></i></span>
+                    <span class="triad-index" aria-hidden="true">02</span>
                 </div>
             </div>
             <div class="featured-triad-col">
                 <div class="triad-card">
                     <h4 class="triad-title">Rentabilité &amp; Conciergerie 360°</h4>
-                    <p class="triad-desc">
+                    <div class="triad-desc">
                         Accompagnement bancaire &amp; notarié sécurisé, rendement locatif optimisé et conciergerie privée VIP avec la flotte Benali Cars clé en main.
-                    </p>
+                    </div>
                 </div>
                 <div class="triad-aside">
                     <span class="triad-icon-wrap"><i class="far fa-analytics"></i></span>
+                    <span class="triad-index" aria-hidden="true">03</span>
                 </div>
             </div>
         </div>

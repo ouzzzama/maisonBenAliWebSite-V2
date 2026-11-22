@@ -187,10 +187,19 @@
   }
 
   var CRM_TYPE_LABEL = {
+    appartement: "Appartement",
+    villa: "Villa",
+    maison: "Maison",
+    riad: "Riad",
+    studio: "Studio",
+    terrain: "Terrain",
+    bureau: "Bureau",
+    commerce: "Commerce",
+    "projets-neufs": "Projets neufs",
     villas: "Villa",
     appartements: "Appartement",
-    vefa: "VEFA",
-    commercial: "Commercial"
+    vefa: "Projets neufs",
+    commercial: "Commerce"
   };
 
   /* A bien opened with ?bien=<slug> comes from the CRM: the page reads it in
@@ -246,17 +255,11 @@
         '<p class="bp-info-loc"><i class="fas fa-map-marker-alt" aria-hidden="true"></i>' +
           esc(ctx.location) + "</p>",
         '<p class="bp-info-text">' + esc(description) + "</p>",
-        '<div class="bp-info-actions" role="group" aria-label="Airbnb, voiture, téléphone et partage">',
-          '<a class="bp-quick" href="https://www.airbnb.com/s/Agadir--Maroc/homes" target="_blank" rel="noopener"' +
-            ' aria-label="Voir les séjours Airbnb à Agadir"><i class="fab fa-airbnb" aria-hidden="true"></i>Airbnb</a>',
-          '<a class="bp-quick" href="ecosysteme-360" aria-label="Louer une voiture avec Benali Cars"' +
-            '><i class="fas fa-car" aria-hidden="true"></i>Cars rental</a>',
-          '<a class="bp-quick" href="tel:+212661191787" aria-label="Appeler Maison Benali">' +
-            '<i class="fas fa-phone-alt" aria-hidden="true"></i>Appeler</a>',
-          '<button type="button" class="bp-quick" data-bp-share aria-label="Partager ce bien">' +
-            '<i class="fas fa-share-alt" aria-hidden="true"></i><span data-bp-share-label>Partager</span></button>',
-        "</div>",
         '<div class="bp-info-foot">',
+          '<div class="bp-info-actions" role="group" aria-label="Partage">',
+            '<button type="button" class="bp-quick" data-bp-share aria-label="Partager ce bien">' +
+              '<i class="fas fa-share-alt" aria-hidden="true"></i><span data-bp-share-label>Partager</span></button>',
+          "</div>",
           '<button type="button" class="bp-btn bp-btn--coral bp-info-cta" data-bp-book="stay" data-bp-id="' +
             esc(STAYS[0].id) + '">Consulter<i class="fas fa-arrow-right" aria-hidden="true"></i></button>',
         "</div>",
@@ -815,6 +818,10 @@
       "</div>";
 
     page.insertBefore(section, page.firstChild);
+
+    /* le bien du CRM est dessiné : on retire l'écran de chargement qui masquait
+       l'ancien gabarit statique */
+    document.documentElement.classList.remove("mb-detail-loading");
 
     wireLeadGallery(section);
     wireRentCar(section);

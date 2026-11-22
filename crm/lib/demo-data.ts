@@ -1,5 +1,9 @@
 /* ------------------------------------------------------------------ types */
 
+import type { ProductCategory } from "@/lib/categories";
+
+export type { ProductCategory };
+
 export type LeadStatus = "NEW" | "CONTACTED" | "QUALIFIED" | "WON" | "LOST";
 export type ServiceInterest =
   | "ACHAT"
@@ -997,15 +1001,16 @@ type PrismaModelName =
   | "mediaAsset"
   | "emailMessage"
   | "product"
+  | "shopItem"
   | "post";
-
-export type ProductCategory = "villas" | "appartements" | "vefa" | "commercial";
 
 export type Product = {
   id: string;
   title: string;
   slug: string;
   category: ProductCategory;
+  /** vente | location */
+  deal: string;
   location: string;
   address: string | null;
   price: number | null;
@@ -1095,7 +1100,8 @@ export const demoProducts: Product[] = [
     id: "pd_villa_founty",
     title: "Villa Founty Beach",
     slug: "villa-founty-beach",
-    category: "villas",
+    category: "villa",
+    deal: "vente",
     location: "founty",
     address: "Founty Beach, Agadir",
     price: 4200000,
@@ -1115,7 +1121,8 @@ export const demoProducts: Product[] = [
     id: "pd_marina_penthouse",
     title: "Penthouse Marina Panorama",
     slug: "penthouse-marina-panorama",
-    category: "appartements",
+    category: "appartement",
+    deal: "location",
     location: "marina",
     address: "Marina d'Agadir, Agadir",
     price: 2650000,
@@ -1135,7 +1142,8 @@ export const demoProducts: Product[] = [
     id: "pd_vefa_taghazout",
     title: "Résidence Taghazout Bay — VEFA",
     slug: "residence-taghazout-bay",
-    category: "vefa",
+    category: "projets-neufs",
+    deal: "vente",
     location: "taghazout",
     address: "Taghazout Bay, Agadir",
     price: 1480000,
@@ -1153,9 +1161,80 @@ export const demoProducts: Product[] = [
   },
 ];
 
+/** Article de la boutique : matériel ou équipement vendu ou loué. */
+export type ShopItem = {
+  id: string;
+  title: string;
+  slug: string;
+  category: string;
+  /** vente | location */
+  mode: string;
+  price: number | null;
+  unit: string | null;
+  stock: number;
+  description: string | null;
+  coverUrl: string | null;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+};
+
+/** Articles affichés dans le module Boutique du CRM. */
+export const demoShopItems: ShopItem[] = [
+  {
+    id: "sh_mobilier_terrasse",
+    title: "Salon de terrasse en teck",
+    slug: "salon-terrasse-teck",
+    category: "Mobilier outdoor",
+    mode: "vente",
+    price: 18500,
+    unit: "unité",
+    stock: 6,
+    description:
+      "Canapé 3 places, deux fauteuils et table basse en teck massif, coussins déperlants. Livraison Agadir et Taghazout.",
+    coverUrl: "assets/images/stock/villa-piscine-founty.jpg",
+    published: true,
+    sortOrder: 10,
+    createdAt: "2026-02-10T09:00:00.000Z",
+  },
+  {
+    id: "sh_pack_linge",
+    title: "Pack linge hôtelier (conciergerie)",
+    slug: "pack-linge-hotelier",
+    category: "Conciergerie",
+    mode: "location",
+    price: 450,
+    unit: "mois",
+    stock: 24,
+    description:
+      "Dotation complète par lit : draps 300 fils, housses, serviettes et peignoirs, rotation et blanchisserie incluses.",
+    coverUrl: "assets/images/stock/appartement-front-de-mer.jpg",
+    published: true,
+    sortOrder: 20,
+    createdAt: "2026-02-14T09:00:00.000Z",
+  },
+  {
+    id: "sh_clim_reversible",
+    title: "Climatiseur réversible 12 000 BTU",
+    slug: "climatiseur-reversible-12000",
+    category: "Équipement",
+    mode: "vente",
+    price: 6900,
+    unit: "unité",
+    stock: 12,
+    description:
+      "Split inverter silencieux, pose comprise, garantie 3 ans. Idéal pour une chambre ou un séjour de 30 m².",
+    coverUrl: "assets/images/stock/residence-eco-luxe.jpg",
+    published: false,
+    sortOrder: 30,
+    createdAt: "2026-02-18T09:00:00.000Z",
+  },
+];
+
 export const demoData = {
   leads: demoLeads,
   products: demoProducts,
+  shop: demoShopItems,
   posts: demoPosts,
   clients: demoClients,
   bookings: demoBookings,
@@ -1174,6 +1253,7 @@ export const demoData = {
     media: "mediaAsset",
     emails: "emailMessage",
     products: "product",
+    shop: "shopItem",
     posts: "post",
   } as Record<string, PrismaModelName>,
 };

@@ -377,8 +377,8 @@
 .bp-info-foot {
   display: flex;
   flex-wrap: wrap;
-  align-items: flex-end;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
   gap: 14px;
   margin-top: auto;
   padding-top: 20px;
@@ -796,8 +796,9 @@
   overflow: hidden;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
   gap: 14px;
+  text-align: center;
   padding: clamp(18px, 1.8vw, 22px);
   text-decoration: none;
   color: inherit;
@@ -934,7 +935,7 @@
 }
 
 .bp-contact-go {
-  margin-left: auto;
+  margin-left: 2px;
   font-size: 12px;
   color: rgba(18, 43, 67, 0.34);
   transition: color 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1504,9 +1505,10 @@
   }
 
   .bp-contact-row .bp-contact {
-    align-items: flex-start;
+    align-items: center;
+    justify-content: center;
     gap: 9px;
-    padding: 12px 10px 13px;
+    padding: 14px 10px;
     min-height: 92px;
   }
 
@@ -1591,7 +1593,11 @@
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 22px;
+  margin-top: 0;
+}
+
+.bp-info-cta {
+  margin-left: auto;
 }
 
 .bp-quick {

@@ -14,6 +14,7 @@ import { FieldError, Input, Label, Select } from "@/components/ui/field";
 import { mediaSchema, type MediaInput } from "@/lib/validators";
 import type { MediaAsset } from "@/lib/demo-data";
 import { PAGE_SLOT_LABEL, cn, formatDate } from "@/lib/utils";
+import { resolveImage } from "@/lib/images";
 
 const SLOT_OPTIONS = Object.entries(PAGE_SLOT_LABEL).map(([value, label]) => ({ value, label }));
 
@@ -132,7 +133,11 @@ export function MediaView({ initial }: { initial: MediaAsset[] }) {
               <div className="aspect-[16/9] bg-cream">
                 {asset ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={asset.url} alt={asset.alt ?? slot.label} className="h-full w-full object-cover" />
+                  <img
+                    src={resolveImage(asset.url)}
+                    alt={asset.alt ?? slot.label}
+                    className="h-full w-full object-cover"
+                  />
                 ) : (
                   <div className="grid h-full place-items-center text-[11px] text-ink/30">
                     Aucune image
@@ -174,7 +179,7 @@ export function MediaView({ initial }: { initial: MediaAsset[] }) {
             <div className="relative aspect-[4/3] bg-cream">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={asset.url}
+                src={resolveImage(asset.url)}
                 alt={asset.alt ?? asset.filename}
                 className={cn("h-full w-full object-cover", !asset.active && "opacity-40 grayscale")}
               />

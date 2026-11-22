@@ -83,6 +83,7 @@ function store(): Record<CollectionName, Row[]> {
       rentals: [...demoData.rentals] as unknown as Row[],
       projects: [...demoData.projects] as unknown as Row[],
       products: [...demoData.products] as unknown as Row[],
+      shop: [...demoData.shop] as unknown as Row[],
       posts: [...demoData.posts] as unknown as Row[],
       transactions: [...demoData.transactions] as unknown as Row[],
       media: [...demoData.media] as unknown as Row[],
@@ -212,7 +213,14 @@ export async function getAnalytics(): Promise<Analytics> {
     else bucket.projects += amount;
   }
 
-  const streamTotals: Record<string, number> = { booking: 0, rental: 0, project: 0, other: 0 };
+  const streamTotals: Record<string, number> = {
+    sale: 0,
+    project: 0,
+    booking: 0,
+    rental: 0,
+    shop: 0,
+    other: 0,
+  };
   for (const t of paid) {
     const stream = String(t.stream ?? "other");
     streamTotals[stream] = (streamTotals[stream] ?? 0) + Number(t.amount ?? 0);
@@ -244,9 +252,11 @@ export async function getAnalytics(): Promise<Analytics> {
     },
     monthly,
     streams: [
-      { name: "Réservations", value: streamTotals.booking },
+      { name: "Location immobilière", value: streamTotals.booking },
+      { name: "VEFA / Projets neufs", value: streamTotals.project },
       { name: "Benali Cars", value: streamTotals.rental },
-      { name: "Projets", value: streamTotals.project },
+      { name: "Vente immobilière", value: streamTotals.sale ?? 0 },
+      { name: "Boutique", value: streamTotals.shop ?? 0 },
       { name: "Autres", value: streamTotals.other },
     ],
     leadFunnel,

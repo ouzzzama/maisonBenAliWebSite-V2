@@ -16,22 +16,30 @@ import { formatCompactMAD, formatMAD } from "@/lib/utils";
 
 type MonthRow = { month: string; bookings: number; rentals: number; projects: number; total: number };
 
-const SERIES = [
+export type RevenueSeries = { key: string; name: string; color: string };
+
+const SERIES: RevenueSeries[] = [
   { key: "bookings", name: "Réservations", color: "#ef453b" },
   { key: "rentals", name: "Benali Cars", color: "#122b43" },
   { key: "projects", name: "Projets", color: "#15483d" },
-] as const;
+];
 
-export function RevenueChart({ data }: { data: MonthRow[] }) {
+export function RevenueChart({
+  data,
+  series = SERIES,
+}: {
+  data: MonthRow[] | Record<string, string | number>[];
+  series?: RevenueSeries[];
+}) {
   return (
     <div className="h-[280px] w-full">
       <ResponsiveContainer width="100%" height="100%">
         <AreaChart data={data} margin={{ top: 8, right: 8, left: -12, bottom: 0 }}>
           <defs>
-            {SERIES.map((series) => (
-              <linearGradient key={series.key} id={`fill-${series.key}`} x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor={series.color} stopOpacity={0.28} />
-                <stop offset="100%" stopColor={series.color} stopOpacity={0.02} />
+            {series.map((item) => (
+              <linearGradient key={item.key} id={`fill-${item.key}`} x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor={item.color} stopOpacity={0.28} />
+                <stop offset="100%" stopColor={item.color} stopOpacity={0.02} />
               </linearGradient>
             ))}
           </defs>
@@ -59,15 +67,15 @@ export function RevenueChart({ data }: { data: MonthRow[] }) {
             }}
             formatter={(value, name) => [formatMAD(Number(value)), String(name)]}
           />
-          {SERIES.map((series) => (
+          {series.map((item) => (
             <Area
-              key={series.key}
+              key={item.key}
               type="monotone"
-              dataKey={series.key}
-              name={series.name}
-              stroke={series.color}
+              dataKey={item.key}
+              name={item.name}
+              stroke={item.color}
               strokeWidth={2}
-              fill={`url(#fill-${series.key})`}
+              fill={`url(#fill-${item.key})`}
               stackId="1"
             />
           ))}

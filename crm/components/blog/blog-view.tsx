@@ -12,6 +12,7 @@ import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Textarea } from "@/components/ui/field";
 import { postSchema, type PostInput } from "@/lib/validators";
 import type { Post } from "@/lib/demo-data";
+import { resolveImage } from "@/lib/images";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
 
@@ -136,7 +137,7 @@ export function BlogView({ initial }: { initial: Post[] }) {
             <div className="relative h-40 w-full overflow-hidden bg-ink/5">
               {post.coverUrl ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
-                <img src={post.coverUrl} alt={post.title} className="size-full object-cover" loading="lazy" />
+                <img src={resolveImage(post.coverUrl)} alt={post.title} className="size-full object-cover" loading="lazy" />
               ) : (
                 <div className="grid size-full place-items-center text-[11px] text-ink/30">Sans photo</div>
               )}

@@ -11,21 +11,24 @@ import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Select, Textarea } from "@/components/ui/field";
 import { productSchema, type ProductInput } from "@/lib/validators";
+import { CATEGORY_LABEL, PRODUCT_CATEGORIES, normalizeCategory } from "@/lib/categories";
 import type { Product } from "@/lib/demo-data";
 import { formatMAD } from "@/lib/utils";
+import { resolveImage } from "@/lib/images";
+import type { ParsedListing } from "@/lib/ocr";
+import { OcrImport } from "@/components/products/ocr-import";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
 
-const CATEGORY_LABEL: Record<string, string> = {
-  villas: "Villa",
-  appartements: "Appartement",
-  vefa: "VEFA",
-  commercial: "Commercial",
+const DEAL_LABEL: Record<string, string> = {
+  vente: "Vente",
+  location: "Location",
 };
 
 const emptyProduct: ProductInput = {
   title: "",
-  category: "villas",
+  category: "appartement",
+  deal: "vente",
   location: "founty",
   address: "",
   price: undefined,
@@ -39,10 +42,17 @@ const emptyProduct: ProductInput = {
   published: true,
 };
 
-export function ProductsView({ initial }: { initial: Product[] }) {
+export function ProductsView({
+  initial,
+  initialDeal = "",
+}: {
+  initial: Product[];
+  /** « vente » ou « location » : la section du CRM ouvre la liste déjà filtrée. */
+  initialDeal?: string;
+}) {
   const products = useCollection<Product>("/api/products", initial);
   const [query, setQuery] = React.useState("");
-  const [filters, setFilters] = React.useState({ category: "" });
+  const [filters, setFilters] = React.useState({ category: "", deal: initialDeal });
   const [open, setOpen] = React.useState(false);
   const [editing, setEditing] = React.useState<Product | null>(null);
 
@@ -61,7 +71,8 @@ export function ProductsView({ initial }: { initial: Product[] }) {
     setEditing(product);
     form.reset({
       title: product.title,
-      category: product.category,
+      category: normalizeCategory(product.category) || "appartement",
+      deal: product.deal === "location" ? "location" : "vente",
       location: product.location,
       address: product.address ?? "",
       price: product.price ?? undefined,
@@ -77,10 +88,25 @@ export function ProductsView({ initial }: { initial: Product[] }) {
     setOpen(true);
   };
 
+  /** Remplit la fiche avec ce que l'OCR a lu sur l'annonce photographiée. */
+  const applyParsed = (parsed: ParsedListing) => {
+    if (parsed.title) form.setValue("title", parsed.title, { shouldDirty: true });
+    if (parsed.price) form.setValue("price", parsed.price, { shouldDirty: true });
+    if (parsed.surface) form.setValue("surface", parsed.surface, { shouldDirty: true });
+    if (parsed.rooms) form.setValue("rooms", parsed.rooms, { shouldDirty: true });
+    if (parsed.baths) form.setValue("baths", parsed.baths, { shouldDirty: true });
+    if (parsed.address) form.setValue("address", parsed.address, { shouldDirty: true });
+    if (parsed.category)
+      form.setValue("category", parsed.category as ProductInput["category"], { shouldDirty: true });
+    if (parsed.deal) form.setValue("deal", parsed.deal, { shouldDirty: true });
+    if (parsed.location) form.setValue("location", parsed.location, { shouldDirty: true });
+  };
+
   const onSubmit = async (values: ProductInput) => {
     const payload = {
       title: values.title,
       category: values.category,
+      deal: values.deal,
       location: values.location,
       address: values.address || "",
       price: values.price ?? null,
@@ -109,6 +135,8 @@ export function ProductsView({ initial }: { initial: Product[] }) {
     const term = query.trim().toLowerCase();
     return products.items.filter((product) => {
       if (filters.category && product.category !== filters.category) return false;
+      if (filters.deal && (product.deal === "location" ? "location" : "vente") !== filters.deal)
+        return false;
       if (!term) return true;
       return [product.title, product.address, product.location, product.description]
         .filter(Boolean)
@@ -155,13 +183,29 @@ export function ProductsView({ initial }: { initial: Product[] }) {
         onFilterChange={(key, value) => setFilters((current) => ({ ...current, [key]: value }))}
         onReset={() => {
           setQuery("");
-          setFilters({ category: "" });
+          setFilters({ category: "", deal: "" });
         }}
+        extra={
+          <span className="inline-flex h-10 items-center whitespace-nowrap rounded-xl bg-ink/4 px-3 text-[12px] font-medium text-ink/60">
+            {filtered.length} sur {products.items.length} bien(s)
+          </span>
+        }
         filters={[
+          {
+            key: "deal",
+            label: "Transaction",
+            options: [
+              { value: "vente", label: "Vente" },
+              { value: "location", label: "Location" },
+            ],
+          },
           {
             key: "category",
             label: "Type",
-            options: Object.entries(CATEGORY_LABEL).map(([value, label]) => ({ value, label })),
+            options: PRODUCT_CATEGORIES.map((category) => ({
+              value: category.value,
+              label: category.label,
+            })),
           },
         ]}
       />
@@ -176,7 +220,7 @@ export function ProductsView({ initial }: { initial: Product[] }) {
               {product.coverUrl ? (
                 /* eslint-disable-next-line @next/next/no-img-element */
                 <img
-                  src={product.coverUrl}
+                  src={resolveImage(product.coverUrl)}
                   alt={product.title}
                   className="size-full object-cover"
                   loading="lazy"
@@ -188,6 +232,9 @@ export function ProductsView({ initial }: { initial: Product[] }) {
               )}
               <span className="absolute left-3 top-3 rounded-full bg-white/90 px-2.5 py-1 text-[10.5px] font-semibold text-ink">
                 {CATEGORY_LABEL[product.category] ?? product.category}
+              </span>
+              <span className="absolute left-3 top-11 rounded-full bg-ink/70 px-2.5 py-1 text-[10.5px] font-semibold text-white/90">
+                {DEAL_LABEL[product.deal] ?? DEAL_LABEL.vente}
               </span>
               <span
                 className={`absolute right-3 top-3 rounded-full px-2.5 py-1 text-[10.5px] font-semibold ${
@@ -274,6 +321,7 @@ export function ProductsView({ initial }: { initial: Product[] }) {
         size="lg"
       >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <OcrImport onExtract={applyParsed} />
           <div className="grid gap-3 sm:grid-cols-2">
             <div className="sm:col-span-2">
               <Label>Titre</Label>
@@ -283,11 +331,18 @@ export function ProductsView({ initial }: { initial: Product[] }) {
             <div>
               <Label>Type</Label>
               <Select {...form.register("category")}>
-                {Object.entries(CATEGORY_LABEL).map(([value, label]) => (
-                  <option key={value} value={value}>
-                    {label}
+                {PRODUCT_CATEGORIES.map((category) => (
+                  <option key={category.value} value={category.value}>
+                    {category.label}
                   </option>
                 ))}
+              </Select>
+            </div>
+            <div>
+              <Label>Vente ou location</Label>
+              <Select {...form.register("deal")}>
+                <option value="vente">Vente</option>
+                <option value="location">Location</option>
               </Select>
             </div>
             <div>
@@ -300,6 +355,8 @@ export function ProductsView({ initial }: { initial: Product[] }) {
                 <option value="palmiers">Baie des Palmiers</option>
                 <option value="hassan">Hassan II</option>
                 <option value="charaf">Charaf</option>
+                <option value="hay-mohammadi">Hay Mohammadi</option>
+                <option value="zone-industrielle">Zone industrielle</option>
               </Select>
             </div>
             <div>

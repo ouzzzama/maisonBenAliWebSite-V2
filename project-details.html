@@ -57,10 +57,49 @@
         <script src="assets/js/minimal-icons.js?v=2"></script>
         <link rel="stylesheet" href="assets/js/plugins/leaflet/leaflet.css">
         <link rel="stylesheet" href="assets/css/brand-map.css?v=20">
-        <link rel="stylesheet" href="assets/css/bento-product.css?v=52">
+        <link rel="stylesheet" href="assets/css/bento-product.css?v=54">
+        <!-- Fiche bien du CRM : on masque l'ancien gabarit tant que le bien n'est pas chargé -->
+        <style>
+            .mb-detail-loader { display: none; }
+            .mb-detail-loading .mb-detail-loader {
+                display: flex;
+                position: fixed;
+                inset: 0;
+                z-index: 9999;
+                align-items: center;
+                justify-content: center;
+                background: #ffffff;
+            }
+            .mb-detail-loader__ring {
+                width: 42px;
+                height: 42px;
+                border-radius: 50%;
+                border: 3px solid rgba(12, 49, 96, 0.16);
+                border-top-color: #0c3160;
+                animation: mbDetailSpin 0.9s linear infinite;
+            }
+            @keyframes mbDetailSpin { to { transform: rotate(360deg); } }
+            @media (prefers-reduced-motion: reduce) {
+                .mb-detail-loader__ring { animation-duration: 2.6s; }
+            }
+        </style>
+        <script>
+            (function () {
+                try {
+                    var params = new URLSearchParams(window.location.search);
+                    if (!params.get("bien") && !params.get("slug")) return;
+                    document.documentElement.classList.add("mb-detail-loading");
+                    /* filet de sécurité : ne jamais laisser la page masquée */
+                    window.setTimeout(function () {
+                        document.documentElement.classList.remove("mb-detail-loading");
+                    }, 6000);
+                } catch (e) {}
+            }());
+        </script>
 
 </head>
     <body class="axis-innerpage">
+        <div class="mb-detail-loader" aria-hidden="true"><span class="mb-detail-loader__ring"></span></div>
         <!--====== Start Preloader ======-->
         <div class="preloader">
             <div class="loading-wrapper">
@@ -667,7 +706,7 @@
         <script src="assets/js/plugins/leaflet/leaflet.js"></script>
         <script src="assets/js/brand-map.js?v=9"></script>
         <script src="assets/js/project-bento.js?v=14"></script>
-        <script src="assets/js/bento-product.js?v=31"></script>
+        <script src="assets/js/bento-product.js?v=34"></script>
     <script src="assets/js/crm-config.js?v=1"></script>
 <script src="assets/js/crm-products.js?v=4"></script>
 </body>

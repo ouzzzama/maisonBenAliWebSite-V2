@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { listRows } from "@/lib/repo";
+import { normalizeCategory } from "@/lib/categories";
 
 export const dynamic = "force-dynamic";
 
@@ -38,7 +39,8 @@ export async function GET(request: NextRequest) {
       id: row.id,
       title: row.title ?? "",
       slug: row.slug ?? row.id,
-      category: row.category ?? "villas",
+      category: normalizeCategory(row.category as string) || "appartement",
+      deal: row.deal === "location" ? "location" : "vente",
       location: row.location ?? "",
       address: row.address ?? "",
       price: row.price === null || row.price === undefined ? null : Number(row.price),

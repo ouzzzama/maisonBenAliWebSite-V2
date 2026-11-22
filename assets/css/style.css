@@ -3976,6 +3976,11 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   -webkit-clip-path: inset(-450px 0px 0px 0px round 0px 0px 42px 42px);
   clip-path: inset(-450px 0px 0px 0px round 0px 0px 42px 42px);
 }
+/* the <picture> only chooses the mobile crop: it must not become the box */
+.hero-banner-media {
+  display: contents;
+}
+
 .hero-banner-building {
   position: absolute;
   right: 0;
@@ -4183,7 +4188,7 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 /* Mobile hero: buildings cross the top edge, feathered downwards, copy centred */
 @media (max-width: 767px) {
   .hero-banner-card {
-    margin-top: 96px;
+    margin-top: 70px;
     border-radius: 28px;
     align-items: stretch;
   }
@@ -4220,10 +4225,12 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     right: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    height: 350px !important;
-    object-fit: contain;
+    height: 300px !important;
+    /* the mobile crop (hero-building-N-mobile.webp) is tight on the building,
+       so it fills the band instead of floating inside it */
+    object-fit: cover;
     object-position: center top;
-    border-radius: 0 !important;
+    border-radius: 28px 28px 0 0 !important;
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 44%, rgba(0, 0, 0, 0.78) 60%, rgba(0, 0, 0, 0.38) 76%, rgba(0, 0, 0, 0.12) 88%, rgba(0, 0, 0, 0) 100%) !important;
     mask-image: linear-gradient(to bottom, #000 0%, #000 44%, rgba(0, 0, 0, 0.78) 60%, rgba(0, 0, 0, 0.38) 76%, rgba(0, 0, 0, 0.12) 88%, rgba(0, 0, 0, 0) 100%) !important;
   }
@@ -4454,85 +4461,103 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
 .featured-triad-col {
   position: relative;
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 78px;
+  grid-template-columns: minmax(0, 1fr) 56px;
   gap: 0;
-  padding: 22px;
+  padding: 14px;
   background: #ffffff;
-  border-radius: 44px;
-  box-shadow: 0 30px 60px -42px rgba(12, 33, 54, 0.5);
+  border: 1px solid rgba(12, 33, 54, 0.05);
+  border-radius: 32px;
+  box-shadow: 0 26px 54px -40px rgba(12, 33, 54, 0.45);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-    box-shadow 0.4s ease;
+    box-shadow 0.4s ease, border-color 0.4s ease;
 }
 
 .featured-triad-col .triad-card {
-  background: #ef453b;
+  background: linear-gradient(158deg, #f4574b 0%, #ef453b 52%, #e3382e 100%);
   border: 0;
-  border-radius: 34px;
-  padding: 36px 30px 40px;
+  border-radius: 22px;
+  padding: 28px 24px 30px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  gap: 26px;
+  justify-content: flex-start;
+  gap: 14px;
   min-height: 100%;
-  box-shadow: 0 18px 38px -28px rgba(232, 67, 43, 0.55);
+  box-shadow: 0 18px 34px -26px rgba(232, 67, 43, 0.6);
 }
 
 .featured-triad-col:hover {
   transform: translateY(-5px);
-  box-shadow: 0 38px 66px -38px rgba(12, 33, 54, 0.55);
+  border-color: rgba(239, 69, 59, 0.18);
+  box-shadow: 0 38px 64px -38px rgba(12, 33, 54, 0.55);
 }
 
+/* right gutter: icon pinned top, step number pinned bottom */
 .triad-aside {
   display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 24px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 20px 0 16px;
 }
 
 .triad-icon-wrap {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 42px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(239, 69, 59, 0.1);
+  border: 1px solid rgba(239, 69, 59, 0.16);
+  font-size: 18px;
   line-height: 1;
   color: #ef453b;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
 }
 
 .featured-triad-col:hover .triad-icon-wrap {
-  transform: translateY(-3px) rotate(-8deg);
+  transform: translateY(-2px);
+  background: #ef453b;
+  border-color: #ef453b;
+  color: #ffffff;
 }
 
 .triad-title {
   font-family: 'Awaking', serif;
-  font-size: clamp(23px, 1.85vw, 31px);
+  font-size: clamp(22px, 1.72vw, 28px);
   font-weight: 700;
   color: #ffffff;
   margin: 0;
-  line-height: 1.2;
-  letter-spacing: -0.01em;
+  line-height: 1.12;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
 }
 
 .triad-desc {
   font-family: 'Cal Sans', sans-serif;
-  font-size: 15.5px;
-  line-height: 1.62;
-  color: rgba(255, 255, 255, 0.94);
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.88);
   margin: 0;
+  padding-top: 16px;
+  border-top: 1px solid rgba(255, 255, 255, 0.28);
 }
 
-/* the step number sits in the white margin, bottom right */
-.featured-triad-col::after {
-  counter-increment: triad;
-  content: "0" counter(triad);
-  position: absolute;
-  right: 30px;
-  bottom: 20px;
+/* the step number, bottom of the white gutter */
+.triad-index {
   font-family: 'Awaking', serif;
-  font-size: clamp(28px, 2.4vw, 42px);
+  font-size: 15px;
   font-weight: 700;
   line-height: 1;
-  color: #122b43;
+  letter-spacing: 0.06em;
+  color: rgba(18, 43, 67, 0.45);
+  transition: color 0.35s ease;
+}
+
+.featured-triad-col:hover .triad-index {
+  color: #ef453b;
 }
 
 /* Responsive Breakpoints */
@@ -4553,11 +4578,16 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     padding-right: 20px;
   }
   .featured-triad-col {
-    padding: 20px;
-    grid-template-columns: minmax(0, 1fr) 84px;
+    padding: 14px;
+    grid-template-columns: minmax(0, 1fr) 50px;
   }
   .featured-triad-col .triad-card {
-    padding: 34px 30px 38px;
+    padding: 24px 20px 26px;
+  }
+  .triad-icon-wrap {
+    width: 40px;
+    height: 40px;
+    font-size: 16px;
   }
 }
 
@@ -4585,27 +4615,27 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
     gap: 26px;
   }
   .featured-triad-col {
-    padding: 16px 16px 18px;
-    border-radius: 34px;
-    grid-template-columns: minmax(0, 1fr) 66px;
+    padding: 12px;
+    border-radius: 28px;
+    grid-template-columns: minmax(0, 1fr) 54px;
   }
   .featured-triad-col .triad-card {
-    padding: 30px 26px 34px;
-    border-radius: 28px;
+    padding: 24px 20px 26px;
+    border-radius: 20px;
   }
   .featured-triad-col:hover {
     transform: none;
   }
   .triad-aside {
-    padding-top: 16px;
+    padding: 16px 0 14px;
   }
   .triad-icon-wrap {
-    font-size: 34px;
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
   }
-  .featured-triad-col::after {
-    right: 18px;
-    bottom: 14px;
-    font-size: 28px;
+  .triad-index {
+    font-size: 14px;
   }
 }
 
@@ -4827,13 +4857,15 @@ h1 *, h2 *, h3 *, h4 *, h5 *, h6 * {
   width: 160px;
   height: 160px;
   pointer-events: none;
+  /* the shadow lives on the static wrapper: put it on the spinning image and
+     the offset turns with the badge, which read as a smeared halo */
+  filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.16));
 }
 .editorial-spinning-seal img.rotating-circle-badge {
   width: 100%;
   height: 100%;
   object-fit: contain;
   animation: spin 22s linear infinite;
-  filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.14));
 }
 
 .editorial-prestige-strip {
@@ -12127,8 +12159,9 @@ img.mb-mini-icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  /* the CTA belongs to the cards above it, not to the green void below */
-  margin-top: clamp(22px, 2vw, 30px);
+  /* the CTA belongs to the cards above it, not to the green void below, and
+     keeps a clear gap under the last card (its shadow used to touch it) */
+  margin-top: clamp(52px, 4.2vw, 72px);
 }
 
 .renvia-project_one .renvia-button--end .theme-btn {
@@ -12137,13 +12170,15 @@ img.mb-mini-icon {
 
 .renvia-project_one {
   /* arch depth + breathing space, so the « Voir toutes nos propriétés »
-     button always sits above the cut whatever the viewport width */
-  padding-bottom: calc(var(--mb-curve) + 46px) !important;
+     button always sits above the cut whatever the viewport width. The extra
+     42px matches the CTA's new top margin: it grows downwards, not towards
+     the arch. */
+  padding-bottom: calc(var(--mb-curve) + 88px) !important;
 }
 
 @media (max-width: 991.98px) {
   .renvia-project_one {
-    padding-bottom: calc(var(--mb-curve) + 46px) !important;
+    padding-bottom: calc(var(--mb-curve) + 88px) !important;
   }
 }
 
@@ -12613,4 +12648,158 @@ footer.main-footer.footer-minimalist {
 
 .mb-article-all:hover {
   color: #ef453b;
+}
+
+/* ---------------------------------------------------------------------------
+   Explorer par catégorie — proprietes-projets.html
+   Neuf catégories de biens (Appartement → Projets neufs) qui pilotent le même
+   filtre que « Type de bien » et les cartes du catalogue.
+--------------------------------------------------------------------------- */
+.prop-cat-explorer {
+  position: relative !important;
+  z-index: 10 !important;
+  margin-bottom: 70px !important;
+  padding: 32px 32px 36px !important;
+  border-radius: 30px !important;
+  background: linear-gradient(150deg, #12243f 0%, #0d1b32 55%, #0a1425 100%) !important;
+  box-shadow: 0 30px 70px rgba(8, 20, 38, 0.26) !important;
+}
+
+.prop-cat-explorer-head {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 14px !important;
+  margin-bottom: 22px !important;
+}
+
+.prop-cat-title {
+  margin: 0 !important;
+  color: #ffffff !important;
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: clamp(22px, 1.9vw, 30px) !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.01em !important;
+}
+
+.prop-cat-all {
+  padding: 9px 20px !important;
+  border-radius: 30px !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+  background: transparent !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  font-family: 'Cal Sans', sans-serif !important;
+  font-size: 13.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.25s ease !important;
+}
+
+.prop-cat-all:hover {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+.prop-cat-all.active {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  color: #e83f2a !important;
+}
+
+.prop-cat-grid {
+  display: grid !important;
+  grid-template-columns: repeat(9, minmax(0, 1fr)) !important;
+  gap: 12px !important;
+}
+
+.prop-cat-card {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: 16px !important;
+  min-height: 116px !important;
+  padding: 20px 10px 16px !important;
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background: rgba(255, 255, 255, 0.045) !important;
+  color: #ffffff !important;
+  font-family: 'Cal Sans', sans-serif !important;
+  cursor: pointer !important;
+  transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease !important;
+}
+
+.prop-cat-card i {
+  font-size: 26px !important;
+  line-height: 1 !important;
+  color: #ffffff !important;
+  opacity: 0.9 !important;
+}
+
+.prop-cat-card span {
+  font-size: 13.5px !important;
+  font-weight: 700 !important;
+  line-height: 1.25 !important;
+  text-align: center !important;
+}
+
+.prop-cat-card:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-color: rgba(255, 255, 255, 0.32) !important;
+  transform: translateY(-4px) !important;
+}
+
+.prop-cat-card.active {
+  background: #ffffff !important;
+  border-color: #ffffff !important;
+  box-shadow: 0 16px 34px rgba(0, 0, 0, 0.26) !important;
+}
+
+.prop-cat-card.active i,
+.prop-cat-card.active span {
+  color: #e83f2a !important;
+  opacity: 1 !important;
+}
+
+@media (max-width: 1399px) {
+  .prop-cat-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 991px) {
+  .prop-cat-explorer {
+    padding: 26px 22px 30px !important;
+    margin-bottom: 50px !important;
+  }
+  .prop-cat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+  }
+  .prop-cat-card {
+    min-height: 104px !important;
+  }
+}
+
+@media (max-width: 575px) {
+  .prop-cat-explorer {
+    padding: 22px 16px 24px !important;
+    border-radius: 22px !important;
+  }
+  .prop-cat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+  .prop-cat-card {
+    min-height: 96px !important;
+    gap: 12px !important;
+  }
+  .prop-cat-card i {
+    font-size: 22px !important;
+  }
+  .prop-cat-card span {
+    font-size: 12.5px !important;
+  }
 }

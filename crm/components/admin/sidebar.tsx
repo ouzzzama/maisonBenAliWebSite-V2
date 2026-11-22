@@ -2,40 +2,74 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import {
   BarChart3,
-  Building2,
   CalendarDays,
   Car,
   ExternalLink,
   FolderKanban,
-  Images,
+  Home,
   Inbox,
+  KeyRound,
   LayoutDashboard,
   LogOut,
   Menu,
   Newspaper,
+  Package,
   Users,
   UserSquare2,
   X,
+  type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3001";
 
-const NAV = [
-  { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard },
-  { href: "/admin/inbox", label: "Boîte de réception", icon: Inbox },
-  { href: "/admin/leads", label: "Leads", icon: UserSquare2 },
-  { href: "/admin/clients", label: "Clients", icon: Users },
-  { href: "/admin/bookings", label: "Réservations", icon: CalendarDays },
-  { href: "/admin/cars", label: "Benali Cars", icon: Car },
-  { href: "/admin/projects", label: "Projets", icon: FolderKanban },
-  { href: "/admin/products", label: "Biens & produits", icon: Building2 },
-  { href: "/admin/blog", label: "Blog", icon: Newspaper },
-  { href: "/admin/media", label: "Médias & CMS", icon: Images },
-  { href: "/admin/finance", label: "Finances", icon: BarChart3 },
+type NavItem = { href: string; label: string; icon: LucideIcon };
+type NavGroup = { label?: string; items: NavItem[] };
+
+/**
+ * Le CRM est découpé par secteur : chaque secteur gère son propre catalogue,
+ * et les finances consolident les quatre.
+ */
+const NAV_GROUPS: NavGroup[] = [
+  { items: [{ href: "/admin", label: "Tableau de bord", icon: LayoutDashboard }] },
+  {
+    label: "Vente immobilière",
+    items: [
+      { href: "/admin/products?deal=vente", label: "Biens à vendre", icon: Home },
+      { href: "/admin/projects", label: "Projets VEFA", icon: FolderKanban },
+    ],
+  },
+  {
+    label: "Location immobilière",
+    items: [
+      { href: "/admin/products?deal=location", label: "Biens à louer", icon: KeyRound },
+      { href: "/admin/bookings", label: "Réservations & conciergerie", icon: CalendarDays },
+    ],
+  },
+  {
+    label: "Boutique",
+    items: [{ href: "/admin/boutique", label: "Produits à vendre / louer", icon: Package }],
+  },
+  {
+    label: "Benali Cars",
+    items: [{ href: "/admin/cars", label: "Location de voitures", icon: Car }],
+  },
+  {
+    label: "Finances",
+    items: [{ href: "/admin/finance", label: "Gestion financière", icon: BarChart3 }],
+  },
+  {
+    label: "Relation client & contenu",
+    items: [
+      { href: "/admin/inbox", label: "Boîte de réception", icon: Inbox },
+      { href: "/admin/leads", label: "Leads", icon: UserSquare2 },
+      { href: "/admin/clients", label: "Clients", icon: Users },
+      { href: "/admin/blog", label: "Blog", icon: Newspaper },
+    ],
+  },
 ];
 
 function initials(name: string, email: string): string {
@@ -45,37 +79,72 @@ function initials(name: string, email: string): string {
   return email.slice(0, 2).toUpperCase();
 }
 
+function NavLink({
+  item,
+  active,
+  onNavigate,
+}: {
+  item: NavItem;
+  active: boolean;
+  onNavigate?: () => void;
+}) {
+  const Icon = item.icon;
+  return (
+    <Link
+      href={item.href}
+      onClick={onNavigate}
+      className={cn(
+        "focus-ring group flex items-center gap-3 rounded-xl px-3 py-2 text-[13px] font-medium transition",
+        active ? "bg-white/12 text-white" : "text-white/60 hover:bg-white/6 hover:text-white"
+      )}
+    >
+      <Icon
+        className={cn(
+          "size-[17px] shrink-0 transition",
+          active ? "text-coral" : "text-white/45 group-hover:text-white/80"
+        )}
+      />
+      <span className="truncate">{item.label}</span>
+      {active ? <span className="ml-auto size-1.5 rounded-full bg-coral" /> : null}
+    </Link>
+  );
+}
+
 function NavList({ onNavigate }: { onNavigate?: () => void }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const deal = searchParams.get("deal") ?? "";
+
+  const isActive = (item: NavItem) => {
+    const [path, query] = item.href.split("?");
+    if (path === "/admin") return pathname === "/admin";
+    if (!pathname.startsWith(path)) return false;
+    if (!query) return !deal || path !== "/admin/products";
+    const wanted = new URLSearchParams(query).get("deal");
+    return (deal || "vente") === wanted;
+  };
+
   return (
-    <nav className="flex flex-col gap-1">
-      {NAV.map((item) => {
-        const active =
-          item.href === "/admin" ? pathname === "/admin" : pathname.startsWith(item.href);
-        const Icon = item.icon;
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            className={cn(
-              "focus-ring group flex items-center gap-3 rounded-xl px-3 py-2.5 text-[13px] font-medium transition",
-              active
-                ? "bg-white/12 text-white"
-                : "text-white/60 hover:bg-white/6 hover:text-white"
-            )}
-          >
-            <Icon
-              className={cn(
-                "size-[17px] shrink-0 transition",
-                active ? "text-coral" : "text-white/45 group-hover:text-white/80"
-              )}
-            />
-            <span className="truncate">{item.label}</span>
-            {active ? <span className="ml-auto size-1.5 rounded-full bg-coral" /> : null}
-          </Link>
-        );
-      })}
+    <nav className="flex flex-col gap-0.5">
+      {NAV_GROUPS.map((group, index) => (
+        <div key={group.label ?? `group-${index}`} className={cn(index > 0 && "mt-3")}>
+          {group.label ? (
+            <p className="mb-1 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-white/30">
+              {group.label}
+            </p>
+          ) : null}
+          <div className="flex flex-col gap-0.5">
+            {group.items.map((item) => (
+              <NavLink
+                key={item.href}
+                item={item}
+                active={isActive(item)}
+                onNavigate={onNavigate}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
     </nav>
   );
 }
@@ -176,7 +245,7 @@ export function Sidebar({ user }: { user: { email: string; name: string } }) {
         <div className="fixed inset-0 z-50 lg:hidden">
           <div className="absolute inset-0 bg-ink/50" onClick={() => setOpen(false)} aria-hidden />
           <aside className="animate-in relative z-10 flex h-full w-[280px] flex-col bg-graphite p-4">
-            <div className="mb-6 flex items-center justify-between">
+            <div className="mb-5 flex shrink-0 items-center justify-between">
               <Brand />
               <button
                 type="button"
@@ -187,31 +256,42 @@ export function Sidebar({ user }: { user: { email: string; name: string } }) {
                 <X className="size-4" />
               </button>
             </div>
-            <NavList onNavigate={() => setOpen(false)} />
-            <div className="mt-auto">
+            <div className="sidebar-scroll -mx-1 min-h-0 flex-1 overflow-y-auto px-1 pb-3">
+              <NavList onNavigate={() => setOpen(false)} />
+            </div>
+            <div className="shrink-0 pt-3">
               <AccountCard user={user} />
             </div>
           </aside>
         </div>
       ) : null}
 
-      {/* desktop rail */}
-      <aside className="sticky top-0 hidden h-screen flex-col border-r border-white/5 bg-graphite p-4 lg:flex">
-        <div className="mb-7 px-1">
+      {/* desktop rail — the column wrapper paints the graphite down to the very
+          bottom of the page, so no cream band appears under a short sidebar */}
+      <div className="hidden bg-graphite lg:block">
+      <aside className="sticky top-0 flex h-dvh flex-col overflow-hidden border-r border-white/5 bg-graphite p-4">
+        <div className="mb-5 shrink-0 px-1">
           <Brand />
         </div>
-        <NavList />
-        <a
-          href={SITE_URL}
-          target="_blank"
-          rel="noopener"
-          className="focus-ring mt-4 flex items-center gap-2 rounded-xl border border-white/8 px-3 py-2.5 text-[12px] font-medium text-white/55 transition hover:border-white/20 hover:text-white"
-        >
-          <ExternalLink className="size-3.5 text-coral" />
-          Voir le site public
-        </a>
-        <AccountCard user={user} />
+        {/* Le menu défile si la fenêtre est courte : rien n'est rogné et le
+            compte reste toujours visible en bas. */}
+        <div className="sidebar-scroll -mx-1 min-h-0 flex-1 overflow-y-auto px-1 pb-3">
+          <NavList />
+          <a
+            href={SITE_URL}
+            target="_blank"
+            rel="noopener"
+            className="focus-ring mt-3 flex items-center gap-2 rounded-xl border border-white/8 px-3 py-2 text-[12px] font-medium text-white/55 transition hover:border-white/20 hover:text-white"
+          >
+            <ExternalLink className="size-3.5 text-coral" />
+            Voir le site public
+          </a>
+        </div>
+        <div className="shrink-0 pt-3">
+          <AccountCard user={user} />
+        </div>
       </aside>
+      </div>
     </>
   );
 }

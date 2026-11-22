@@ -21,11 +21,33 @@
   if (!CRM) return;
 
   var CATEGORY_LABEL = {
+    appartement: "Appartement",
+    villa: "Villa",
+    maison: "Maison",
+    riad: "Riad",
+    studio: "Studio",
+    terrain: "Terrain",
+    bureau: "Bureau",
+    commerce: "Commerce",
+    "projets-neufs": "Projets neufs",
+    // anciens slugs encore servis par une base non migrée
     villas: "Villa",
     appartements: "Appartement",
-    vefa: "VEFA",
-    commercial: "Commercial",
+    vefa: "Projets neufs",
+    commercial: "Commerce",
   };
+
+  var LEGACY_CATEGORY = {
+    villas: "villa",
+    appartements: "appartement",
+    vefa: "projets-neufs",
+    commercial: "commerce",
+  };
+
+  function categorySlug(value) {
+    var slug = String(value || "").trim();
+    return LEGACY_CATEGORY[slug] || slug;
+  }
 
   function escapeHtml(value) {
     return String(value === null || value === undefined ? "" : value)
@@ -85,7 +107,7 @@
 
     return (
       '<div class="prop-card-item" data-crm-product-card="true" data-category="' +
-      escapeHtml(product.category) +
+      escapeHtml(categorySlug(product.category)) +
       '" data-location="' +
       escapeHtml(product.location) +
       '" data-beds="' +
@@ -162,14 +184,22 @@
       control.addEventListener("change", applyFilters);
     });
 
-    Array.prototype.forEach.call(document.querySelectorAll(".prop-filter-btn"), function (button) {
-      button.addEventListener("click", function () {
-        setTimeout(applyFilters, 0);
-      });
-    });
+    Array.prototype.forEach.call(
+      document.querySelectorAll(".prop-filter-btn, .prop-cat-card"),
+      function (button) {
+        button.addEventListener("click", function () {
+          setTimeout(applyFilters, 0);
+        });
+      }
+    );
 
     var reset = document.getElementById("emptyStateResetBtn");
     if (reset) reset.addEventListener("click", function () { setTimeout(applyFilters, 0); });
+
+    /* Les biens du CRM arrivent après le script de la page : on relance son
+       filtre pour que le compteur et l'état vide prennent les nouvelles cartes
+       en compte. */
+    if (type) type.dispatchEvent(new Event("change", { bubbles: true }));
 
     if (typeof AOS !== "undefined" && AOS.refresh) AOS.refresh();
     if (typeof ScrollTrigger !== "undefined" && ScrollTrigger.refresh) ScrollTrigger.refresh();
