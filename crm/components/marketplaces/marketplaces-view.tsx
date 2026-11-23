@@ -3,7 +3,7 @@
 import * as React from "react";
 import { useForm } from "react-hook-form";
 import { zodForm } from "@/lib/form";
-import { ExternalLink, Globe, Pause, Pencil, Play, Plus, Trash2 } from "lucide-react";
+import { ExternalLink, Pause, Pencil, Play, Plus, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/admin/page-header";
 import { FilterBar } from "@/components/admin/filter-bar";
 import { useCollection } from "@/components/admin/use-collection";
@@ -14,9 +14,7 @@ import { marketplaceSchema, type MarketplaceInput } from "@/lib/validators";
 import {
   MARKETPLACE_PLATFORMS,
   MARKETPLACE_STATUS_LABEL,
-  platformInitial,
   platformLabel,
-  platformLogo,
   statusLabel,
 } from "@/lib/marketplaces";
 import type { MarketplaceListing, Product } from "@/lib/demo-data";
@@ -164,7 +162,7 @@ export function MarketplacesView({
               className="flex flex-col rounded-3xl border border-ink/8 bg-white p-4 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
             >
               <div className="flex items-center gap-2.5">
-                <span className="grid size-9 shrink-0 place-items-center overflow-hidden bg-white ring-1 ring-inset ring-ink/10">
+                <span className="grid size-9 shrink-0 place-items-center overflow-hidden rounded-md bg-white ring-1 ring-inset ring-ink/10">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={item.logo}
@@ -196,51 +194,6 @@ export function MarketplacesView({
                   <b className="text-emerald-600">{online}</b> en ligne
                 </span>
               </div>
-
-              {/* les biens diffusés sur ce portail, directement dans la carte */}
-              <ul className="mt-3 flex-1 space-y-1 border-t border-ink/8 pt-2">
-                {rows.length === 0 ? (
-                  <li className="px-1 py-1.5 text-[11px] leading-snug text-ink/40">
-                    Aucun bien diffusé sur ce portail.
-                  </li>
-                ) : (
-                  rows.map((row) => {
-                    const linked = products.find((product) => product.id === row.productId);
-                    return (
-                      <li key={row.id}>
-                        <button
-                          type="button"
-                          onClick={() => openEdit(row)}
-                          title="Modifier cette annonce"
-                          className="focus-ring flex w-full items-start gap-2 rounded-lg px-1.5 py-1.5 text-left transition hover:bg-ink/[0.035]"
-                        >
-                          <span
-                            aria-hidden="true"
-                            className={cn(
-                              "mt-1.5 size-1.5 shrink-0 rounded-full",
-                              row.status === "published"
-                                ? "bg-emerald-500"
-                                : row.status === "paused"
-                                  ? "bg-amber-500"
-                                  : "bg-ink/25"
-                            )}
-                          />
-                          <span className="min-w-0 flex-1">
-                            <span className="block truncate text-[11.5px] font-semibold text-ink">
-                              {row.title}
-                            </span>
-                            <span className="block truncate text-[10.5px] text-ink/45">
-                              {row.price ? formatMAD(row.price) : "Prix libre"} ·{" "}
-                              {statusLabel(row.status)}
-                              {linked ? ` · ${linked.title}` : ""}
-                            </span>
-                          </span>
-                        </button>
-                      </li>
-                    );
-                  })
-                )}
-              </ul>
 
               <button
                 type="button"
@@ -302,58 +255,65 @@ export function MarketplacesView({
         }}
       />
 
-      <div className="space-y-2.5">
-        {filtered.map((listing) => {
-          const product = products.find((item) => item.id === listing.productId);
+      {/* Un bloc de projets par portail, en colonnes sous les cartes. */}
+      <div className={cn("grid gap-3", platform ? "grid-cols-1" : "sm:grid-cols-2 xl:grid-cols-4")}>
+        {(platform
+          ? MARKETPLACE_PLATFORMS.filter((item) => item.value === platform)
+          : MARKETPLACE_PLATFORMS
+        ).map((column) => {
+          const rows = filtered.filter((listing) => listing.platform === column.value);
           return (
+            <section
+              key={column.value}
+              className="flex flex-col gap-2 rounded-3xl border border-ink/8 bg-white/55 p-2.5"
+            >
+              <div className="flex items-center justify-between px-1">
+                <span className="text-[10px] font-semibold uppercase tracking-[0.09em] text-ink/40">
+                  Projets diffusés
+                </span>
+                <span className="rounded-full bg-white px-1.5 text-[10px] font-bold text-ink/50 ring-1 ring-inset ring-ink/10">
+                  {rows.length}
+                </span>
+              </div>
+              {rows.length === 0 ? (
+                <p className="rounded-2xl border border-dashed border-ink/12 bg-white/70 px-3 py-8 text-center text-[11px] leading-snug text-ink/40">
+                  {query.trim()
+                    ? "Aucun projet ne correspond à la recherche."
+                    : "Aucun projet diffusé sur ce portail."}
+                </p>
+              ) : null}
+
+              {rows.map((listing) => {
+                const product = products.find((item) => item.id === listing.productId);
+                return (
             <article
               key={listing.id}
-              className="flex flex-wrap items-center gap-3 rounded-2xl border border-ink/8 bg-white p-3.5 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
+              className="flex flex-col gap-2 rounded-2xl border border-ink/8 bg-white p-3 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
             >
-              <span className="grid size-9 shrink-0 place-items-center overflow-hidden bg-white text-[13px] font-bold text-ink ring-1 ring-inset ring-ink/10">
-                {platformLogo(listing.platform) ? (
-                  /* eslint-disable-next-line @next/next/no-img-element */
-                  <img
-                    src={platformLogo(listing.platform)}
-                    alt=""
-                    className="size-full object-cover"
-                    loading="lazy"
-                  />
-                ) : (
-                  platformInitial(listing.platform)
-                )}
-              </span>
-
-              <div className="min-w-0 flex-1">
-                <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="truncate text-[13.5px] font-semibold text-ink">{listing.title}</h2>
+              <div className="min-w-0">
+                <div className="flex items-start justify-between gap-2">
+                  <h2 className="min-w-0 flex-1 truncate text-[12.5px] font-semibold text-ink">
+                    {listing.title}
+                  </h2>
                   <span
                     className={cn(
-                      "rounded-full px-2 py-0.5 text-[10.5px] font-semibold",
+                      "shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
                       STATUS_TONE[listing.status] ?? STATUS_TONE.draft
                     )}
                   >
                     {statusLabel(listing.status)}
                   </span>
                 </div>
-                <p className="mt-1 truncate text-[11.5px] text-ink/45">
-                  {platformLabel(listing.platform)}
+                <p className="mt-1 truncate text-[11px] text-ink/45">
+                  {listing.price ? formatMAD(listing.price) : "Prix libre"}
                   {product ? ` · ${product.title}` : ""}
-                  {listing.notes ? ` · ${listing.notes}` : ""}
                 </p>
+                {listing.notes ? (
+                  <p className="mt-0.5 line-clamp-2 text-[10.5px] text-ink/35">{listing.notes}</p>
+                ) : null}
               </div>
 
-              <div className="flex items-center gap-4 text-[11.5px] text-ink/55">
-                <span>{listing.price ? formatMAD(listing.price) : "Prix libre"}</span>
-                <span>
-                  <b className="text-ink">{listing.views ?? 0}</b> vues
-                </span>
-                <span>
-                  <b className="text-ink">{listing.contacts ?? 0}</b> contacts
-                </span>
-              </div>
-
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 border-t border-ink/8 pt-2">
                 {listing.externalUrl ? (
                   <a
                     href={listing.externalUrl}
@@ -396,17 +356,16 @@ export function MarketplacesView({
                 >
                   <Trash2 className="size-3.5" />
                 </button>
+                <span className="ml-auto text-[10.5px] text-ink/45">
+                  {listing.views ?? 0} vues · {listing.contacts ?? 0} contacts
+                </span>
               </div>
             </article>
+                );
+              })}
+            </section>
           );
         })}
-
-        {filtered.length === 0 ? (
-          <div className="rounded-3xl border border-dashed border-ink/12 bg-white/60 p-12 text-center text-[13px] text-muted">
-            <Globe className="mx-auto mb-3 size-6 text-ink/25" />
-            Aucune annonce pour ce portail. Cliquez « Nouvelle annonce » pour en créer une.
-          </div>
-        ) : null}
       </div>
 
       <Dialog
