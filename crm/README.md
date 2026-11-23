@@ -63,9 +63,35 @@ webhooks Resend/SendGrid ; brancher un worker IMAP ou un endpoint webhook
 enregistrées comme messages sortants (`isOutbound`). L'envoi réel se fait via SMTP
 ou l'API du fournisseur.
 
-Les médias acceptent une URL publique ou un fichier encodé en data-URL (démo).
-En production : upload vers S3/Supabase, puis stocker l'URL dans `MediaAsset.url`
-et exposer `GET /api/media?slot=HOME_HERO` à la partie publique du site.
+### Images : envoi direct vers Hostinger
+
+Depuis le CRM (bibliothèque Médias, biens, projets, annonces, blog, boutique),
+le bouton « Téléverser une image » envoie le fichier à `POST /api/upload` :
+l'image est d'abord réduite à 1800 px de large et convertie en WebP dans le
+navigateur, puis déposée par FTP dans le panneau Fichiers Hostinger. Le champ
+image reçoit **l'URL publique** du fichier (`https://maisonbenali.com/uploads/crm/…`),
+qui est donc servie par le site vitrine sans passer par le CRM.
+
+Configuration (hPanel → Fichiers → Comptes FTP, compte dont la racine est
+`public_html`) dans `.env.local` :
+
+```
+HOSTINGER_FTP_HOST="ftp.maisonbenali.com"
+HOSTINGER_FTP_PORT="21"
+HOSTINGER_FTP_USER="…"
+HOSTINGER_FTP_PASSWORD="…"
+HOSTINGER_FTP_SECURE="true"        # FTPS explicite ; "implicit" pour le port 990
+HOSTINGER_FTP_DIR="/public_html/uploads/crm"
+MEDIA_PUBLIC_URL="https://maisonbenali.com/uploads/crm"
+```
+
+Sans ces variables, les fichiers restent dans `crm/.uploads/` et sont servis par
+le CRM sur `/uploads/<fichier>` (mode développement). `GET /api/upload` indique
+le stockage actif sans exposer le mot de passe. Les deux routes sont protégées
+par la session du CRM.
+
+Les médias acceptent aussi une URL publique déjà hébergée, puis
+`GET /api/media?slot=HOME_HERO` expose la liste à la partie publique du site.
 
 ## Structure
 

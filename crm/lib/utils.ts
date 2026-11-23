@@ -17,6 +17,17 @@ export const formatMAD = (value: number | null | undefined) =>
     ? "—"
     : currency.format(Number(value));
 
+/** Ordonne les cartes d'une colonne : position enregistrée, puis la plus récente. */
+export function byPosition<
+  T extends { position?: number | null; createdAt?: string | null },
+>(rows: T[]): T[] {
+  return [...rows].sort(
+    (a, b) =>
+      Number(a.position ?? 0) - Number(b.position ?? 0) ||
+      String(b.createdAt ?? "").localeCompare(String(a.createdAt ?? ""))
+  );
+}
+
 export const formatCompactMAD = (value: number) => {
   if (Math.abs(value) >= 1_000_000) return `${(value / 1_000_000).toFixed(1)}M MAD`;
   if (Math.abs(value) >= 1_000) return `${Math.round(value / 1_000)}k MAD`;

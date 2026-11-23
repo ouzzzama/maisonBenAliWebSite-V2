@@ -26,8 +26,9 @@ import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Select } from "@/components/ui/field";
 import { RevenueChart } from "@/components/charts/revenue-chart";
 import { STREAMS, STREAM_OPTIONS, normalizeStream, streamLabel } from "@/lib/streams";
+import { MARKETPLACE_PLATFORMS, detectPlatform } from "@/lib/marketplaces";
 import { transactionSchema, type TransactionInput } from "@/lib/validators";
-import type { Transaction } from "@/lib/demo-data";
+import type { MarketplaceListing, Transaction } from "@/lib/demo-data";
 import {
   TX_STATUS_LABEL,
   TX_TYPE_LABEL,
@@ -55,10 +56,17 @@ const emptyTx: TransactionInput = {
   status: "PAID",
   method: "Virement",
   stream: "sale",
+  marketplace: "",
   occurredAt: toInputDate(),
 };
 
-export function FinanceView({ initial }: { initial: Transaction[] }) {
+export function FinanceView({
+  initial,
+  listings = [],
+}: {
+  initial: Transaction[];
+  listings?: MarketplaceListing[];
+}) {
   const transactions = useCollection<Transaction>("/api/transactions", initial);
   const [query, setQuery] = React.useState("");
   const [filters, setFilters] = React.useState({ status: "", stream: "" });
@@ -70,7 +78,11 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
   });
 
   const onSubmit = async (values: TransactionInput) => {
-    const payload = { ...values, occurredAt: new Date(values.occurredAt).toISOString() };
+    const payload = {
+      ...values,
+      marketplace: values.marketplace ? values.marketplace : null,
+      occurredAt: new Date(values.occurredAt).toISOString(),
+    };
     const result = await transactions.create(payload);
     if (result) {
       setOpen(false);
@@ -108,6 +120,49 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
         };
       }),
     [transactions.items]
+  );
+
+  /* Revenus et retombées par portail de diffusion (annonces marketplaces). */
+  const marketplaceCards = React.useMemo(
+    () =>
+      MARKETPLACE_PLATFORMS.map((platform) => {
+        const rows = listings.filter((listing) => listing.platform === platform.value);
+        const published = rows.filter((listing) => listing.status === "published");
+        const attributed = transactions.items.filter(
+          (tx) =>
+            tx.type !== "EXPENSE" &&
+            (tx.marketplace || detectPlatform(tx.label, tx.method, tx.reference)) === platform.value
+        );
+        const collected = attributed.filter((tx) => tx.status === "PAID");
+        const views = rows.reduce((sum, listing) => sum + Number(listing.views ?? 0), 0);
+        const contacts = rows.reduce((sum, listing) => sum + Number(listing.contacts ?? 0), 0);
+        return {
+          key: platform.value,
+          label: platform.label,
+          logo: platform.logo,
+          color: platform.color,
+          listings: rows.length,
+          published: published.length,
+          portfolio: published.reduce((sum, listing) => sum + Number(listing.price ?? 0), 0),
+          collected: collected.reduce((sum, tx) => sum + Number(tx.amount), 0),
+          waiting: attributed
+            .filter((tx) => tx.status !== "PAID")
+            .reduce((sum, tx) => sum + Number(tx.amount), 0),
+          views,
+          contacts,
+          rate: views ? (contacts / views) * 100 : 0,
+        };
+      }),
+    [listings, transactions.items]
+  );
+
+  const marketplaceTotals = marketplaceCards.reduce(
+    (totals, card) => ({
+      collected: totals.collected + card.collected,
+      views: totals.views + card.views,
+      contacts: totals.contacts + card.contacts,
+    }),
+    { collected: 0, views: 0, contacts: 0 }
   );
 
   const paidIn = transactions.items
@@ -257,7 +312,7 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
       <PageHeader
         eyebrow="Finance"
         title="Trésorerie & revenus"
-        description="Encaissements consolidés par secteur : vente, VEFA, location, cars et boutique."
+        description="Encaissements consolidés par secteur : vente, VEFA, location, cars et boutique — plus les revenus et la portée des portails marketplaces."
         actions={
           <Button variant="coral" onClick={() => setOpen(true)}>
             <Plus className="size-4" /> Nouvelle transaction
@@ -274,40 +329,49 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
             /* rien à gauche, la couleur du secteur arrive vers le bord droit */
             <div
               key={sector.key}
-              className="relative overflow-hidden rounded-3xl border border-ink/8 p-4 pr-14 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
-              style={{
-                background: `linear-gradient(90deg, #ffffff 0%, #ffffff 45%, ${sector.color}1a 65%, ${sector.color}b8 100%)`,
-              }}
+              className="relative overflow-hidden rounded-3xl border border-ink/8 bg-white p-4 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
             >
-              {/* rognée de moitié par le bord droit */}
-              <Icon
+              {/* dégradé dans une couche interne : posé sur la carte elle-même, il
+                  débordait dans la bordure et laissait un trait de couleur à gauche */}
+              <div
                 aria-hidden="true"
-                strokeWidth={1.4}
-                className="pointer-events-none absolute -right-10 top-1/2 size-20 -translate-y-1/2 text-white opacity-50"
+                className="pointer-events-none absolute inset-0"
+                style={{
+                  background: `linear-gradient(100deg, #ffffff 0%, #ffffff 52%, ${sector.color}24 78%, ${sector.color}b0 100%)`,
+                }}
               />
-              <div className="relative flex items-center gap-2">
-                <span
-                  className="size-2.5 shrink-0 rounded-full"
-                  style={{ background: sector.color }}
-                />
-                <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink/45">
-                  {sector.label}
+              {/* l'icône reste entière, dans son médaillon au bord droit de la carte */}
+              <span
+                aria-hidden="true"
+                className="pointer-events-none absolute right-4 top-1/2 grid size-10 -translate-y-1/2 place-items-center rounded-xl bg-white/25 text-white ring-1 ring-inset ring-white/40"
+              >
+                <Icon strokeWidth={1.7} className="size-5" />
+              </span>
+              <div className="relative pr-12">
+                <div className="flex items-center gap-2">
+                  <span
+                    className="size-2.5 shrink-0 rounded-full"
+                    style={{ background: sector.color }}
+                  />
+                  <p className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-ink/45">
+                    {sector.label}
+                  </p>
+                </div>
+                <p className="mt-2 text-[22px] font-semibold leading-none text-ink">
+                  {formatMAD(sector.total)}
+                </p>
+                <p className="mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-muted">
+                  <span className="inline-flex items-center gap-1">
+                    <ArrowUpRight className="size-3 text-emerald-600" />
+                    {sector.count} écriture{suffix} encaissée{suffix}
+                  </span>
+                  {sector.waiting > 0 ? (
+                    <span className="inline-flex items-center gap-1 text-rose-500">
+                      · <ArrowDownRight className="size-3" /> {formatMAD(sector.waiting)} en attente
+                    </span>
+                  ) : null}
                 </p>
               </div>
-              <p className="relative mt-2 text-[22px] font-semibold leading-none text-ink">
-                {formatMAD(sector.total)}
-              </p>
-              <p className="relative mt-2 flex flex-wrap items-center gap-x-1.5 gap-y-1 text-[11px] text-muted">
-                <span className="inline-flex items-center gap-1">
-                  <ArrowUpRight className="size-3 text-emerald-600" />
-                  {sector.count} écriture{suffix} encaissée{suffix}
-                </span>
-                {sector.waiting > 0 ? (
-                  <span className="inline-flex items-center gap-1 text-rose-500">
-                    · <ArrowDownRight className="size-3" /> {formatMAD(sector.waiting)} en attente
-                  </span>
-                ) : null}
-              </p>
             </div>
           );
         })}
@@ -330,6 +394,103 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
             </p>
           </div>
         ))}
+      </div>
+
+      {/* Marketplaces : portée et revenus de chaque portail de diffusion. */}
+      <div className="mt-4 rounded-3xl border border-ink/8 bg-white p-4 shadow-[0_2px_10px_rgba(18,43,67,0.04)]">
+        <div className="mb-3 flex flex-wrap items-end justify-between gap-2">
+          <div>
+            <h2 className="text-[14px] font-semibold text-ink">
+              Marketplaces — retombées & revenus
+            </h2>
+            <p className="mt-0.5 text-[11px] text-muted">
+              Vues, contacts et encaissements rattachés à chaque portail de diffusion.
+            </p>
+          </div>
+          <p className="flex flex-wrap items-center gap-x-2 text-[11px] text-ink/50">
+            <span>
+              <b className="text-ink">{formatMAD(marketplaceTotals.collected)}</b> encaissés
+            </span>
+            <span className="text-ink/20">·</span>
+            <span>
+              <b className="text-ink">{marketplaceTotals.views.toLocaleString("fr-FR")}</b> vues
+            </span>
+            <span className="text-ink/20">·</span>
+            <span>
+              <b className="text-ink">{marketplaceTotals.contacts}</b> contacts
+            </span>
+          </p>
+        </div>
+
+        <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+          {marketplaceCards.map((card) => (
+            <article
+              key={card.key}
+              className="rounded-2xl border border-ink/8 p-3.5 shadow-[0_1px_6px_rgba(18,43,67,0.04)]"
+            >
+              <div className="flex items-center gap-2">
+                <span className="grid size-8 shrink-0 place-items-center overflow-hidden rounded-lg bg-white ring-1 ring-inset ring-ink/10">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={card.logo}
+                    alt={`${card.label} — logo`}
+                    className="size-full object-cover"
+                    loading="lazy"
+                  />
+                </span>
+                <div className="min-w-0">
+                  <p className="truncate text-[12px] font-semibold text-ink">{card.label}</p>
+                  <p className="truncate text-[10.5px] text-ink/45">
+                    {card.published} en ligne · {card.listings} annonce
+                    {card.listings > 1 ? "s" : ""}
+                  </p>
+                </div>
+              </div>
+
+              <p className="mt-2.5 text-[19px] font-semibold leading-none text-ink">
+                {formatMAD(card.collected)}
+              </p>
+              <p className="mt-1 text-[10.5px] text-ink/45">
+                encaissé via {card.label}
+                {card.waiting > 0 ? (
+                  <span className="text-rose-500"> · {formatMAD(card.waiting)} en attente</span>
+                ) : null}
+              </p>
+
+              <div className="mt-2.5 grid grid-cols-3 gap-1 rounded-xl bg-ink/[0.03] px-2 py-1.5 text-center">
+                <div>
+                  <p className="text-[12.5px] font-semibold text-ink">
+                    {card.views.toLocaleString("fr-FR")}
+                  </p>
+                  <p className="text-[9.5px] uppercase tracking-[0.08em] text-ink/40">Vues</p>
+                </div>
+                <div>
+                  <p className="text-[12.5px] font-semibold text-ink">{card.contacts}</p>
+                  <p className="text-[9.5px] uppercase tracking-[0.08em] text-ink/40">Contacts</p>
+                </div>
+                <div>
+                  <p className="text-[12.5px] font-semibold text-ink">
+                    {card.rate.toFixed(1)}%
+                  </p>
+                  <p className="text-[9.5px] uppercase tracking-[0.08em] text-ink/40">Taux</p>
+                </div>
+              </div>
+
+              <p className="mt-2 text-[10.5px] text-ink/45">
+                Portefeuille en ligne :{" "}
+                <span className="font-semibold text-ink/70">{formatMAD(card.portfolio)}</span>
+              </p>
+            </article>
+          ))}
+        </div>
+
+        {marketplaceTotals.collected === 0 ? (
+          <p className="mt-2.5 text-[11px] text-ink/40">
+            Aucun encaissement rattaché pour l&apos;instant : choisissez « Portail d&apos;origine »
+            dans une transaction — ou nommez le portail dans le libellé — pour voir le revenu par
+            marketplace.
+          </p>
+        ) : null}
       </div>
 
       <div className="mt-4 rounded-3xl border border-ink/8 bg-white p-4 shadow-[0_2px_10px_rgba(18,43,67,0.04)]">
@@ -443,6 +604,20 @@ export function FinanceView({ initial }: { initial: Transaction[] }) {
             <div>
               <Label>Moyen</Label>
               <Input {...form.register("method")} placeholder="Virement, carte, espèces…" />
+            </div>
+            <div>
+              <Label>Portail d&apos;origine</Label>
+              <Select {...form.register("marketplace")}>
+                <option value="">Aucun (direct)</option>
+                {MARKETPLACE_PLATFORMS.map((platform) => (
+                  <option key={platform.value} value={platform.value}>
+                    {platform.label}
+                  </option>
+                ))}
+              </Select>
+              <p className="mt-1 text-[11px] text-muted">
+                Rattaché au revenu du portail dans le bloc Marketplaces.
+              </p>
             </div>
           </div>
           <div className="flex items-center justify-end gap-2 pt-1">

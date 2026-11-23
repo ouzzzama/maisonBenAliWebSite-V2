@@ -10,6 +10,7 @@ import { useCollection } from "@/components/admin/use-collection";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Textarea } from "@/components/ui/field";
+import { ImageUploadButton } from "@/components/ui/image-upload";
 import { postSchema, type PostInput } from "@/lib/validators";
 import type { Post } from "@/lib/demo-data";
 import { resolveImage } from "@/lib/images";
@@ -242,6 +243,12 @@ export function BlogView({ initial }: { initial: Post[] }) {
             <div className="sm:col-span-2">
               <Label>Image de couverture (URL ou chemin du site)</Label>
               <Input {...form.register("coverUrl")} placeholder="assets/images/stock/blog-guide-mre.jpg" />
+              <ImageUploadButton
+                className="mt-1.5"
+                onUploaded={(url) =>
+                  form.setValue("coverUrl", url, { shouldDirty: true, shouldValidate: true })
+                }
+              />
               <FieldError>{form.formState.errors.coverUrl?.message}</FieldError>
             </div>
           </div>

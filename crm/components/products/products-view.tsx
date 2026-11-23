@@ -1,6 +1,7 @@
 "use client";
 
 import * as React from "react";
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodForm } from "@/lib/form";
 import { ExternalLink, Eye, EyeOff, MapPin, Pencil, Plus, Trash2 } from "lucide-react";
@@ -10,9 +11,11 @@ import { useCollection } from "@/components/admin/use-collection";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Select, Textarea } from "@/components/ui/field";
+import { ImageUploadButton } from "@/components/ui/image-upload";
 import { productSchema, type ProductInput } from "@/lib/validators";
 import { CATEGORY_LABEL, PRODUCT_CATEGORIES, normalizeCategory } from "@/lib/categories";
-import type { Product } from "@/lib/demo-data";
+import type { MarketplaceListing, Product } from "@/lib/demo-data";
+import { platformLabel, platformLogo, statusLabel } from "@/lib/marketplaces";
 import { formatMAD } from "@/lib/utils";
 import { resolveImage } from "@/lib/images";
 import type { ParsedListing } from "@/lib/ocr";
@@ -47,6 +50,7 @@ export function ProductsView({
   initialDeal = "",
   initialCategory = "",
   embedded = false,
+  marketplaces = [],
 }: {
   initial: Product[];
   /** « vente » ou « location » : la section du CRM ouvre la liste déjà filtrée. */
@@ -55,6 +59,8 @@ export function ProductsView({
   initialCategory?: string;
   /** Intégré dans « Gestion de stock » : le titre de page est porté par l'onglet. */
   embedded?: boolean;
+  /** Annonces marketplaces : chaque bien affiche les portails où il est diffusé. */
+  marketplaces?: MarketplaceListing[];
 }) {
   const products = useCollection<Product>("/api/products", initial);
   const [query, setQuery] = React.useState("");
@@ -283,6 +289,34 @@ export function ProductsView({
                 {product.price ? formatMAD(product.price) : "Prix sur demande"}
               </p>
 
+              {marketplaces.some((listing) => listing.productId === product.id) ? (
+                <div className="mt-2 flex flex-wrap items-center gap-1">
+                  {marketplaces
+                    .filter((listing) => listing.productId === product.id)
+                    .map((listing) => (
+                      <Link
+                        key={listing.id}
+                        href="/admin/marketplaces"
+                        title={`${platformLabel(listing.platform)} — ${statusLabel(listing.status)}`}
+                        className="inline-flex items-center gap-1 rounded-full bg-ink/5 py-0.5 pl-1 pr-2 transition hover:bg-ink/10"
+                      >
+                        {platformLogo(listing.platform) ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img
+                            src={platformLogo(listing.platform)}
+                            alt=""
+                            className="size-3.5 rounded-[3px] object-cover"
+                            loading="lazy"
+                          />
+                        ) : null}
+                        <span className="text-[10px] font-semibold text-ink/60">
+                          {platformLabel(listing.platform)}
+                        </span>
+                      </Link>
+                    ))}
+                </div>
+              ) : null}
+
               <div className="mt-auto flex items-center gap-1 pt-3">
                 <Button
                   type="button"
@@ -416,6 +450,12 @@ export function ProductsView({
             <Input
               {...form.register("coverUrl")}
               placeholder="assets/images/innerpage/project/project-img1.jpg"
+            />
+            <ImageUploadButton
+              className="mt-1.5"
+              onUploaded={(url) =>
+                form.setValue("coverUrl", url, { shouldDirty: true, shouldValidate: true })
+              }
             />
           </div>
 

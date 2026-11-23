@@ -57,6 +57,21 @@ export const MARKETPLACE_STATUS_LABEL: Record<string, string> = {
   expired: "Expirée",
 };
 
+/**
+ * Retrouve le portail cité dans un texte libre (« Séjour Airbnb — Villa Founty »).
+ * Sert aux transactions déjà saisies, avant que le champ ne soit renseigné.
+ */
+export function detectPlatform(...values: (string | null | undefined)[]): string {
+  const haystack = values.filter(Boolean).join(" ").toLowerCase();
+  if (!haystack) return "";
+  const hit = MARKETPLACE_PLATFORMS.find(
+    (platform) =>
+      haystack.includes(platform.label.toLowerCase()) ||
+      new RegExp(`\\b${platform.value}\\b`).test(haystack)
+  );
+  return hit ? hit.value : "";
+}
+
 export function platformLabel(value?: string | null): string {
   return MARKETPLACE_PLATFORMS_LABEL[String(value ?? "")] ?? String(value ?? "—");
 }

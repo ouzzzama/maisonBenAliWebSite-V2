@@ -152,6 +152,7 @@ export type PostInput = z.infer<typeof postSchema>;
 export const marketplaceSchema = z.object({
   platform: z.enum(MARKETPLACE_PLATFORM_VALUES),
   title: z.string().trim().min(3, "Titre requis"),
+  imageUrl: z.string().trim().optional().or(z.literal("")),
   productId: z.string().trim().optional().or(z.literal("")),
   externalUrl: z.string().trim().url("Lien invalide").optional().or(z.literal("")),
   status: z.enum(["draft", "published", "paused", "expired"]),
@@ -170,6 +171,7 @@ export const transactionSchema = z.object({
   status: z.enum(["PENDING", "PAID", "OVERDUE"]),
   method: z.string().trim().optional().or(z.literal("")),
   stream: z.string().trim().optional().or(z.literal("")),
+  marketplace: z.string().trim().optional().or(z.literal("")),
   occurredAt: z.string().min(1, "Date requise"),
 });
 

@@ -10,6 +10,7 @@ import { useCollection } from "@/components/admin/use-collection";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Select, Textarea } from "@/components/ui/field";
+import { ImageUploadButton } from "@/components/ui/image-upload";
 import { shopItemSchema, type ShopItemInput } from "@/lib/validators";
 import type { ShopItem } from "@/lib/demo-data";
 import { formatMAD } from "@/lib/utils";
@@ -299,6 +300,12 @@ export function ShopView({
             <div className="sm:col-span-2">
               <Label>Photo (URL ou chemin du site)</Label>
               <Input {...form.register("coverUrl")} placeholder="assets/images/stock/…jpg" />
+              <ImageUploadButton
+                className="mt-1.5"
+                onUploaded={(url) =>
+                  form.setValue("coverUrl", url, { shouldDirty: true, shouldValidate: true })
+                }
+              />
             </div>
           </div>
 

@@ -47,3 +47,6 @@ next-env.d.ts
 # OTP codes written while SMTP is not configured
 /.otp-dev.log
 .neon
+
+# images téléversées sans FTP Hostinger (mode développement)
+/.uploads

@@ -121,6 +121,8 @@ export type Project = {
   slug: string;
   description: string | null;
   status: ProjectStatus;
+  /** Rang de la carte dans sa colonne du kanban. */
+  position?: number | null;
   budget: number | null;
   startsAt: string | null;
   endsAt: string | null;
@@ -139,6 +141,7 @@ export type Transaction = {
   status: TransactionStatus;
   method: string | null;
   stream: string | null;
+  marketplace?: string | null;
   occurredAt: string;
   clientId: string | null;
   bookingId: string | null;
@@ -1238,10 +1241,14 @@ export type MarketplaceListing = {
   /** airbnb | mubawab | avito | hespress */
   platform: string;
   title: string;
+  /** Photo de l'annonce (chemin site ou URL), gérée dans le CRM. */
+  imageUrl: string | null;
   productId: string | null;
   externalUrl: string | null;
   /** draft | published | paused | expired */
   status: string;
+  /** Rang de la carte dans sa colonne du tableau. */
+  position?: number | null;
   price: number | null;
   views: number;
   contacts: number;

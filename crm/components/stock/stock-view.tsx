@@ -2,13 +2,13 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { CalendarDays, Car, FolderKanban, Home, KeyRound } from "lucide-react";
+import { Building2, CalendarDays, Car, FolderKanban, Home, KeyRound } from "lucide-react";
 import { PageHeader } from "@/components/admin/page-header";
 import { ProductsView } from "@/components/products/products-view";
 import { CarsView } from "@/components/cars/cars-view";
 import { PRODUCT_CATEGORIES, normalizeCategory } from "@/lib/categories";
 import { cn } from "@/lib/utils";
-import type { CarRental, Product } from "@/lib/demo-data";
+import type { CarRental, MarketplaceListing, Product } from "@/lib/demo-data";
 
 /**
  * Un seul écran pour les catalogues du groupe. Les boutons de bascule
@@ -18,18 +18,34 @@ import type { CarRental, Product } from "@/lib/demo-data";
 const TABS = [
   { key: "vente", label: "Vente", icon: Home },
   { key: "location", label: "Location", icon: KeyRound },
+  { key: "vefa", label: "Projets VEFA", icon: Building2 },
   { key: "cars", label: "Benali Cars", icon: Car },
 ] as const;
 
 type StockTab = (typeof TABS)[number]["key"];
 
-export function StockView({ products, rentals }: { products: Product[]; rentals: CarRental[] }) {
+export function StockView({
+  products,
+  rentals,
+  marketplaces = [],
+}: {
+  products: Product[];
+  rentals: CarRental[];
+  marketplaces?: MarketplaceListing[];
+}) {
   const [active, setActive] = React.useState<StockTab>("vente");
   const [category, setCategory] = React.useState("");
+
+  /* stock VEFA : les programmes neufs, vendus (catégorie « projets-neufs ») */
+  const vefaProducts = products.filter(
+    (product) =>
+      product.deal !== "location" && normalizeCategory(product.category) === "projets-neufs"
+  );
 
   const counts: Record<StockTab, number> = {
     vente: products.filter((product) => product.deal !== "location").length,
     location: products.filter((product) => product.deal === "location").length,
+    vefa: vefaProducts.length,
     cars: rentals.length,
   };
 
@@ -47,7 +63,7 @@ export function StockView({ products, rentals }: { products: Product[]; rentals:
       <PageHeader
         eyebrow="Catalogue"
         title="Gestion de stock"
-        description="Biens à vendre, biens à louer et Benali Cars sur une seule page : basculez de catalogue avec les boutons, puis affinez par catégorie de bien."
+        description="Biens à vendre, biens à louer, projets VEFA et Benali Cars sur une seule page : basculez de catalogue avec les boutons, puis affinez par catégorie de bien."
         actions={
           <>
             <Link
@@ -103,7 +119,7 @@ export function StockView({ products, rentals }: { products: Product[]; rentals:
         })}
       </div>
 
-      {active !== "cars" ? (
+      {active !== "cars" && active !== "vefa" ? (
         <div
           role="group"
           aria-label="Catégorie de bien"
@@ -150,6 +166,7 @@ export function StockView({ products, rentals }: { products: Product[]; rentals:
             initial={products}
             initialDeal="vente"
             initialCategory={category}
+            marketplaces={marketplaces}
             embedded
           />
         ) : null}
@@ -159,6 +176,17 @@ export function StockView({ products, rentals }: { products: Product[]; rentals:
             initial={products}
             initialDeal="location"
             initialCategory={category}
+            marketplaces={marketplaces}
+            embedded
+          />
+        ) : null}
+        {active === "vefa" ? (
+          <ProductsView
+            key="vefa"
+            initial={vefaProducts}
+            initialDeal="vente"
+            initialCategory="projets-neufs"
+            marketplaces={marketplaces}
             embedded
           />
         ) : null}

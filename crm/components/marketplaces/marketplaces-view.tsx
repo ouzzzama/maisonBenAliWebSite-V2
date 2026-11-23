@@ -1,15 +1,18 @@
 "use client";
 
 import * as React from "react";
+import { createPortal } from "react-dom";
 import { useForm } from "react-hook-form";
 import { zodForm } from "@/lib/form";
-import { ExternalLink, Pause, Pencil, Play, Plus, Trash2 } from "lucide-react";
+import { ExternalLink, GripVertical, Pencil, Plus, Trash2 } from "lucide-react";
 import { PageHeader } from "@/components/admin/page-header";
 import { FilterBar } from "@/components/admin/filter-bar";
 import { useCollection } from "@/components/admin/use-collection";
+import { useSmoothReorder } from "@/components/admin/use-smooth-reorder";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { FieldError, Input, Label, Select, Textarea } from "@/components/ui/field";
+import { ImageUploadButton } from "@/components/ui/image-upload";
 import { marketplaceSchema, type MarketplaceInput } from "@/lib/validators";
 import {
   MARKETPLACE_PLATFORMS,
@@ -18,7 +21,25 @@ import {
   statusLabel,
 } from "@/lib/marketplaces";
 import type { MarketplaceListing, Product } from "@/lib/demo-data";
-import { cn, formatMAD } from "@/lib/utils";
+import { resolveImage } from "@/lib/images";
+import { byPosition, cn, formatMAD } from "@/lib/utils";
+
+/** Carte en cours de déplacement : ancrage au pointeur + inclinaison. */
+type DragState = {
+  id: string;
+  from: string;
+  width: number;
+  height: number;
+  left: number;
+  top: number;
+  startX: number;
+  startY: number;
+  offsetX: number;
+  offsetY: number;
+};
+
+/** Colonne survolée et rang auquel la carte serait insérée. */
+type DropTarget = { platform: string; index: number };
 
 const STATUS_TONE: Record<string, string> = {
   published: "bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/20",
@@ -30,6 +51,7 @@ const STATUS_TONE: Record<string, string> = {
 const emptyListing: MarketplaceInput = {
   platform: "airbnb",
   title: "",
+  imageUrl: "",
   productId: "",
   externalUrl: "",
   status: "draft",
@@ -51,6 +73,20 @@ export function MarketplacesView({
   const [platform, setPlatform] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [editing, setEditing] = React.useState<MarketplaceListing | null>(null);
+  /* glisser-déposer au pointeur : la carte suit la souris, opaque, inclinée */
+  const [drag, setDrag] = React.useState<DragState | null>(null);
+  const [dropTarget, setDropTarget] = React.useState<DropTarget | null>(null);
+  const dragRef = React.useRef<DragState | null>(null);
+  const dragNodeRef = React.useRef<HTMLElement | null>(null);
+  const dragTiltRef = React.useRef(0);
+  const dropRef = React.useRef<DropTarget | null>(null);
+  const columnRefs = React.useRef<Record<string, HTMLElement | null>>({});
+  const dragPointRef = React.useRef<{ x: number; y: number } | null>(null);
+  const placeRef = React.useRef<(() => void) | null>(null);
+
+  /* les cartes glissent à leur nouvelle place ; pendant le glisser, l'emplacement
+     s'ouvre par les marges, donc pas d'animation FLIP concurrente */
+  useSmoothReorder(drag === null);
 
   const form = useForm<MarketplaceInput>({
     resolver: zodForm(marketplaceSchema),
@@ -68,6 +104,7 @@ export function MarketplacesView({
     form.reset({
       platform: listing.platform as MarketplaceInput["platform"],
       title: listing.title,
+      imageUrl: listing.imageUrl ?? "",
       productId: listing.productId ?? "",
       externalUrl: listing.externalUrl ?? "",
       status: listing.status as MarketplaceInput["status"],
@@ -83,6 +120,7 @@ export function MarketplacesView({
     const payload = {
       platform: values.platform,
       title: values.title,
+      imageUrl: values.imageUrl || null,
       productId: values.productId || null,
       externalUrl: values.externalUrl || null,
       status: values.status,
@@ -104,13 +142,177 @@ export function MarketplacesView({
     }
   };
 
-  const toggleStatus = (listing: MarketplaceListing) => {
-    const next = listing.status === "published" ? "paused" : "published";
-    listings.update(listing.id, {
-      status: next,
-      publishedAt: next === "published" ? new Date().toISOString() : null,
-    });
+  /* pose la carte au rang exact prévisualisé, puis enregistre l'ordre de la colonne */
+  const moveListing = React.useCallback(
+    (listingId: string, platformValue: string, index: number) => {
+      const listing = listings.items.find((item) => item.id === listingId);
+      if (!listing) return;
+
+      const others = byPosition(
+        listings.items.filter(
+          (item) => item.platform === platformValue && item.id !== listingId
+        )
+      );
+      const at = Math.max(0, Math.min(index, others.length));
+      const ordered = [...others.slice(0, at), listing, ...others.slice(at)];
+      const positions = new Map(ordered.map((item, rank) => [item.id, rank * 10]));
+
+      /* la carte atterrit tout de suite au bon rang, sans repasser par son ancienne colonne */
+      listings.setItems((current) =>
+        current.map((item) => {
+          const position = positions.get(item.id);
+          if (position === undefined) return item;
+          return item.id === listingId
+            ? { ...item, platform: platformValue, position }
+            : { ...item, position };
+        })
+      );
+
+      for (const item of ordered) {
+        const position = positions.get(item.id) ?? 0;
+        const patch: Record<string, unknown> = {};
+        if (Number(item.position ?? 0) !== position) patch.position = position;
+        if (item.id === listingId) patch.platform = platformValue;
+        if (Object.keys(patch).length) {
+          void listings.update(item.id, patch).then((row) => {
+            if (!row) listings.refresh();
+          });
+        }
+      }
+    },
+    [listings]
+  );
+
+  /* garde le callback à jour sans relancer les écouteurs du glisser-déposer */
+  const moveListingRef = React.useRef(moveListing);
+  React.useEffect(() => {
+    moveListingRef.current = moveListing;
+  }, [moveListing]);
+
+  const startDrag = (
+    event: React.PointerEvent<HTMLElement>,
+    listing: MarketplaceListing
+  ) => {
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+    if ((event.target as HTMLElement).closest("button, a")) return;
+    const node = event.currentTarget as HTMLElement;
+    const rect = node.getBoundingClientRect();
+    const next: DragState = {
+      id: listing.id,
+      from: listing.platform,
+      width: rect.width,
+      height: rect.height,
+      left: rect.left,
+      top: rect.top,
+      startX: event.clientX,
+      startY: event.clientY,
+      offsetX: event.clientX - rect.left,
+      offsetY: event.clientY - rect.top,
+    };
+    dragRef.current = next;
+    dragNodeRef.current = node;
+    dragTiltRef.current = 0;
+    dragPointRef.current = { x: event.clientX, y: event.clientY };
+    setDrag(next);
+    event.preventDefault();
   };
+
+  React.useLayoutEffect(() => {
+    if (!drag) return;
+    const node = dragNodeRef.current;
+    if (!node) return;
+
+    /* la carte suit le pointeur au pixel près, en dehors du cycle de rendu React */
+    const place = () => {
+      const state = dragRef.current;
+      const point = dragPointRef.current;
+      const target = dragNodeRef.current;
+      /* la carte rendue dans un portail est un nouveau nœud : on réapplique
+         toujours la position sur le nœud courant */
+      if (!state || !point || !target) return;
+      const { x, y } = point;
+      const tiltTarget = Math.max(-10, Math.min(10, (x - state.startX) * 0.55));
+      dragTiltRef.current += (tiltTarget - dragTiltRef.current) * 0.22;
+      /* déplacement exprimé en écart depuis le point d'attrape : le curseur reste
+         collé au même endroit de la carte, quel que soit le conteneur */
+      target.style.transform = `translate3d(${x - state.startX}px, ${
+        y - state.startY
+      }px, 0) rotate(${dragTiltRef.current.toFixed(2)}deg)`;
+    };
+    placeRef.current = place;
+
+    /* première pose avant repeint : la carte ne saute pas au départ */
+    place();
+
+    const platformAt = (x: number, y: number) => {
+      const hit = Object.entries(columnRefs.current).find(([, element]) => {
+        if (!element) return false;
+        const rect = element.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      });
+      return hit ? hit[0] : "";
+    };
+
+    /* rang d'atterrissage : nombre de cartes dont le milieu est au-dessus du pointeur */
+    const indexAt = (element: HTMLElement, y: number) => {
+      let index = 0;
+      for (const card of Array.from(element.querySelectorAll<HTMLElement>("[data-card-id]"))) {
+        const rect = card.getBoundingClientRect();
+        if (y > rect.top + rect.height / 2) index += 1;
+      }
+      return index;
+    };
+
+    const handleMove = (event: PointerEvent) => {
+      if (!dragRef.current) return;
+      dragPointRef.current = { x: event.clientX, y: event.clientY };
+      place();
+      const over = platformAt(event.clientX, event.clientY);
+      const element = over ? columnRefs.current[over] : null;
+      const next: DropTarget | null =
+        over && element ? { platform: over, index: indexAt(element, event.clientY) } : null;
+      const previous = dropRef.current;
+      if (
+        (next?.platform ?? "") !== (previous?.platform ?? "") ||
+        (next?.index ?? -1) !== (previous?.index ?? -1)
+      ) {
+        dropRef.current = next;
+        setDropTarget(next);
+      }
+    };
+
+    const finish = () => {
+      const current = dragRef.current;
+      const target = dropRef.current;
+      dragRef.current = null;
+      dropRef.current = null;
+      if (dragNodeRef.current) dragNodeRef.current.style.transform = "";
+      dragNodeRef.current = null;
+      dragPointRef.current = null;
+      placeRef.current = null;
+      document.body.style.userSelect = "";
+      document.body.style.cursor = "";
+      setDrag(null);
+      setDropTarget(null);
+      /* hors de toute colonne : la carte revient simplement à sa place */
+      if (current && target) {
+        moveListingRef.current(current.id, target.platform, target.index);
+      }
+    };
+
+    document.body.style.userSelect = "none";
+    document.body.style.cursor = "grabbing";
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", finish);
+    window.addEventListener("pointercancel", finish);
+    return () => {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", finish);
+      window.removeEventListener("pointercancel", finish);
+      document.body.style.userSelect = "";
+      document.body.style.cursor = "";
+    };
+  }, [drag !== null]);
 
   const filtered = React.useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -255,17 +457,48 @@ export function MarketplacesView({
         }}
       />
 
+      {platform ? null : (
+        <p className="mb-2 inline-flex items-center gap-1.5 rounded-full bg-ink/5 px-2.5 py-1 text-[11px] font-medium text-ink/55">
+          <GripVertical className="size-3.5" />
+          Glissez une annonce d&apos;une colonne à l&apos;autre pour changer son portail.
+        </p>
+      )}
+
       {/* Un bloc de projets par portail, en colonnes sous les cartes. */}
       <div className={cn("grid gap-3", platform ? "grid-cols-1" : "sm:grid-cols-2 xl:grid-cols-4")}>
         {(platform
           ? MARKETPLACE_PLATFORMS.filter((item) => item.value === platform)
           : MARKETPLACE_PLATFORMS
         ).map((column) => {
-          const rows = filtered.filter((listing) => listing.platform === column.value);
+          const rows = byPosition(
+            filtered.filter((listing) => listing.platform === column.value)
+          );
+          const hovering = drag !== null && dropTarget?.platform === column.value;
+          const sourceIndex = drag ? rows.findIndex((row) => row.id === drag.id) : -1;
+          const flowCount = rows.length - (sourceIndex >= 0 ? 1 : 0);
+          /* emplacement d'atterrissage : dans la colonne survolée, sinon à la place d'origine */
+          const insertAt = drag
+            ? hovering
+              ? Math.min(dropTarget?.index ?? 0, flowCount)
+              : drag.from === column.value && sourceIndex >= 0
+                ? sourceIndex
+                : null
+            : null;
+          /* ouverture de l'emplacement : hauteur de la carte + l'espace entre cartes */
+          const slotSize = drag && insertAt !== null ? drag.height + 8 : 0;
+          let flowIndex = 0;
           return (
             <section
               key={column.value}
-              className="flex flex-col gap-2 rounded-3xl border border-ink/8 bg-white/55 p-2.5"
+              ref={(element) => {
+                columnRefs.current[column.value] = element;
+              }}
+              className={cn(
+                "flex flex-col gap-2 rounded-3xl border border-dashed bg-white/55 p-2.5 transition",
+                hovering
+                  ? "border-coral/60 border-solid bg-coral/[0.06] ring-2 ring-coral/25"
+                  : "border-ink/15"
+              )}
             >
               <div className="flex items-center justify-between px-1">
                 <span className="text-[10px] font-semibold uppercase tracking-[0.09em] text-ink/40">
@@ -285,33 +518,114 @@ export function MarketplacesView({
 
               {rows.map((listing) => {
                 const product = products.find((item) => item.id === listing.productId);
-                return (
-            <article
-              key={listing.id}
-              className="flex flex-col gap-2 rounded-2xl border border-ink/8 bg-white p-3 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
-            >
-              <div className="min-w-0">
-                <div className="flex items-start justify-between gap-2">
-                  <h2 className="min-w-0 flex-1 truncate text-[12.5px] font-semibold text-ink">
-                    {listing.title}
-                  </h2>
-                  <span
+                const cover = listing.imageUrl || product?.coverUrl || "";
+                const activeDrag = drag && drag.id === listing.id ? drag : null;
+                const cardIndex = activeDrag ? -1 : flowIndex;
+                if (!activeDrag) flowIndex += 1;
+                /* les cartes du dessous glissent pour laisser la place, aucune n'est retirée */
+                const slotBefore =
+                  slotSize > 0 && insertAt !== null && cardIndex === insertAt ? slotSize : 0;
+                const slotAfter =
+                  slotSize > 0 &&
+                  insertAt !== null &&
+                  cardIndex === flowCount - 1 &&
+                  insertAt >= flowCount
+                    ? slotSize
+                    : 0;
+                const card = (
+                  <article
+                    key={listing.id}
+                    data-card-id={listing.id}
+                    data-flip-id={listing.id}
+                    ref={(node) => {
+                      if (!node || !activeDrag) return;
+                      dragNodeRef.current = node;
+                      /* le portail crée un nouveau nœud : on lui redonne tout de suite
+                         la position du pointeur, sinon la carte reste figée au départ */
+                      placeRef.current?.();
+                    }}
+                    onPointerDown={(event) => startDrag(event, listing)}
+                    style={
+                      activeDrag
+                        ? {
+                            position: "fixed",
+                            left: activeDrag.left,
+                            top: activeDrag.top,
+                            width: activeDrag.width,
+                            transformOrigin: `${activeDrag.offsetX}px ${activeDrag.offsetY}px`,
+                            margin: 0,
+                            zIndex: 60,
+                            opacity: 1,
+                            pointerEvents: "none",
+                            willChange: "transform",
+                          }
+                        : drag
+                          ? {
+                              marginTop: slotBefore || undefined,
+                              marginBottom: slotAfter || undefined,
+                              transition:
+                                "margin-top 200ms cubic-bezier(0.22, 1, 0.36, 1), margin-bottom 200ms cubic-bezier(0.22, 1, 0.36, 1)",
+                            }
+                          : undefined
+                    }
                     className={cn(
-                      "shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
-                      STATUS_TONE[listing.status] ?? STATUS_TONE.draft
+                      "flex select-none flex-col gap-2 rounded-2xl border bg-white p-3",
+                      activeDrag
+                        ? "cursor-grabbing border-coral/50 shadow-2xl ring-2 ring-coral/40"
+                        : "cursor-grab border-ink/8 shadow-[0_2px_10px_rgba(18,43,67,0.04)]"
                     )}
                   >
-                    {statusLabel(listing.status)}
-                  </span>
-                </div>
-                <p className="mt-1 truncate text-[11px] text-ink/45">
-                  {listing.price ? formatMAD(listing.price) : "Prix libre"}
-                  {product ? ` · ${product.title}` : ""}
-                </p>
-                {listing.notes ? (
-                  <p className="mt-0.5 line-clamp-2 text-[10.5px] text-ink/35">{listing.notes}</p>
-                ) : null}
-              </div>
+                    {/* vignette carrée à gauche, détails à droite */}
+                    <div className="flex items-start gap-2.5">
+                      <div className="relative size-16 shrink-0 overflow-hidden rounded-xl bg-ink/5">
+                        {/* poignée visible : la carte se glisse vers un autre portail */}
+                        <span
+                          aria-hidden="true"
+                          title="Glisser vers un autre portail"
+                          className="absolute left-1 top-1 z-10 grid size-5 place-items-center rounded-md bg-white/90 text-ink/55 shadow-sm"
+                        >
+                          <GripVertical className="size-3" />
+                        </span>
+                        {cover ? (
+                          /* eslint-disable-next-line @next/next/no-img-element */
+                          <img
+                            src={resolveImage(cover)}
+                            alt={listing.title}
+                            className="size-full object-cover"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <span className="grid size-full place-items-center text-[9px] text-ink/30">
+                            Sans photo
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="min-w-0 flex-1">
+                        <div className="flex items-start justify-between gap-2">
+                          <h2 className="min-w-0 flex-1 truncate text-[12.5px] font-semibold text-ink">
+                            {listing.title}
+                          </h2>
+                          <span
+                            className={cn(
+                              "shrink-0 rounded-full px-1.5 py-0.5 text-[10px] font-semibold",
+                              STATUS_TONE[listing.status] ?? STATUS_TONE.draft
+                            )}
+                          >
+                            {statusLabel(listing.status)}
+                          </span>
+                        </div>
+                        <p className="mt-1 truncate text-[11px] text-ink/45">
+                          {listing.price ? formatMAD(listing.price) : "Prix libre"}
+                          {product ? ` · ${product.title}` : ""}
+                        </p>
+                        {listing.notes ? (
+                          <p className="mt-0.5 line-clamp-2 text-[10.5px] text-ink/35">
+                            {listing.notes}
+                          </p>
+                        ) : null}
+                      </div>
+                    </div>
 
               <div className="flex items-center gap-1 border-t border-ink/8 pt-2">
                 {listing.externalUrl ? (
@@ -325,18 +639,6 @@ export function MarketplacesView({
                     <ExternalLink className="size-3.5" />
                   </a>
                 ) : null}
-                <button
-                  type="button"
-                  onClick={() => toggleStatus(listing)}
-                  title={listing.status === "published" ? "Mettre en pause" : "Publier"}
-                  className="focus-ring grid size-8 place-items-center rounded-lg text-ink/45 transition hover:bg-ink/5 hover:text-ink"
-                >
-                  {listing.status === "published" ? (
-                    <Pause className="size-3.5" />
-                  ) : (
-                    <Play className="size-3.5" />
-                  )}
-                </button>
                 <button
                   type="button"
                   onClick={() => openEdit(listing)}
@@ -362,7 +664,18 @@ export function MarketplacesView({
               </div>
             </article>
                 );
+                return activeDrag && typeof document !== "undefined"
+                  ? createPortal(card, document.body)
+                  : card;
               })}
+              {/* colonne vide : l'emplacement s'ouvre pour accueillir la carte */}
+              {drag && insertAt !== null && flowCount === 0 ? (
+                <div
+                  aria-hidden="true"
+                  className="rounded-2xl border border-dashed border-coral/50 bg-coral/[0.07]"
+                  style={{ height: drag.height }}
+                />
+              ) : null}
             </section>
           );
         })}
@@ -402,6 +715,19 @@ export function MarketplacesView({
               <Label>Titre de l&apos;annonce</Label>
               <Input {...form.register("title")} placeholder="Villa Founty Beach — 4 suites" />
               <FieldError>{form.formState.errors.title?.message}</FieldError>
+            </div>
+            <div className="sm:col-span-2">
+              <Label>Image de l&apos;annonce</Label>
+              <Input {...form.register("imageUrl")} placeholder="assets/images/… ou https://…" />
+              <ImageUploadButton
+                className="mt-1.5"
+                onUploaded={(url) =>
+                  form.setValue("imageUrl", url, { shouldDirty: true, shouldValidate: true })
+                }
+              />
+              <p className="mt-1 text-[11px] text-muted">
+                Photo affichée dans le CRM. Laissée vide, c&apos;est celle du bien lié qui est utilisée.
+              </p>
             </div>
             <div className="sm:col-span-2">
               <Label>Bien lié (optionnel)</Label>

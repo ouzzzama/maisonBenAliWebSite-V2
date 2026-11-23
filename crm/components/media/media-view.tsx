@@ -15,6 +15,7 @@ import { mediaSchema, type MediaInput } from "@/lib/validators";
 import type { MediaAsset } from "@/lib/demo-data";
 import { PAGE_SLOT_LABEL, cn, formatDate } from "@/lib/utils";
 import { resolveImage } from "@/lib/images";
+import { uploadImage } from "@/lib/upload-client";
 
 const SLOT_OPTIONS = Object.entries(PAGE_SLOT_LABEL).map(([value, label]) => ({ value, label }));
 
@@ -35,6 +36,23 @@ export function MediaView({ initial }: { initial: MediaAsset[] }) {
   const [open, setOpen] = React.useState(false);
   const [editing, setEditing] = React.useState<MediaAsset | null>(null);
   const [preview, setPreview] = React.useState<string | null>(null);
+  const [uploading, setUploading] = React.useState(false);
+  const [uploadError, setUploadError] = React.useState<string | null>(null);
+  const [storage, setStorage] = React.useState<{ driver: string; label: string } | null>(null);
+
+  /* où partent les fichiers : Hostinger (public_html) ou dossier local du CRM */
+  React.useEffect(() => {
+    let alive = true;
+    fetch("/api/upload")
+      .then((response) => (response.ok ? response.json() : null))
+      .then((data) => {
+        if (alive && data) setStorage({ driver: data.driver, label: data.label });
+      })
+      .catch(() => undefined);
+    return () => {
+      alive = false;
+    };
+  }, []);
 
   const form = useForm<MediaInput>({
     resolver: zodForm(mediaSchema),
@@ -63,24 +81,42 @@ export function MediaView({ initial }: { initial: MediaAsset[] }) {
     setOpen(true);
   };
 
-  const onFile = (file?: File) => {
+  /* envoi réel : l'image compressée est déposée sur Hostinger, le champ reçoit l'URL publique */
+  const onFile = async (file?: File) => {
     if (!file) return;
-    const reader = new FileReader();
-    reader.onload = () => {
-      const result = String(reader.result);
-      setPreview(result);
-      form.setValue("url", result);
-      form.setValue("filename", file.name);
-    };
-    reader.readAsDataURL(file);
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const result = await uploadImage(file);
+      setPreview(result.url);
+      form.setValue("url", result.url, { shouldDirty: true, shouldValidate: true });
+      form.setValue("filename", result.filename, { shouldDirty: true });
+    } catch (cause) {
+      setUploadError(cause instanceof Error ? cause.message : "Envoi impossible");
+    } finally {
+      setUploading(false);
+    }
   };
 
   const onSubmit = async (values: MediaInput) => {
+    const extension = values.url.split("?")[0].split(".").pop()?.toLowerCase();
+    const mimeType =
+      extension === "png"
+        ? "image/png"
+        : extension === "webp"
+          ? "image/webp"
+          : extension === "avif"
+            ? "image/avif"
+            : extension === "gif"
+              ? "image/gif"
+              : extension === "svg"
+                ? "image/svg+xml"
+                : "image/jpeg";
     const payload = {
       ...values,
       filename: values.filename || values.url.split("/").pop() || "image",
       size: 0,
-      mimeType: values.url.startsWith("data:image/png") ? "image/png" : "image/jpeg",
+      mimeType,
     };
     const result = editing
       ? await media.update(editing.id, payload)
@@ -267,22 +303,37 @@ export function MediaView({ initial }: { initial: MediaAsset[] }) {
         open={open}
         onClose={() => setOpen(false)}
         title={editing ? "Modifier l'image" : "Ajouter une image"}
-        description="Déposez un fichier (stocké en data-URL dans la démo) ou collez une URL publique."
+        description={
+          storage
+            ? `Fichier envoyé vers : ${storage.label}. L'URL publique obtenue peut être réutilisée partout dans le CRM.`
+            : "Déposez un fichier : il est compressé puis envoyé sur l'hébergement, et son URL publique est réutilisable partout."
+        }
       >
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <label className="flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-ink/15 bg-cream/60 px-4 py-8 text-center transition hover:border-coral/40">
-            <UploadCloud className="size-6 text-coral" />
+          <label
+            className={cn(
+              "flex cursor-pointer flex-col items-center justify-center gap-2 rounded-2xl border border-dashed border-ink/15 bg-cream/60 px-4 py-8 text-center transition hover:border-coral/40",
+              uploading && "cursor-wait opacity-60"
+            )}
+          >
+            <UploadCloud className={cn("size-6 text-coral", uploading && "animate-pulse")} />
             <span className="text-[12.5px] font-medium text-ink">
-              Choisir un fichier image
+              {uploading ? "Envoi vers l'hébergement…" : "Choisir un fichier image"}
             </span>
-            <span className="text-[11px] text-muted">JPG, PNG, WebP</span>
+            <span className="text-[11px] text-muted">
+              JPG, PNG, WebP — optimisé automatiquement en WebP
+            </span>
             <input
               type="file"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp,image/avif,image/gif,image/svg+xml"
               className="hidden"
+              disabled={uploading}
               onChange={(event) => onFile(event.target.files?.[0])}
             />
           </label>
+          {uploadError ? (
+            <p className="text-[11.5px] text-rose-600">{uploadError}</p>
+          ) : null}
 
           {preview ? (
             // eslint-disable-next-line @next/next/no-img-element
