@@ -23,6 +23,7 @@ const PREFIX: Record<CollectionName, string> = {
   transactions: "tx",
   media: "md",
   emails: "em",
+  vehicles: "vh",
 };
 
 const now = () => new Date().toISOString();

@@ -35,7 +35,7 @@ const RESERVATION_FILE = path.join(DATA_DIR, "reservations.jsonl");
 // never blocks the visitor.
 const CRM_URL = (process.env.CRM_URL || "http://localhost:3002").replace(/\/$/, "");
 
-function syncToCrm(record) {
+async function syncToCrm(record) {
   const payload = {
     type: record.type,
     name: record.name,
@@ -53,25 +53,28 @@ function syncToCrm(record) {
   const headers = { "Content-Type": "application/json" };
   if (process.env.WEBSITE_INTAKE_KEY) headers["X-Intake-Key"] = process.env.WEBSITE_INTAKE_KEY;
 
-  fetch(`${CRM_URL}/api/public/intake`, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(payload)
-  })
-    .then((response) =>
-      response.json().then((body) => {
-        if (!response.ok || !body.ok) throw new Error(body.error || `HTTP ${response.status}`);
-        console.log("crm sync:", record.id, "→ lead", body.id, body.bookingId || body.rentalId || "");
-      })
-    )
-    .catch((error) => console.warn("crm sync failed:", record.id, error.message));
+  try {
+    const response = await fetch(`${CRM_URL}/api/public/intake`, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(payload),
+      signal: AbortSignal.timeout(12_000)
+    });
+    const body = await response.json();
+    if (!response.ok || !body.ok) throw new Error(body.error || `HTTP ${response.status}`);
+    console.log("crm sync:", record.id, "→ lead", body.id, body.bookingId || body.rentalId || "");
+    return body;
+  } catch (error) {
+    console.warn("crm sync failed:", record.id, error.message);
+    return null;
+  }
 }
 
 function clean(value, max) {
   return typeof value === "string" ? value.replace(/[\u0000-\u001f]/g, " ").trim().slice(0, max) : "";
 }
 
-app.post("/api/reservation", (req, res) => {
+app.post("/api/reservation", async (req, res) => {
   const body = req.body || {};
   const phone = clean(body.phone, 32);
   if (phone.replace(/\D/g, "").length < 6) {
@@ -103,8 +106,17 @@ app.post("/api/reservation", (req, res) => {
   }
 
   console.log("reservation saved:", record.id, record.type, record.phone);
-  syncToCrm(record);
-  res.status(201).json({ ok: true, id: record.id });
+  /* Le CRM crée le lead, la location et l'accusé de réception : on attend sa
+     réponse pour pouvoir afficher la vraie référence au visiteur. */
+  const crm = await syncToCrm(record);
+  res.status(201).json({
+    ok: true,
+    id: record.id,
+    leadId: crm && crm.id,
+    reference: (crm && crm.reference) || record.id,
+    rentalId: crm && crm.rentalId,
+    ack: (crm && crm.ack) || null
+  });
 });
 
 app.get("*", (req, res) => {

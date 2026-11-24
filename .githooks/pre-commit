@@ -1,0 +1,19 @@
+#!/bin/sh
+# Met à jour les ?v= des CSS/JS avant chaque commit, pour que le dépôt
+# contienne toujours des hashes à jour (le déploiement ne fait que publier).
+# Installation : npm run hooks:install
+# Contournement ponctuel : MB_SKIP_ASSET_HASH=1 git commit ...
+
+if [ -n "$MB_SKIP_ASSET_HASH" ]; then
+  exit 0
+fi
+
+command -v node >/dev/null 2>&1 || exit 0
+
+node scripts/cache-bust.mjs || exit 1
+
+# Les seules lignes modifiées par le script sont des ?v= : on les remet dans
+# l'index pour qu'un commit de style.css embarque aussi la nouvelle version.
+git add -u -- '*.html' 2>/dev/null || true
+
+exit 0

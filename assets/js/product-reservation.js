@@ -64,13 +64,34 @@
         data[key] = String(value).trim();
       });
 
+      var type = form.getAttribute("data-reserve-type") || "bien";
+
       if (!data.phone) {
         setStatus("Merci d'indiquer un numéro de téléphone.", "error");
         return;
       }
 
-      data.type = form.getAttribute("data-reserve-type") || "bien";
-      data.property = "Résidence Agadir Bay";
+      if (type === "car") {
+        if (!data.name || data.name.length < 2) {
+          setStatus("Merci d'indiquer votre nom.", "error");
+          return;
+        }
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email || "")) {
+          setStatus("Merci d'indiquer un e-mail valide : c'est là que part l'accusé de réception.", "error");
+          return;
+        }
+        if (!data.from || !data.to) {
+          setStatus("Merci d'indiquer vos dates de départ et de retour.", "error");
+          return;
+        }
+        if (data.to < data.from) {
+          setStatus("La date de retour doit être après la date de départ.", "error");
+          return;
+        }
+      }
+
+      data.type = type;
+      if (type === "bien") data.property = "Résidence Agadir Bay";
       data.page = window.location.pathname;
 
       if (button) {
@@ -90,10 +111,16 @@
           if (!result.ok || !result.body.ok) {
             throw new Error((result.body && result.body.error) || "Échec de l'envoi");
           }
-          setStatus(
-            "Demande enregistrée (réf. " + result.body.id + "). Nous vous rappelons sous 24 h ouvrées.",
-            "success"
-          );
+          var reference = result.body.reference || result.body.id || null;
+          var label = "Demande enregistrée" + (reference ? " (réf. " + reference + ")" : "") + ". ";
+          var ackSent = !!(result.body.ack && result.body.ack.delivered);
+          var message =
+            type === "car"
+              ? label +
+                (ackSent && data.email ? "Un accusé de réception part vers " + data.email + ". " : "") +
+                "Nous confirmons la disponibilité sous 24 h ouvrées."
+              : label + "Nous vous rappelons sous 24 h ouvrées.";
+          setStatus(message, "success");
           form.reset();
         })
         .catch(function (error) {

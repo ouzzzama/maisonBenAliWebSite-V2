@@ -533,6 +533,43 @@ Version: 1.0
         onScroll(initialY);
     })();
 
+    //===== Mobile : le logo reste épinglé tant que la bannière est à l'écran,
+    // puis il part avec elle dès que la bannière est passée.
+    (function initBannerPinnedLogo() {
+        var header = document.querySelector('header.header-area');
+        // uniquement la bannière d'accueil : les pages intérieures gardent leur logo qui défile
+        var banner = document.querySelector('.modern-hero-section .hero-slider-wrapper') ||
+            document.querySelector('.modern-hero-section .hero-banner-card');
+        if (!header || !banner) return;
+
+        var mobile = window.matchMedia('(max-width: 1199.98px)');
+
+        function apply() {
+            if (!mobile.matches) {
+                header.classList.remove('mb-banner-locked', 'mb-banner-passed');
+                return;
+            }
+            var gap = header.offsetHeight || 86;
+            var rect = banner.getBoundingClientRect();
+            // encore au moins une bande de bannière sous le logo : on garde le logo
+            var bannerOnScreen = rect.bottom > gap * 0.6;
+            header.classList.add('mb-banner-locked');
+            header.classList.toggle('mb-banner-passed', !bannerOnScreen);
+        }
+
+        function update() {
+            apply();
+        }
+
+        apply();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update);
+        if (mobile.addEventListener) mobile.addEventListener('change', update);
+        if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.create({ start: 0, end: 'max', onUpdate: update });
+        }
+    })();
+
     var carsModal = document.getElementById('airbnbCarsModal');
     if (carsModal) {
         carsModal.addEventListener('show.bs.modal', function () {

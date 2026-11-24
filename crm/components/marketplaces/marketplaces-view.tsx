@@ -493,19 +493,30 @@ export function MarketplacesView({
               ref={(element) => {
                 columnRefs.current[column.value] = element;
               }}
+              /* chaque colonne reprend le fond clair de son portail (couleurs du logo) */
+              style={
+                hovering
+                  ? undefined
+                  : { background: column.tint, borderColor: column.line }
+              }
               className={cn(
-                "flex flex-col gap-2 rounded-3xl border border-dashed bg-white/55 p-2.5 transition",
+                "flex flex-col gap-2 rounded-3xl border border-dashed p-2.5 transition",
                 hovering
                   ? "border-coral/60 border-solid bg-coral/[0.06] ring-2 ring-coral/25"
-                  : "border-ink/15"
+                  : ""
               )}
             >
               <div className="flex items-center justify-between px-1">
-                <span className="text-[10px] font-semibold uppercase tracking-[0.09em] text-ink/40">
+                <span className="inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.09em] text-ink/45">
+                  <span
+                    aria-hidden="true"
+                    className="size-1.5 rounded-full"
+                    style={{ backgroundColor: column.color }}
+                  />
                   Projets diffusés
                 </span>
-                <span className="rounded-full bg-white px-1.5 text-[10px] font-bold text-ink/50 ring-1 ring-inset ring-ink/10">
-                  {rows.length}
+                <span className="rounded-full bg-white px-1.5 text-[10px] font-bold ring-1 ring-inset ring-ink/10">
+                  <span style={{ color: column.color }}>{rows.length}</span>
                 </span>
               </div>
               {rows.length === 0 ? (

@@ -86,6 +86,121 @@ export async function sendOtpCode(params: { to: string; code: string; name: stri
   return { delivered: true };
 }
 
+export type AckResult = { delivered: boolean; reason?: string };
+
+function fromAddress(): string {
+  return (
+    process.env.MAIL_FROM ||
+    (process.env.SMTP_USER
+      ? `Maison Benali <${process.env.SMTP_USER}>`
+      : "Maison Benali <direction@maisonbenali.com>")
+  );
+}
+
+async function smtpTransport() {
+  const nodemailer = await import("nodemailer");
+  const port = Number(process.env.SMTP_PORT || 587);
+  return nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port,
+    secure: port === 465,
+    auth:
+      process.env.SMTP_USER && process.env.SMTP_PASSWORD
+        ? { user: process.env.SMTP_USER, pass: process.env.SMTP_PASSWORD }
+        : undefined,
+    connectionTimeout: 10_000,
+    greetingTimeout: 10_000,
+    socketTimeout: 15_000,
+  });
+}
+
+/** 2026-12-01 → 1er décembre 2026 */
+function frDate(value?: string): string {
+  if (!value) return "À confirmer";
+  const date = new Date(value.length <= 10 ? `${value}T12:00:00Z` : value);
+  if (Number.isNaN(date.getTime())) return "À confirmer";
+  const text = new Intl.DateTimeFormat("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(date);
+  return text.replace(/^1 /, "1er ");
+}
+
+/**
+ * Accusé de réception envoyé au client qui demande une voiture depuis le site.
+ * Best effort : sans relais SMTP configuré, la demande reste enregistrée dans le
+ * CRM et la raison du non-envoi est journalisée côté serveur.
+ */
+export async function sendCarReservationAck(params: {
+  to: string;
+  name: string;
+  car: string;
+  startDate?: string;
+  endDate?: string;
+  reference: string;
+}): Promise<AckResult> {
+  if (!isMailConfigured() || !process.env.SMTP_HOST) {
+    console.log(`[reservation] SMTP non configuré — accusé non envoyé à ${params.to} (${params.reference})`);
+    return { delivered: false, reason: "smtp-not-configured" };
+  }
+
+  const stay =
+    frDate(params.startDate) === frDate(params.endDate)
+      ? frDate(params.startDate)
+      : `du ${frDate(params.startDate)} au ${frDate(params.endDate)}`;
+
+  try {
+    const transport = await smtpTransport();
+    await transport.sendMail({
+      from: fromAddress(),
+      to: params.to,
+      replyTo: process.env.MAIL_REPLY_TO || undefined,
+      subject: `Votre demande de réservation — ${params.car} (réf. ${params.reference})`,
+      text: [
+        `Bonjour ${params.name},`,
+        "",
+        `Nous avons bien reçu votre demande de réservation pour la ${params.car}, ${stay}.`,
+        `Référence de suivi : ${params.reference}.`,
+        "",
+        "Nous confirmons la disponibilité et le tarif sous 24 h ouvrées, par e-mail ou par téléphone.",
+        "Livraison possible à l'aéroport Agadir Al Massira ou à votre résidence.",
+        "",
+        "Une question ? WhatsApp : +212 661-191787 — direction@maisonbenali.com",
+        "",
+        "Maison Benali — Benali Cars",
+      ].join("\n"),
+      html: `
+        <div style="background:${BRAND_CREAM};padding:32px 16px;font-family:'Cal Sans',Helvetica,Arial,sans-serif;color:${BRAND_INK}">
+          <div style="max-width:560px;margin:0 auto;background:#ffffff;border-radius:18px;padding:32px">
+            <p style="margin:0 0 6px;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:${BRAND_CORAL}">Benali Cars · Agadir</p>
+            <h1 style="margin:0 0 18px;font-size:22px">Demande bien reçue</h1>
+            <p style="margin:0 0 20px;font-size:14px;line-height:1.6;color:#42546a">
+              Bonjour ${params.name}, nous avons bien enregistré votre demande de réservation.
+              Notre équipe revient vers vous sous 24 h ouvrées pour confirmer la disponibilité et le tarif.
+            </p>
+            <table style="width:100%;border-collapse:collapse;font-size:14px;color:${BRAND_INK}">
+              <tr><td style="padding:10px 0;border-bottom:1px solid #eee9df;color:#6b7c8c">Véhicule</td><td style="padding:10px 0;border-bottom:1px solid #eee9df;text-align:right;font-weight:600">${params.car}</td></tr>
+              <tr><td style="padding:10px 0;border-bottom:1px solid #eee9df;color:#6b7c8c">Dates</td><td style="padding:10px 0;border-bottom:1px solid #eee9df;text-align:right;font-weight:600">${stay}</td></tr>
+              <tr><td style="padding:10px 0;color:#6b7c8c">Référence</td><td style="padding:10px 0;text-align:right;font-weight:600">${params.reference}</td></tr>
+            </table>
+            <p style="margin:22px 0 0;font-size:12px;line-height:1.6;color:#6b7c8c">
+              Livraison possible à l'aéroport Agadir Al Massira ou à votre résidence.<br/>
+              Une question ? WhatsApp +212 661-191787 · direction@maisonbenali.com
+            </p>
+          </div>
+        </div>
+      `,
+    });
+    return { delivered: true };
+  } catch (error) {
+    const reason = error instanceof Error ? error.message : "envoi impossible";
+    console.warn(`[reservation] accusé non envoyé à ${params.to} : ${reason}`);
+    return { delivered: false, reason };
+  }
+}
+
 async function recordLocalCode(params: { to: string; code: string; name: string }) {
   console.log(`[auth] SMTP non configuré — code OTP pour ${params.to} : ${params.code}`);
   try {

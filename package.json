@@ -6,7 +6,11 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build": "echo 'Build complete'"
+    "build": "node scripts/cache-bust.mjs && node scripts/build-site.mjs",
+    "assets:hash": "node scripts/cache-bust.mjs",
+    "assets:check": "node scripts/cache-bust.mjs --check",
+    "site:build": "node scripts/build-site.mjs",
+    "hooks:install": "git config core.hooksPath .githooks && echo 'Hooks installés (.githooks).'"
   },
   "repository": {
     "type": "git",

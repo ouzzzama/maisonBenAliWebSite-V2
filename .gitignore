@@ -8,3 +8,5 @@ HOSTINGER-A-COPIER.txt
 .cloud-attachments/
 .agents/
 screenshots/
+dist/
+.ftp-deploy-sync-state.json

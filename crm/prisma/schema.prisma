@@ -234,6 +234,32 @@ model CarRental {
   @@index([status, pickupAt])
 }
 
+/* --------------------------------------------------------------- flotte -- */
+
+/** Véhicule Benali Cars et sa grille tarifaire (source des prix du site). */
+model Vehicle {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  category       String   @default("SUV")
+  badge          String?
+  tagline        String?
+  description    String?
+  image          String?
+  alt            String?
+  dailyRate      Decimal? @db.Decimal(10, 2)
+  weeklyRate     Decimal? @db.Decimal(10, 2)
+  highSeasonRate Decimal? @db.Decimal(10, 2)
+  seasonNote     String?
+  deposit        Decimal? @db.Decimal(10, 2)
+  published      Boolean  @default(true)
+  sortOrder      Int      @default(10)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  @@index([published, sortOrder])
+}
+
 /* ------------------------------------------------------------- projects -- */
 
 enum ProjectStatus {

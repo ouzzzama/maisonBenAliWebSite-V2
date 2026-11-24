@@ -6,7 +6,15 @@ import { ArrowLeft, ArrowRight, KeyRound, Loader2, Mail, ShieldCheck } from "luc
 
 type Step = "credentials" | "otp";
 
-export function LoginForm({ next }: { next: string }) {
+export function LoginForm({
+  next,
+  framed = true,
+  compact = false,
+}: {
+  next: string;
+  framed?: boolean;
+  compact?: boolean;
+}) {
   const router = useRouter();
   const [step, setStep] = React.useState<Step>("credentials");
   const [email, setEmail] = React.useState("");
@@ -76,20 +84,33 @@ export function LoginForm({ next }: { next: string }) {
     }
   }
 
-  const inputClass =
-    "focus-ring h-11 w-full rounded-xl border border-ink/12 bg-white px-3.5 text-[13.5px] text-ink outline-none transition placeholder:text-ink/30 focus:border-ink/35";
+  const inputClass = compact
+    ? "focus-ring h-11 w-full rounded-xl border border-ink/12 bg-white px-3.5 text-[13px] text-ink outline-none transition placeholder:text-ink/30 focus:border-ink/35"
+    : "focus-ring h-12 w-full rounded-2xl border border-ink/12 bg-white px-3.5 text-[13.5px] text-ink outline-none transition placeholder:text-ink/30 focus:border-ink/35";
 
   return (
-    <div className="rounded-3xl border border-ink/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(18,43,67,0.55)] sm:p-8">
+    <div
+      className={
+        framed
+          ? "rounded-3xl border border-ink/10 bg-white p-6 shadow-[0_24px_60px_-40px_rgba(18,43,67,0.55)] sm:p-8"
+          : "p-0"
+      }
+    >
       {step === "credentials" ? (
         <>
           <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-coral">Connexion</p>
-          <h2 className="mt-1.5 text-[24px] leading-tight tracking-[-0.02em] text-ink">Accès administrateur</h2>
+          <h2
+            className={`mt-1.5 leading-tight tracking-[-0.02em] text-ink ${
+              compact ? "text-[20px]" : "text-[24px]"
+            }`}
+          >
+            Accès administrateur
+          </h2>
           <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">
             Un code de vérification sera envoyé à l&apos;adresse e-mail autorisée.
           </p>
 
-          <form onSubmit={requestCode} className="mt-6 space-y-4">
+          <form onSubmit={requestCode} className={compact ? "mt-4 space-y-3" : "mt-6 space-y-4"}>
             <label className="block">
               <span className="mb-1.5 block text-[11.5px] font-semibold text-ink/70">Adresse e-mail</span>
               <span className="relative block">
@@ -131,7 +152,9 @@ export function LoginForm({ next }: { next: string }) {
             <button
               type="submit"
               disabled={pending}
-              className="focus-ring inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-ink text-[13px] font-semibold text-white transition hover:bg-ink-deep disabled:opacity-60"
+              className={`focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full bg-ink text-[13px] font-semibold text-white transition hover:bg-ink-deep disabled:opacity-60 ${
+                compact ? "h-11" : "h-12"
+              }`}
             >
               {pending ? <Loader2 className="size-4 animate-spin" /> : null}
               Recevoir le code
@@ -139,7 +162,7 @@ export function LoginForm({ next }: { next: string }) {
             </button>
           </form>
 
-          <p className="mt-4 text-[11px] leading-relaxed text-ink/35">
+          <p className="mt-3 text-[10.5px] leading-relaxed text-ink/35">
             Toute tentative est limitée à 6 essais par tranche de 10 minutes.
           </p>
         </>
@@ -159,7 +182,11 @@ export function LoginForm({ next }: { next: string }) {
           </button>
 
           <p className="text-[10.5px] font-semibold uppercase tracking-[0.18em] text-coral">Vérification</p>
-          <h2 className="mt-1.5 text-[24px] leading-tight tracking-[-0.02em] text-ink">
+          <h2
+            className={`mt-1.5 leading-tight tracking-[-0.02em] text-ink ${
+              compact ? "text-[20px]" : "text-[24px]"
+            }`}
+          >
             Saisissez le code reçu
           </h2>
           <p className="mt-1.5 text-[12.5px] leading-relaxed text-muted">
@@ -185,7 +212,7 @@ Renseignez un mot de passe d&apos;application SMTP valide dans SMTP_PASSWORD pou
             </div>
           ) : null}
 
-          <form onSubmit={verify} className="mt-6 space-y-4">
+          <form onSubmit={verify} className={compact ? "mt-4 space-y-3" : "mt-6 space-y-4"}>
             <label className="block">
               <span className="mb-1.5 block text-[11.5px] font-semibold text-ink/70">Code de vérification</span>
               <input
@@ -211,7 +238,9 @@ Renseignez un mot de passe d&apos;application SMTP valide dans SMTP_PASSWORD pou
             <button
               type="submit"
               disabled={pending || code.length !== 6}
-              className="focus-ring inline-flex h-11 w-full items-center justify-center gap-2 rounded-xl bg-coral text-[13px] font-semibold text-white transition hover:bg-coral-deep disabled:opacity-50"
+              className={`focus-ring inline-flex w-full items-center justify-center gap-2 rounded-full bg-coral text-[13px] font-semibold text-white transition hover:bg-coral-deep disabled:opacity-50 ${
+                compact ? "h-11" : "h-12"
+              }`}
             >
               {pending ? <Loader2 className="size-4 animate-spin" /> : <ShieldCheck className="size-4" />}
               Vérifier et entrer

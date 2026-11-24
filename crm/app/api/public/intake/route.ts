@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createRow, newId } from "@/lib/repo";
+import { sendCarReservationAck } from "@/lib/mailer";
 
 export const dynamic = "force-dynamic";
 
@@ -70,6 +71,22 @@ export async function POST(request: NextRequest) {
   const from = str(body.from, 24);
   const to = str(body.to, 24);
   const now = new Date().toISOString();
+  const isCar = type === "car";
+  const stayDays =
+    isCar && from && to
+      ? Math.max(
+          1,
+          Math.ceil(
+            (new Date(`${to.slice(0, 10)}T12:00:00Z`).getTime() -
+              new Date(`${from.slice(0, 10)}T12:00:00Z`).getTime()) /
+              86_400_000
+          )
+        )
+      : null;
+  const datesLine =
+    isCar && from && to
+      ? `Dates : ${from.slice(0, 10)} → ${to.slice(0, 10)}${stayDays ? ` (${stayDays} j)` : ""}`
+      : "";
 
   const lead = await createRow("leads", {
     id: newId("ld"),
@@ -78,10 +95,16 @@ export async function POST(request: NextRequest) {
     phone: phone || null,
     company: null,
     status: "NEW",
-    interest: type === "car" ? "CARS" : type === "contact" ? "PROJET" : "ACHAT",
+    interest: isCar ? "CARS" : type === "contact" ? "PROJET" : "ACHAT",
     source: "Site web",
     budget: null,
-    notes: [property, car && `Véhicule : ${car}`, message, page && `Page : ${page}`]
+    notes: [
+      property,
+      car && `Véhicule : ${car}`,
+      datesLine,
+      message,
+      page && `Page : ${page}`,
+    ]
       .filter(Boolean)
       .join("\n"),
     tags: [type === "car" ? "Benali Cars" : type === "contact" ? "Contact" : "Visite"],
@@ -90,6 +113,7 @@ export async function POST(request: NextRequest) {
 
   let bookingId: string | null = null;
   let rentalId: string | null = null;
+  let rentalReference: string | null = null;
 
   if (type === "car" && (from || to)) {
     const pickupAt = from || now.slice(0, 10);
@@ -121,6 +145,7 @@ export async function POST(request: NextRequest) {
       clientId: null,
     });
     rentalId = rental.id;
+    rentalReference = String(rental.reference ?? rental.id);
   } else if (visitDate || type === "bien") {
     const startsAt = visitDate ? new Date(visitDate).toISOString() : now;
     const booking = await createRow("bookings", {
@@ -140,8 +165,22 @@ export async function POST(request: NextRequest) {
     bookingId = booking.id;
   }
 
+  /* Accusé de réception au client : la demande est déjà enregistrée, un relais
+     SMTP absent ou en panne ne doit jamais faire échouer l'envoi du formulaire. */
+  let ack: { delivered: boolean; reason?: string } | null = null;
+  if (isCar && email.includes("@")) {
+    ack = await sendCarReservationAck({
+      to: email,
+      name,
+      car: car || "Véhicule Benali Cars",
+      startDate: from || undefined,
+      endDate: to || undefined,
+      reference: rentalReference || String(lead.id),
+    });
+  }
+
   return NextResponse.json(
-    { ok: true, id: lead.id, bookingId, rentalId },
+    { ok: true, id: lead.id, bookingId, rentalId, reference: rentalReference || lead.id, ack },
     { status: 201, headers: cors() }
   );
 }

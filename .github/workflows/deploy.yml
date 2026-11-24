@@ -1,0 +1,114 @@
+name: Déploiement Hostinger
+
+# À chaque push sur main : hash des CSS/JS, envoi du site vitrine par FTP,
+# puis vérification que le site répond et que l'app Node (CRM) a bien redémarré.
+# Le CRM est reconstruit et redémarré par l'intégration Git de Hostinger
+# (hPanel → l'app Node.js → GitHub), qui se déclenche sur le même push.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-hostinger-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  site:
+    name: Site vitrine → public_html
+    runs-on: ubuntu-latest
+    env:
+      SITE_URL: ${{ vars.SITE_URL || 'https://maisonbenali.com' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Réécrit chaque ?v= des CSS/JS avec le hash du fichier : jamais de
+      # visiteur bloqué sur un ancien style.css à cause du cache navigateur.
+      - name: Cache-busting des CSS/JS
+        run: node scripts/cache-bust.mjs
+
+      - name: Assemblage du dossier publié
+        run: node scripts/build-site.mjs
+
+      # Sans cet état, chaque run renverrait les 255 Mo du site : on le garde
+      # entre deux exécutions pour un envoi réellement incrémental.
+      - name: Cache de l'état de synchronisation FTP
+        uses: actions/cache@v4
+        with:
+          path: .ftp-deploy-sync-state.json
+          key: ftp-state-${{ github.ref_name }}-${{ github.run_id }}
+          restore-keys: ftp-state-${{ github.ref_name }}-
+
+      # Synchronisation incrémentale : les fichiers inchangés ne repartent pas.
+      # Ne PAS activer dangerous-clean-slate : le dossier public_html/uploads
+      # contient les images envoyées par le CRM (lib/storage.ts).
+      - name: Envoi FTP vers Hostinger
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          port: 21
+          local-dir: ./dist/
+          # Racine du site. Si le compte FTP est déjà ouvert sur public_html,
+          # définissez la variable FTP_SERVER_DIR = /
+          server-dir: ${{ vars.FTP_SERVER_DIR || '/public_html/' }}
+          state-name: .ftp-deploy-sync-state.json
+          timeout: 120000
+
+      - name: Vérification du site en ligne
+        run: |
+          set -euo pipefail
+
+          # Le hash publié dans index.html doit être celui des fichiers locaux.
+          CSS_PATH=$(grep -oE 'assets/css/style\.css\?v=[a-f0-9]+' dist/index.html | head -1)
+          if [ -z "$CSS_PATH" ]; then
+            echo "::error::index.html ne référence pas style.css avec un hash"
+            exit 1
+          fi
+          echo "Hash publié : $CSS_PATH"
+
+          for attempt in $(seq 1 12); do
+            CODE=$(curl -s -o /dev/null -w '%{http_code}' "$SITE_URL/index.html" || true)
+            LIVE=$(curl -s "$SITE_URL/index.html" | grep -oE 'assets/css/style\.css\?v=[a-f0-9]+' | head -1 || true)
+            echo "essai $attempt : HTTP $CODE · $LIVE"
+            if [ "$CODE" = "200" ] && [ "$LIVE" = "$CSS_PATH" ]; then
+              echo "Site en ligne avec les bons hashes."
+              exit 0
+            fi
+            sleep 10
+          done
+
+          echo "::error::Le site en ligne ne sert pas encore les nouveaux hashes ($CSS_PATH)."
+          exit 1
+
+  crm:
+    name: App Node (CRM) redémarrée
+    runs-on: ubuntu-latest
+    needs: site
+    env:
+      CRM_URL: ${{ vars.CRM_URL || 'https://crm.maisonbenali.com' }}
+    steps:
+      # Hostinger reconstruit et redémarre l'app Node sur le push. On vérifie
+      # ici que le redémarrage a bien eu lieu : page de connexion + API publique.
+      - name: Attente du redémarrage du CRM
+        run: |
+          set -euo pipefail
+          for attempt in $(seq 1 24); do
+            LOGIN=$(curl -s -o /dev/null -w '%{http_code}' "$CRM_URL/login" || true)
+            API=$(curl -s -o /dev/null -w '%{http_code}' "$CRM_URL/api/public/cars" || true)
+            echo "essai $attempt : /login $LOGIN · /api/public/cars $API"
+            if [ "$LOGIN" = "200" ] && [ "$API" = "200" ]; then
+              echo "CRM en ligne (app Node redémarrée)."
+              exit 0
+            fi
+            sleep 10
+          done
+          echo "::error::Le CRM ne répond pas après redémarrage ($CRM_URL)."
+          exit 1

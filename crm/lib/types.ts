@@ -12,4 +12,5 @@ export type CollectionName =
   | "posts"
   | "transactions"
   | "media"
-  | "emails";
+  | "emails"
+  | "vehicles";

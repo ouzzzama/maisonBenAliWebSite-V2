@@ -691,6 +691,25 @@
     z-index: 100000;
     background: transparent !important;
     transform: none !important;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    /* pas de will-change ici : le calque promu était rastérisé en basse
+       résolution et rendait le logo flou (bords doux + halo). */
+  }
+
+  /* Tant que la bannière d'accueil est à l'écran, le logo reste épinglé dessus ;
+     une fois la bannière passée, il sort avec elle (et revient en remontant). */
+  header.header-area.mb-banner-locked,
+  header.header-area.mb-banner-locked.is-scrolled {
+    position: fixed !important;
+    top: 0 !important;
+    transform: none !important;
+  }
+
+  header.header-area.mb-banner-passed,
+  header.header-area.mb-banner-passed.is-scrolled {
+    position: fixed !important;
+    top: 0 !important;
+    transform: translateY(calc(-100% - 16px)) !important;
   }
 
   .header-area .container-fluid {

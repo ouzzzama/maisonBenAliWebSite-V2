@@ -1,6 +1,9 @@
 /**
- * Portails sur lesquels Maison Benali diffuse ses annonces. Les libellés sont
- * partagés par le CRM et les formulaires ; `color` sert de repère visuel.
+ * Portails sur lesquels Maison Benali diffuse ses annonces.
+ *
+ * `color`  = couleur du logo, reprise telle quelle (repère visuel, graphiques)
+ * `tint`   = fond très clair de la colonne du portail
+ * `line`   = bordure de cette colonne, un cran plus soutenue que le fond
  */
 export const MARKETPLACE_PLATFORMS = [
   {
@@ -8,7 +11,9 @@ export const MARKETPLACE_PLATFORMS = [
     label: "Airbnb",
     hint: "Séjours & conciergerie",
     url: "https://www.airbnb.com",
-    color: "#ff5a5f",
+    color: "#f15c61",
+    tint: "linear-gradient(180deg, #fff1f1 0%, #fff7f6 100%)",
+    line: "#fbd3d5",
     logo: "/brand/marketplaces/airbnb.svg",
   },
   {
@@ -16,7 +21,9 @@ export const MARKETPLACE_PLATFORMS = [
     label: "Mubawab",
     hint: "Portail immobilier Maroc",
     url: "https://www.mubawab.ma",
-    color: "#f5a623",
+    color: "#47a2da",
+    tint: "linear-gradient(180deg, #eef7fd 0%, #f6fbfe 100%)",
+    line: "#c9e6f7",
     logo: "/brand/marketplaces/mubawab.svg",
   },
   {
@@ -24,7 +31,10 @@ export const MARKETPLACE_PLATFORMS = [
     label: "Avito",
     hint: "Petites annonces",
     url: "https://www.avito.ma",
-    color: "#7c5cff",
+    color: "#54ba70",
+    /* le logo Avito est tricolore : le fond reprend les trois teintes */
+    tint: "linear-gradient(150deg, #fff2f3 0%, #f1faf4 52%, #f1f7fc 100%)",
+    line: "#e3d9dd",
     logo: "/brand/marketplaces/avito.svg",
   },
   {
@@ -32,7 +42,9 @@ export const MARKETPLACE_PLATFORMS = [
     label: "Hespress Immobilier",
     hint: "Annonces Hespress",
     url: "https://www.hespress.com",
-    color: "#e11d48",
+    color: "#2d3186",
+    tint: "linear-gradient(180deg, #f1f2fb 0%, #f8f9fd 100%)",
+    line: "#d5d7f0",
     logo: "/brand/marketplaces/hespress.svg",
   },
 ] as const;

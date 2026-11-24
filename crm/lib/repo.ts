@@ -57,18 +57,36 @@ function serialize(row: PrismaRow): Row {
 }
 
 const DATE_FIELDS = ["createdAt", "updatedAt", "receivedAt", "startsAt", "endsAt", "pickupAt", "dropoffAt", "occurredAt", "publishedAt"];
-const DECIMAL_FIELDS = ["budget", "price", "dailyRate", "totalPrice", "deposit", "amount"];
+const DECIMAL_FIELDS = [
+  "budget",
+  "price",
+  "dailyRate",
+  "weeklyRate",
+  "highSeasonRate",
+  "totalPrice",
+  "deposit",
+  "amount",
+];
 
-function prepare(data: RowInput): PrismaRow {
+/** Tarifs que l'on peut vider depuis le CRM (colonnes nullables). */
+const CLEARABLE_DECIMALS: Partial<Record<CollectionName, string[]>> = {
+  vehicles: ["dailyRate", "weeklyRate", "highSeasonRate", "deposit"],
+};
+
+function prepare(data: RowInput, collection?: CollectionName): PrismaRow {
   const out: PrismaRow = { ...data };
   for (const field of DATE_FIELDS) {
     const value = out[field];
     if (typeof value === "string" && value) out[field] = new Date(value);
     if (!value) out[field] = undefined;
   }
+  const clearable = collection ? CLEARABLE_DECIMALS[collection] ?? [] : [];
   for (const field of DECIMAL_FIELDS) {
     const value = out[field];
-    if (value === "" || value === undefined || value === null) out[field] = undefined;
+    if (value === undefined) out[field] = undefined;
+    else if (value === "" || value === null)
+      // Un champ vidé dans le CRM efface le tarif (au lieu de garder l'ancien).
+      out[field] = clearable.includes(field) ? null : undefined;
     else if (typeof value === "number" && Number.isFinite(value)) out[field] = value;
   }
   return out;
@@ -89,6 +107,7 @@ function store(): Record<CollectionName, Row[]> {
       transactions: [...demoData.transactions] as unknown as Row[],
       media: [...demoData.media] as unknown as Row[],
       emails: [...demoData.emails] as unknown as Row[],
+      vehicles: [...demoData.vehicles] as unknown as Row[],
     };
   }
   return cache.__crmStore;
@@ -124,7 +143,7 @@ export async function getRow(collection: CollectionName, id: string): Promise<Ro
 export async function createRow(collection: CollectionName, data: RowInput): Promise<Row> {
   const prisma = getPrisma();
   if (prisma) {
-    const row = (await prisma[MODEL[collection]].create({ data: prepare(data) })) as PrismaRow;
+    const row = (await prisma[MODEL[collection]].create({ data: prepare(data, collection) })) as PrismaRow;
     return serialize(row);
   }
   const row = { id: newId(`${collection.slice(0, 2)}_`), ...data } as Row;
@@ -137,7 +156,7 @@ export async function createRow(collection: CollectionName, data: RowInput): Pro
 export async function updateRow(collection: CollectionName, id: string, data: RowInput): Promise<Row | null> {
   const prisma = getPrisma();
   if (prisma) {
-    const row = (await prisma[MODEL[collection]].update({ where: { id }, data: prepare(data) })) as PrismaRow;
+    const row = (await prisma[MODEL[collection]].update({ where: { id }, data: prepare(data, collection) })) as PrismaRow;
     return serialize(row);
   }
   const list = store()[collection] ?? [];

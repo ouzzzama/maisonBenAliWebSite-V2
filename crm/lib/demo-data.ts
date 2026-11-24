@@ -1006,7 +1006,8 @@ type PrismaModelName =
   | "product"
   | "shopItem"
   | "marketplaceListing"
-  | "post";
+  | "post"
+  | "vehicle";
 
 export type Product = {
   id: string;
@@ -1260,6 +1261,143 @@ export type MarketplaceListing = {
 /** Aucune annonce n'est pré-remplie : la page se remplit depuis le CRM. */
 export const demoMarketplaceListings: MarketplaceListing[] = [];
 
+/* ----------------------------------------------------------------- flotte -- */
+
+/** Grille tarifaire d'un véhicule Benali Cars, reprise par le site public. */
+export type Vehicle = {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  badge: string | null;
+  tagline: string | null;
+  description: string | null;
+  image: string | null;
+  alt: string | null;
+  dailyRate: number | null;
+  weeklyRate: number | null;
+  highSeasonRate: number | null;
+  seasonNote: string | null;
+  deposit: number | null;
+  published: boolean;
+  sortOrder: number;
+  createdAt: string;
+  updatedAt: string;
+};
+
+/**
+ * La flotte reprend les cinq modèles du formulaire de réservation.
+ * Les tarifs partent vides : ils se saisissent dans CRM → Cars → Tarifs.
+ * Tant qu'un tarif est vide, le site affiche « Tarif sur demande ».
+ */
+export const demoVehicles: Vehicle[] = [
+  {
+    id: "vh_duster",
+    slug: "dacia-duster",
+    name: "Dacia Duster",
+    category: "SUV",
+    badge: "Le plus polyvalent",
+    tagline: "SUV compact, à l'aise en ville comme sur la route de Taghazout.",
+    description:
+      "Le Duster est le compagnon idéal pour découvrir la baie d'Agadir sans se poser de questions : position de conduite haute, coffre généreux et vraie aisance sur les routes de campagne comme dans les ruelles de la médina.",
+    image: "assets/images/innerpage/cars/car-suv.webp",
+    alt: "Dacia Duster blanc devant une villa d'Agadir",
+    dailyRate: null,
+    weeklyRate: null,
+    highSeasonRate: null,
+    seasonNote: "Haute saison : juillet, août et fêtes de fin d'année.",
+    deposit: null,
+    published: true,
+    sortOrder: 10,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "vh_208",
+    slug: "peugeot-208",
+    name: "Peugeot 208",
+    category: "Citadine",
+    badge: "La plus agile",
+    tagline: "Citadine agile et facile à garer, parfaite pour le centre d'Agadir.",
+    description:
+      "Compacte, sobre et maniable, la 208 se gare partout : Founty, Marina, centre-ville ou corniche.",
+    image: "assets/images/innerpage/cars/car-compact.webp",
+    alt: "Peugeot 208 grise sur une route d'Agadir",
+    dailyRate: null,
+    weeklyRate: null,
+    highSeasonRate: null,
+    seasonNote: "Haute saison : juillet, août et fêtes de fin d'année.",
+    deposit: null,
+    published: true,
+    sortOrder: 20,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "vh_classe_c",
+    slug: "mercedes-classe-c",
+    name: "Mercedes Classe C",
+    category: "Berline",
+    badge: "Le confort d'affaires",
+    tagline: "Berline premium, silencieuse et confortable pour vos rendez-vous.",
+    description:
+      "La Classe C est la berline des arrivées soignées : sellerie soignée, insonorisation remarquable et tenue de route rassurante.",
+    image: "assets/images/innerpage/cars/car-sedan.webp",
+    alt: "Mercedes Classe C noire devant une résidence contemporaine",
+    dailyRate: null,
+    weeklyRate: null,
+    highSeasonRate: null,
+    seasonNote: "Haute saison : juillet, août et fêtes de fin d'année.",
+    deposit: null,
+    published: true,
+    sortOrder: 30,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "vh_evoque",
+    slug: "range-rover-evoque",
+    name: "Range Rover Evoque",
+    category: "SUV premium",
+    badge: "L'arrivée signature",
+    tagline: "SUV premium au gabarit compact : présence et confort à bord.",
+    description:
+      "L'Evoque associe une silhouette reconnaissable à un intérieur raffiné. Position haute, visibilité généreuse et confort de haut niveau.",
+    image: "assets/images/innerpage/cars/car-suv-premium.jpg",
+    alt: "SUV premium bronze devant une villa blanche face à l'océan",
+    dailyRate: null,
+    weeklyRate: null,
+    highSeasonRate: null,
+    seasonNote: "Haute saison : juillet, août et fêtes de fin d'année.",
+    deposit: null,
+    published: true,
+    sortOrder: 40,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+  {
+    id: "vh_a3",
+    slug: "audi-a3",
+    name: "Audi A3",
+    category: "Compacte premium",
+    badge: "L'équilibre premium",
+    tagline: "Compacte premium : finitions soignées, conduite précise, coffre généreux.",
+    description:
+      "L'A3 offre le raffinement d'une allemande dans un format compact : conduite précise, finitions nettes et coffre suffisant pour les bagages d'un séjour.",
+    image: "assets/images/innerpage/cars/car-sportback.jpg",
+    alt: "Audi A3 grise sur une route arborée",
+    dailyRate: null,
+    weeklyRate: null,
+    highSeasonRate: null,
+    seasonNote: "Haute saison : juillet, août et fêtes de fin d'année.",
+    deposit: null,
+    published: true,
+    sortOrder: 50,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  },
+];
+
 export const demoData = {
   leads: demoLeads,
   products: demoProducts,
@@ -1273,6 +1411,7 @@ export const demoData = {
   transactions: demoTransactions,
   media: demoMedia,
   emails: demoEmails,
+  vehicles: demoVehicles,
   scope: {
     leads: "lead",
     clients: "client",
@@ -1286,6 +1425,7 @@ export const demoData = {
     shop: "shopItem",
     posts: "post",
     marketplaces: "marketplaceListing",
+    vehicles: "vehicle",
   } as Record<string, PrismaModelName>,
 };
 

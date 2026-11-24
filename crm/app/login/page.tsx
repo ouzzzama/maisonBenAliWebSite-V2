@@ -1,15 +1,8 @@
 import { redirect } from "next/navigation";
-import { ShieldCheck, MailCheck, Lock } from "lucide-react";
 import { getSession } from "@/lib/auth-server";
 import { LoginForm } from "@/components/auth/login-form";
 
 export const dynamic = "force-dynamic";
-
-const POINTS = [
-  { icon: Lock, title: "Accès privé", text: "Le back-office est fermé à toute session non vérifiée." },
-  { icon: MailCheck, title: "Code par e-mail", text: "Un code à 6 chiffres envoyé sur l'adresse autorisée." },
-  { icon: ShieldCheck, title: "Session signée", text: "Cookie HttpOnly signé, expiré automatiquement." },
-];
 
 export default async function LoginPage({
   searchParams,
@@ -23,70 +16,47 @@ export default async function LoginPage({
   const target = next && next.startsWith("/") ? next : "/admin";
 
   return (
-    <main className="grid min-h-screen lg:grid-cols-[1.05fr_1fr]">
-      <section className="relative hidden flex-col justify-between overflow-hidden bg-graphite p-10 text-white lg:flex">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/brand/monogram-b-white.svg"
-          alt=""
-          aria-hidden
-          className="pointer-events-none absolute -bottom-16 -right-10 w-[420px] opacity-[0.05]"
-        />
-        <div className="relative flex items-center gap-3">
+    <main className="flex min-h-[100dvh] flex-col items-center overflow-hidden bg-cream lg:justify-center lg:bg-[#0c2136] lg:py-10">
+      {/* Une seule composition, du mobile au desktop : photo entière bord à bord,
+          logo blanc complet, arc doux de la maison, formulaire posé dessus. */}
+      <div className="flex min-h-0 w-full flex-1 flex-col lg:max-w-[470px] lg:flex-none lg:overflow-hidden lg:rounded-[34px] lg:shadow-[0_44px_100px_-42px_rgba(0,0,0,0.7)]">
+        <div className="relative aspect-[1184/880] w-full shrink-0 overflow-hidden bg-graphite">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/monogram-b-white.svg" alt="Maison Benali" width={30} height={32} className="h-8 w-auto" />
-          <span className="font-script text-[15px] leading-none text-white/55">Espace CRM</span>
-        </div>
-
-        <div className="relative max-w-md">
-          <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-coral">
-            Maison Benali
-          </p>
-          <h1 className="text-[34px] leading-[1.1] tracking-[-0.02em]">
-            Le pilotage de vos opérations, en accès restreint.
-          </h1>
-          <p className="mt-4 text-[13.5px] leading-relaxed text-white/55">
-            Leads, réservations, Benali Cars, projets et trésorerie. La connexion se fait en deux
-            étapes : mot de passe puis code envoyé par e-mail.
-          </p>
-          <ul className="mt-8 space-y-4">
-            {POINTS.map((point) => {
-              const Icon = point.icon;
-              return (
-                <li key={point.title} className="flex gap-3">
-                  <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-xl bg-white/8 text-coral">
-                    <Icon className="size-4" />
-                  </span>
-                  <span>
-                    <span className="block text-[12.5px] font-semibold text-white">{point.title}</span>
-                    <span className="block text-[12px] leading-relaxed text-white/45">{point.text}</span>
-                  </span>
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-
-        <p className="relative text-[11px] text-white/30">
-          © {new Date().getFullYear()} Maison Benali — accès réservé à l&apos;administration.
-        </p>
-      </section>
-
-      <section className="flex items-center justify-center bg-cream px-4 py-12 sm:px-8">
-        <div className="w-full max-w-[420px]">
-          <div className="mb-8 flex justify-center lg:hidden">
+          <img
+            src="/images/login-hero-wide.jpg"
+            alt="Résidence balnéaire Maison Benali à Agadir"
+            className="relative z-[1] h-full w-full object-cover"
+          />
+          <span
+            aria-hidden
+            className="absolute inset-0 z-[2] bg-gradient-to-b from-graphite/40 via-transparent to-graphite/75"
+          />
+          <div className="absolute inset-x-0 bottom-[72px] z-[3] flex flex-col items-center px-6 text-center">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/brand/maison-benali-logo.svg"
+              src="/brand/maison-benali-logo-all-white.svg"
               alt="Maison Benali"
               width={220}
-              height={53}
-              className="h-auto w-[210px]"
+              height={54}
+              className="h-auto w-[210px] drop-shadow-[0_2px_16px_rgba(0,0,0,0.55)] lg:w-[230px]"
             />
+            <p className="mt-2 font-script text-[13px] leading-none text-white/75">Espace CRM</p>
           </div>
-          <LoginForm next={target} />
         </div>
-      </section>
+
+        <div className="relative z-10 -mt-8 flex min-h-0 flex-1 flex-col [filter:drop-shadow(0_-16px_28px_rgba(18,43,67,0.28))]">
+          {/* Arche douce de la maison : ellipse très large, épaules hors cadre */}
+          <span
+            aria-hidden
+            className="pointer-events-none absolute -top-[28px] left-1/2 h-[120px] w-[130%] -translate-x-1/2 rounded-[50%] bg-white"
+          />
+          <div className="relative flex min-h-0 flex-1 flex-col overflow-y-auto bg-white px-5 pb-6 pt-10 lg:px-8 lg:pb-8 lg:pt-12">
+            <div className="mx-auto flex w-full max-w-[420px] flex-col">
+              <LoginForm next={target} framed={false} compact />
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
   );
 }
